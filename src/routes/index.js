@@ -20,7 +20,7 @@ const publicRoutes = [
     {
         path: '/login',
         component: Login,
-        layout: Default,
+        layout: HeaderOnly,
     },
 ];
 

@@ -1,5 +1,7 @@
 import style from './Login.modules.scss';
 import classNames from 'classnames/bind';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap-icons/font/bootstrap-icons.css'
 
 const cx = classNames.bind(style);
 
@@ -15,7 +17,10 @@ function Login() {
                         <form>
                             {/* login message */}
                             <div className={cx("login-message")}>
-                                <h2 className={cx("title")}>Please adjust the following</h2>
+                                <h2 className={cx("title")}>
+                                    <span className={cx("bi bi-exclamation-circle-fill")}> </span>
+                                    Please adjust the following
+                                </h2>
                                 <div className={cx("errors")}>
                                     <ul>
                                         <li>
@@ -25,23 +30,23 @@ function Login() {
                                 </div>
                             </div>
                             {/* input fiels */}
-                            <div class="form-floating mb-3">
-                                <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" />
-                                <label for="floatingInput">Email address</label>
+                            <div className="form-floating mb-5">
+                                <input type="email" className="form-control rounded-0" id="floatingInput" placeholder="name@example.com" />
+                                <label htmlFor="floatingInput">Email<span className={cx("asterisk")}> *</span></label>
                             </div>
-                            <div class="form-floating">
-                                <input type="password" class="form-control" id="floatingPassword" placeholder="Password" />
-                                <label for="floatingPassword">Password</label>
+                            <div className="form-floating mb-5">
+                                <input type="password" className="form-control rounded-0 password" id="floatingPassword" placeholder="Password" />
+                                <label htmlFor="floatingPassword">Password<span className={cx("asterisk")}> *</span></label>
                             </div>
                             <button type="button" className={cx("btn btn-outline-dark rounded-0 button")}>Sign In</button>
-                            <p className={cx('p-text')}>New customer? <a href='#' className={cx('link')}>Create your account</a></p>
-                            <p className={cx('p-text')}>Lost password? <a href='#' className={cx('link')}>Recover password</a></p>
+                            <p className={cx('p-text')}>New customer? <a href="#" className={cx('link')}>Create your account</a></p>
+                            <p className={cx('p-text')}>Lost password? <a href="#" className={cx('link')}>Recover password</a></p>
                         </form>
                     </div>
 
                     {/* guest */}
                     <div className={cx('guest-login-wrapper')}>
-                        <hr style={{ marginBottom: '50px', marginTop: '60px' }} />
+                        <hr />
                         <h2 className={cx('title')}>CONTINUE AS A GUEST</h2>
                         <form>
                             <button type="button" className={cx("btn btn-dark rounded-0 button")}>Continue</button>
