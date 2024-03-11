@@ -1,22 +1,28 @@
 import { Default, HeaderOnly } from '~/layouts';
-import { Shop, Home } from '~/pages';
+import { Header } from '~/layouts/components';
+import { Shop, Home, Cart } from '~/pages';
 
 const publicRoutes = [
-    {
-        path: '/',
-        component: Home,
-        layout: HeaderOnly,
-    },
-    {
-        path: '/home',
-        component: Home,
-        layout: HeaderOnly,
-    },
-    {
-        path: '/shop',
-        component: Shop,
-        layout: Default,
-    },
+  {
+    path: '/',
+    component: Home,
+    layout: HeaderOnly,
+  },
+  {
+    path: '/home',
+    component: Home,
+    layout: HeaderOnly,
+  },
+  {
+    path: '/shop',
+    component: Shop,
+    layout: Default,
+  },
+  {
+    path: '/cart',
+    component: Cart,
+    layout: HeaderOnly,
+  },
 ];
 
 const privateRoutes = [{}];
