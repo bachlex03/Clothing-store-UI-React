@@ -66,8 +66,15 @@ function Cart() {
                   <span className={cx('cms-qty-act', 'cms-qty-down')}></span>
                 </div>
               </td>
-              <td className="product-subtotal">Subtotal</td>
-              <td className="remove">x</td>
+              <td className={cx('product-subtotal')}>
+                <bdi>
+                  <span className={cx('icon')}>
+                    <TbCurrencyDollar />
+                  </span>
+                  79.00
+                </bdi>
+              </td>
+              <td className={cx('product-remove')}>x</td>
             </tr>
             <tr className={cx('cart-item')}>
               <td className="choose">
@@ -86,7 +93,7 @@ function Cart() {
               </td>
               <td className={cx('product-price')} data-title="Price">
                 <bdi>
-                  <span>
+                  <span className={cx('icon')}>
                     <TbCurrencyDollar />
                   </span>
                   79.00
@@ -112,8 +119,15 @@ function Cart() {
                   <span className={cx('cms-qty-act', 'cms-qty-down')}></span>
                 </div>
               </td>
-              <td className="product-subtotal">Subtotal</td>
-              <td className="remove">x</td>
+              <td className={cx('product-subtotal')}>
+                <bdi>
+                  <span className={cx('icon')}>
+                    <TbCurrencyDollar />
+                  </span>
+                  79.00
+                </bdi>
+              </td>
+              <td className={cx('product-remove')}>x</td>
             </tr>
             <tr>
               <td colSpan={'6'} className="actions">
@@ -138,6 +152,77 @@ function Cart() {
           </tbody>
         </Table>
       </form>
+      <div className={cx('cart-collaterals')}>
+        <div className={cx('cart_totals')}>
+          <h2>Cart totals</h2>
+          <Table striped borderless className={cx('table-container')}>
+            <tbody>
+              <tr className={cx('cart-subtotal')}>
+                <th>Subtotal</th>
+                <td data-title="Subtotal">
+                  <bdi>
+                    <span className={cx('icon')}>
+                      <TbCurrencyDollar />
+                    </span>
+                    79.00
+                  </bdi>
+                </td>
+              </tr>
+              <tr className={cx('shipping-totals')}>
+                <th>Shipping</th>
+                <td data-title="Shipping">
+                  <ul id="shipping_method" className={cx('shipping-methods')}>
+                    <li>
+                      <input
+                        type="radio"
+                        name="shipping_method[0]"
+                        data-index="0"
+                        id="shipping_method_0_flat_rate1"
+                        value="flat_rate:1"
+                        class="shipping_method"
+                        checked="checked"
+                      />
+                      <label for="shipping_method_0_flat_rate1">Flat rate</label>
+                    </li>
+                    <li>
+                      <input
+                        type="radio"
+                        name="shipping_method[0]"
+                        data-index="0"
+                        id="shipping_method_0_wc_pickup_store"
+                        value="wc_pickup_store"
+                        class="shipping_method"
+                      />
+                      <label for="shipping_method_0_wc_pickup_store">Pickup Store</label>
+                    </li>
+                  </ul>
+                  <p class="shipping-destination">
+                    Shipping to <strong>CA</strong>.
+                  </p>
+                </td>
+              </tr>
+              <tr class={cx('order-total')}>
+                <th>Total</th>
+                <td data-title="Total">
+                  <strong>
+                    <bdi>
+                      <span className={cx('icon')}>
+                        <TbCurrencyDollar />
+                      </span>
+                      79.00
+                    </bdi>
+                  </strong>
+                </td>
+              </tr>
+            </tbody>
+          </Table>
+          <div className={cx('proceed-to-checkout')}>
+            <Link to="/" className={cx('btn', 'btn-accent', 'text-white', 'btn-hover-primary')}>
+              Proceed to checkout
+            </Link>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
