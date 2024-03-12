@@ -40,21 +40,20 @@ function Cart() {
               </td>
               <td className={cx('product-price')} data-title="Price">
                 <bdi>
-                  <span>
+                  <span className={cx('icon')}>
                     <TbCurrencyDollar />
                   </span>
                   79.00
                 </bdi>
               </td>
-              <td className="product-quantity" data-title="Quantity">
+              <td className={cx('product-quantity')} data-title="Quantity">
                 <div className={cx('quantity')}>
                   <input
                     type="number"
-                    id="quantity_65ef5c35c6c59"
-                    className={cx('qty text')}
-                    name="cart[0aa1883c6411f7873cb83dacb17b0afc][qty]"
+                    className={cx('qty')}
+                    id
+                    name
                     value="2"
-                    aria-label="Product quantity"
                     size="4"
                     min="0"
                     max=""
@@ -63,8 +62,8 @@ function Cart() {
                     inputMode="numeric"
                     autoComplete="off"
                   />
-                  <span className={cx('cms-qty-act cms-qty-up')}></span>
-                  <span className={cx('cms-qty-act cms-qty-down')}></span>
+                  <span className={cx('cms-qty-act', 'cms-qty-up')}></span>
+                  <span className={cx('cms-qty-act', 'cms-qty-down')}></span>
                 </div>
               </td>
               <td className="product-subtotal">Subtotal</td>
@@ -93,7 +92,26 @@ function Cart() {
                   79.00
                 </bdi>
               </td>
-              <td className="product-quantity">Otto</td>
+              <td className={cx('product-quantity')} data-title="Quantity">
+                <div className={cx('quantity')}>
+                  <input
+                    type="number"
+                    className={cx('qty')}
+                    id
+                    name
+                    value="2"
+                    size="4"
+                    min="0"
+                    max=""
+                    step="1"
+                    placeholder=""
+                    inputMode="numeric"
+                    autoComplete="off"
+                  />
+                  <span className={cx('cms-qty-act', 'cms-qty-up')}></span>
+                  <span className={cx('cms-qty-act', 'cms-qty-down')}></span>
+                </div>
+              </td>
               <td className="product-subtotal">Subtotal</td>
               <td className="remove">x</td>
             </tr>
