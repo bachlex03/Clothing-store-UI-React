@@ -1,24 +1,25 @@
-import { Default, HeaderOnly } from '~/layouts';
+import { Default, HeaderOnly, Admin } from '~/layouts';
 import { Shop, Home } from '~/pages';
+import { Dashboard } from '~/pages/Admin';
 
 const publicRoutes = [
-    {
-        path: '/',
-        component: Home,
-        layout: HeaderOnly,
-    },
-    {
-        path: '/home',
-        component: Home,
-        layout: HeaderOnly,
-    },
-    {
-        path: '/shop',
-        component: Shop,
-        layout: Default,
-    },
+  {
+    path: '/',
+    component: Home,
+    layout: HeaderOnly,
+  },
+  {
+    path: '/shop',
+    component: Shop,
+    layout: Default,
+  },
+  {
+    path: '/admin',
+    component: Dashboard,
+    layout: Admin,
+  },
 ];
 
-const privateRoutes = [{}];
+const privateRoutes = [];
 
 export { publicRoutes, privateRoutes };
