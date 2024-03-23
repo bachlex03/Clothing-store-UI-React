@@ -5,9 +5,9 @@ const cx = classNames.bind(styles);
 
 function Dashboard() {
   return (
-    <>
-      <h1 className="text-blue-400">Dashboard</h1>
-    </>
+    <div className="h-screen text-blue-400" style={{ backgroundColor: '#0f1824', width: '' }}>
+      <div>Dashboard</div>
+    </div>
   );
 }
 

@@ -1,5 +1,14 @@
+import style from './AdminSidebar.module.scss';
+import classNames from 'classnames/bind';
+
+const cx = classNames.bind(style);
+
 function AdminSidebar() {
-  return <h1>AdminSidebar</h1>;
+  return (
+    <div className={cx('w-259')} style={{ backgroundColor: '#132337' }}>
+      Sidebar
+    </div>
+  );
 }
 
 export default AdminSidebar;

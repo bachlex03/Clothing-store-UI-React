@@ -1,9 +1,15 @@
 import { useLayoutEffect } from 'react';
 import { AdminHeader, AdminFooter, AdminSidebar } from '../components';
 
+import style from './Admin.scss';
+import classNames from 'classnames/bind';
+
+const cx = classNames.bind(style);
+
 function Admin({ children }) {
   useLayoutEffect(() => {
     const styleTag = document.createElement('style');
+
     styleTag.innerHTML = `
       @import url('https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css');
     `;
@@ -16,15 +22,13 @@ function Admin({ children }) {
   }, []);
 
   return (
-    <div>
-      <AdminHeader />
-      <div className="container">
-        <div className="left-block">
-          <AdminSidebar />
-        </div>
-        <div className="right-block">{children}</div>
+    <div className="flex">
+      <AdminSidebar />
+
+      <div className="w-screen">
+        <AdminHeader />
+        <div className="">{children}</div>
       </div>
-      <AdminFooter />
     </div>
   );
 }
