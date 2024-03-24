@@ -101,6 +101,72 @@ function Dashboard() {
           <div className={cx('footer-right')}>Design & Develop by Group 1</div>
         </div>
       </div>
+
+      <div className={cx('overlay')}>
+        <div className={cx('add-product-container')}>
+          <span className={cx('overlay-heading-text')}>Add New</span>
+
+          <div className={cx('inner-container')}>
+            <div className={cx('left-block')}></div>
+
+            <div className={cx('right-block')}>
+              <p className={cx('heading-text')}>Product Card Preview</p>
+
+              <div className={cx('img-block')}>
+                <img src="https://themesdesign.in/tailwick/html-dark/assets/images/img-03.png" alt="" />
+              </div>
+
+              <p className={cx('sell-price')}>
+                $145.99 <span className={cx('sale-price')}>299.99</span>
+              </p>
+
+              <p className={cx('name-text')}>Fast colors Typography Men</p>
+
+              <p className={cx('category-text')}>Men's Fashion</p>
+
+              <div className={cx('colors')}>
+                <p className={cx('variant-text')}>Colors</p>
+
+                <div className={cx('color-container')}>
+                  <div className={cx('color-block')}>
+                    <input className={cx('select-color', 'color-1')} name="right-" type="checkbox" />
+                  </div>
+
+                  <div className={cx('color-block')}>
+                    <input className={cx('select-color', 'color-2')} name="right-" type="checkbox" />
+                  </div>
+
+                  <div className={cx('color-block')}>
+                    <input className={cx('select-color', 'color-3')} name="right-" type="checkbox" />
+                  </div>
+
+                  <div className={cx('color-block')}>
+                    <input className={cx('select-color', 'color-4')} name="right-" type="checkbox" />
+                  </div>
+                </div>
+              </div>
+
+              <div className={cx('sizes')}>
+                <p className={cx('variant-text', 'mb-12px')}>Sizes</p>
+
+                <span
+                  className={cx('select-size', {
+                    active: true,
+                  })}
+                >
+                  XS
+                </span>
+                <span className={cx('select-size')}>S</span>
+
+                <span className={cx('select-size')}>M</span>
+
+                <span className={cx('select-size')}>L</span>
+                <span className={cx('select-size')}>XL</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

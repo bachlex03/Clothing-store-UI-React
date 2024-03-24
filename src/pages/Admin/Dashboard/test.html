@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Custom Checkbox with Background Color</title>
+    <style>
+      /* Custom classes */
+      .inline-block {
+        display: inline-block;
+      }
+
+      .align-middle {
+        vertical-align: middle;
+      }
+
+      .border {
+        border-width: 1px;
+        border-style: solid;
+      }
+
+      .rounded-full {
+        border-radius: 9999px; /* Large value to make it round */
+      }
+
+      .appearance-none {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+      }
+
+      .cursor-pointer {
+        cursor: pointer;
+      }
+
+      .size-5 {
+        width: 1.25rem; /* Adjust size as needed */
+        height: 1.25rem; /* Adjust size as needed */
+      }
+
+      .bg-sky-500 {
+        background-color: #3182ce; /* Sky blue color */
+      }
+
+      .border-sky-500 {
+        border-color: #3182ce; /* Sky blue border color */
+      }
+
+      .checked:bg-sky-500:checked {
+        background-color: #3182ce; /* Change background color when checked */
+      }
+
+      .checked:border-sky-500:checked {
+        border-color: #3182ce; /* Change border color when checked */
+      }
+
+      .disabled\:opacity-75:disabled {
+        opacity: 0.75; /* Reduce opacity for disabled state */
+      }
+
+      .disabled\:cursor-default:disabled {
+        cursor: default; /* Change cursor for disabled state */
+      }
+    </style>
+  </head>
+  <body>
+    <input
+      id="selectColorPre1"
+      class="inline-block align-middle border rounded-full appearance-none cursor-pointer size-5 bg-sky-500 border-sky-500 checked:bg-sky-500 checked:border-sky-500 disabled:opacity-75 disabled:cursor-default"
+      type="checkbox"
+      value="color1"
+      name="selectColorPre"
+    />
+  </body>
+</html>

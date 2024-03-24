@@ -13,6 +13,8 @@
   --admin-border-color: #233a57;
   --admin-font-color-hover: #3b82f6;
   --admin-background-color: #3c82f6;
+  --admin-bg: #142337;
+  --admin-bg2: #0f1824;
 }
 
 html {
@@ -95,10 +97,21 @@ body {
   padding-right: 16px;
 }
 
-//
-
+// margin
 .mr-8px {
   margin-right: 8px;
+}
+
+.mb-4px {
+  margin-bottom: 4px;
+}
+
+.mb-12px {
+  margin-bottom: 12px;
+}
+
+.mb-16px {
+  margin-bottom: 16px;
 }
 
 // Admin hover
