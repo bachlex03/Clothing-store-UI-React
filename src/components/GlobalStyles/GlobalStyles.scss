@@ -11,6 +11,8 @@
 :root {
   --admin-font-color: #92afd3;
   --admin-border-color: #233a57;
+  --admin-font-color-hover: #3b82f6;
+  --admin-background-color: #3c82f6;
 }
 
 html {
@@ -92,3 +94,11 @@ body {
 .pr-16px {
   padding-right: 16px;
 }
+
+//
+
+.mr-8px {
+  margin-right: 8px;
+}
+
+// Admin hover

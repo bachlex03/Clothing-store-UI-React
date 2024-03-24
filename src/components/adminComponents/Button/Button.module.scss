@@ -1,0 +1,15 @@
+.container {
+  color: #fff;
+  padding: 8px 16px;
+  background-color: var(--admin-background-color);
+  border-radius: 6px;
+  font-size: 1.4rem;
+  user-select: none;
+  cursor: pointer;
+}
+
+.hover {
+  &:hover {
+    background-color: #2563eb;
+  }
+}

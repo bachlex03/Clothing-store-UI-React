@@ -14,7 +14,7 @@ const publicRoutes = [
     layout: Default,
   },
   {
-    path: '/admin',
+    path: '/admin/dashboard',
     component: Dashboard,
     layout: Admin,
   },
