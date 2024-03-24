@@ -1,0 +1,36 @@
+.container {
+  width: 100%;
+}
+
+.heading {
+  font-size: 1.4rem;
+  color: var(--admin-font-color-2);
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.input {
+  width: 100%;
+  background-color: transparent;
+  border: 0.8px solid rgba($color: #92afd3, $alpha: 0.3);
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 1.4rem;
+  outline: none;
+  line-height: 21px;
+  color: var(--admin-font-color);
+
+  &::placeholder {
+    color: var(--admin-font-color);
+  }
+
+  &:focus {
+    border: 1px solid var(--admin-background-color);
+  }
+}
+
+.hint {
+  font-size: 1.3rem;
+  color: var(--admin-font-color);
+  margin-top: 4px;
+}

@@ -263,16 +263,18 @@ tbody {
   gap: 30px;
 }
 
+// Left-block
 .left-block {
-  width: 65%;
+  width: 70%;
   height: 200px;
   background-color: var(--admin-bg);
   border-radius: 8px;
+  padding: 20px;
 }
 
 // Right block
 .right-block {
-  width: 35%;
+  width: 30%;
   background-color: var(--admin-bg);
   border-radius: 8px;
   padding: 10px 16px;

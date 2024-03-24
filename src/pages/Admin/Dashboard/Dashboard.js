@@ -11,7 +11,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { Button } from '~/components/adminComponents';
+import { Button, Input } from '~/components/adminComponents';
 
 const cx = classNames.bind(styles);
 
@@ -107,8 +107,20 @@ function Dashboard() {
           <span className={cx('overlay-heading-text')}>Add New</span>
 
           <div className={cx('inner-container')}>
-            <div className={cx('left-block')}></div>
+            {/* Start::: left-block */}
+            <div className={cx('left-block')}>
+              <div className="row">
+                <div className="col c-6">
+                  <Input hint="Do not exceed 20 characters when entering the name.">Product Title</Input>
+                </div>
 
+                <div className="col c-6">
+                  <Input hint="Code will be generated automatically">Product Code</Input>
+                </div>
+              </div>
+            </div>
+
+            {/* Start::: right-block */}
             <div className={cx('right-block')}>
               <p className={cx('heading-text')}>Product Card Preview</p>
 
