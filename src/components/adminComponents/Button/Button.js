@@ -3,8 +3,8 @@ import classNames from 'classnames/bind';
 
 const cx = classNames.bind(style);
 
-function Button({ hover, children }) {
-  return <div className={cx('container', { hover })}>{children}</div>;
+function Button({ hover, reset, children }) {
+  return <div className={cx('container', { hover, reset })}>{children}</div>;
 }
 
 export default Button;

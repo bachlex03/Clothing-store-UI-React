@@ -6,10 +6,23 @@
   font-size: 1.4rem;
   user-select: none;
   cursor: pointer;
+  margin-right: 10px;
 }
 
-.hover {
+.container.hover {
   &:hover {
     background-color: #2563eb;
+  }
+}
+
+.reset {
+  background-color: transparent;
+  color: red;
+  font-size: 1.3rem;
+}
+
+.reset.hover {
+  &:hover {
+    background-color: rgba($color: red, $alpha: 0.1);
   }
 }

@@ -265,19 +265,29 @@ tbody {
 
 // Left-block
 .left-block {
-  width: 70%;
-  height: 200px;
+  width: 73%;
   background-color: var(--admin-bg);
   border-radius: 8px;
   padding: 20px;
+  padding-bottom: 100px;
+  margin-bottom: 100px;
+  overflow-y: scroll;
+  height: 100vh;
+}
+
+.left-block-footer {
+  display: flex;
+  justify-content: flex-end;
 }
 
 // Right block
 .right-block {
-  width: 30%;
+  width: 272px;
+  height: fit-content;
   background-color: var(--admin-bg);
   border-radius: 8px;
   padding: 10px 16px;
+  padding-bottom: 20px;
 
   .heading-text {
     padding: 10px;

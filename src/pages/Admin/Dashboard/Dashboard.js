@@ -118,10 +118,100 @@ function Dashboard() {
                   <Input hint="Code will be generated automatically">Product Code</Input>
                 </div>
               </div>
+
+              <div className="row mt16">
+                <div className="col c-4">
+                  <Input placeholder="$00.00" type="number">
+                    Quantity
+                  </Input>
+                </div>
+                <div className="col c-4">
+                  <Input selectOptions={['Shirt', 'clothe', 'shoe']}>Category</Input>
+                </div>
+                <div className="col c-4">
+                  <Input>Product Type</Input>
+                </div>
+              </div>
+
+              <div className="row mt16">
+                <div className="col c-6">
+                  <Input
+                    colors={[
+                      '#0ca5e9',
+                      '#f97315',
+                      '#259782',
+                      '#a855f7',
+                      '#ebb305',
+                      '#ef4444',
+                      '#64758b',
+                      '#0f172a',
+                      '#e2e8f0',
+                    ]}
+                  >
+                    Colors Variant
+                  </Input>
+                </div>
+                <div className="col c-6">
+                  <Input sizes={['XS', 'S', 'M', 'L', 'XL', '2XL']}>Sizes</Input>
+                </div>
+              </div>
+
+              <div className="row">
+                <div className="col c-12">
+                  <Input image>Product Images</Input>
+                </div>
+              </div>
+
+              <div className="row">
+                <div className="col c-12">
+                  <Input placeholder="Enter Description" textarea>
+                    Product Description
+                  </Input>
+                </div>
+              </div>
+
+              <div className="row">
+                <div className="col c-4">
+                  <Input type="number" placeholder="$00.00">
+                    Price
+                  </Input>
+                </div>
+
+                <div className="col c-4">
+                  <Input type="number" placeholder="0%">
+                    Discounts
+                  </Input>
+                </div>
+
+                <div className="col c-4">
+                  <Input type="number" placeholder="0%">
+                    TAX Applicable
+                  </Input>
+                </div>
+
+                <div className="col c-4">
+                  <Input>Publish Date & Time</Input>
+                </div>
+
+                <div className="col c-4">
+                  <Input>Status</Input>
+                </div>
+
+                <div className="col c-4">
+                  <Input selectOptions={['Publish', 'Hidden']}>Visibility</Input>
+                </div>
+              </div>
+
+              <div className={cx('left-block-footer', 'mt16')}>
+                <Button reset hover>
+                  Reset
+                </Button>
+                <Button hover>Create Product</Button>
+              </div>
             </div>
 
             {/* Start::: right-block */}
-            <div className={cx('right-block')}>
+            <div image className={cx('right-block')}>
               <p className={cx('heading-text')}>Product Card Preview</p>
 
               <div className={cx('img-block')}>

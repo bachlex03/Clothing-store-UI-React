@@ -21,6 +21,7 @@
 
 html {
   font-size: 62.5%;
+  scroll-behavior: smooth;
 }
 
 body {
@@ -100,6 +101,14 @@ body {
 }
 
 // margin
+.mt12 {
+  margin-top: 12px;
+}
+
+.mt16 {
+  margin-top: 16px;
+}
+
 .mr-8px {
   margin-right: 8px;
 }
