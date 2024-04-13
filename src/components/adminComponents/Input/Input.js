@@ -1,7 +1,7 @@
 import style from './Input.module.scss';
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCaretDown, faUpload, fas } from '@fortawesome/free-solid-svg-icons';
+import { faCaretDown, faUpload } from '@fortawesome/free-solid-svg-icons';
 import { useState, useRef } from 'react';
 import React from 'react';
 
@@ -32,6 +32,7 @@ function Input({
   const [activeSizes, setActiveSizes] = useState([]);
 
   const textRef = useRef(null);
+  const inputImgRef = useRef(null);
 
   const handleSelect = (e) => {
     if (e.target.innerText === children) {
@@ -51,6 +52,11 @@ function Input({
     setIsChoose(true);
 
     setCategory(e.target.innerText);
+  };
+
+  const handleImages = (e) => {
+    console.log(e.target.files);
+    setValue([...e.target.files]);
   };
 
   const props = {
@@ -176,11 +182,27 @@ function Input({
     );
   } else if (image) {
     Comp = (
-      <div className={cx('img-container', 'mt12')}>
+      <div
+        className={cx('img-container', 'mt12')}
+        onClick={() => {
+          inputImgRef.current.click();
+        }}
+      >
         <div className={cx('img-inner')}>
           <FontAwesomeIcon className={cx('upload-icon')} icon={faUpload} />
           <p>Drag and drop your product images or browse your product images</p>
         </div>
+
+        <input
+          type={type}
+          name=""
+          id=""
+          accept="image/*"
+          multiple
+          style={{ display: 'none' }}
+          ref={inputImgRef}
+          onChange={handleImages}
+        />
       </div>
     );
   } else if (textarea) {

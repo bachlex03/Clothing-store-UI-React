@@ -8,6 +8,7 @@ import {
   faMagnifyingGlass,
   faPlus,
   faTrash,
+  faCircleNotch,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
@@ -32,6 +33,8 @@ function Dashboard() {
   const [quantity, setQuantity] = useState();
   const [price, setPrice] = useState();
   const [valueCategory, setValueCategory] = useState('');
+  const [description, setDescription] = useState('');
+  const [images, setImages] = useState([]);
 
   const handlePrice = (e) => {
     if (!regexOnlyNumber.test(e.target.value)) {
@@ -237,13 +240,36 @@ function Dashboard() {
 
               <div className="row">
                 <div className="col c-12">
-                  <Input image>Product Images</Input>
+                  <Input type={'file'} image setValue={setImages}>
+                    Product Images
+                  </Input>
+
+                  <div className={cx('img-preview-container')}>
+                    {images.map((image, index) => {
+                      return (
+                        <div className={cx('image-container')}>
+                          <img key={index} src={URL.createObjectURL(image)} alt="" className={cx('input-images')} />
+                          <i>
+                            <FontAwesomeIcon icon={faCircleNotch} className={cx('order-img-icon')} />
+                            <i className={cx('order-text')}>{index + 1}</i>
+                          </i>
+                        </div>
+                      );
+                    })}
+                  </div>
                 </div>
               </div>
 
               <div className="row">
                 <div className="col c-12">
-                  <Input placeholder="Enter Description" textarea>
+                  <Input
+                    placeholder="Enter Description"
+                    textarea
+                    value={description}
+                    onChange={(e) => {
+                      setDescription(e.target.value);
+                    }}
+                  >
                     Product Description
                   </Input>
                 </div>
