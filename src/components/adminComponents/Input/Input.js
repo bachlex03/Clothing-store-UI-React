@@ -3,8 +3,11 @@ import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretDown, faUpload, fas } from '@fortawesome/free-solid-svg-icons';
 import { useState, useRef } from 'react';
+import React from 'react';
 
 const cx = classNames.bind(style);
+
+let activateSize = -1;
 
 function Input({
   hint,
@@ -25,6 +28,8 @@ function Input({
   const [display, setDisplay] = useState(false);
   const [category, setCategory] = useState('Select category');
   const [isChoose, setIsChoose] = useState(false);
+  const [activeColor, setActiveColor] = useState(-1);
+  const [activeSizes, setActiveSizes] = useState([]);
 
   const textRef = useRef(null);
 
@@ -100,7 +105,20 @@ function Input({
     Comp = (
       <div className={cx('mt16')}>
         {colors.map((color, index) => {
-          return <input type="checkbox" className={cx('colors')} style={{ backgroundColor: color }} />;
+          return (
+            <input
+              key={index}
+              data-key={index}
+              type="checkbox"
+              className={cx('colors', {
+                active: activeColor === index ? true : false,
+              })}
+              style={{ backgroundColor: color }}
+              onClick={() => {
+                setActiveColor(index);
+              }}
+            />
+          );
         })}
       </div>
     );
@@ -108,10 +126,49 @@ function Input({
     Comp = (
       <div className={cx('size-container')}>
         {sizes.map((size, index) => {
+          console.log('render');
           return (
-            <div className={cx('size-item')}>
+            <div
+              key={index}
+              className={cx('size-item', {
+                active: activeSizes.length
+                  ? activeSizes.some((activeSize) => activeSize.index === index)
+                    ? true
+                    : false
+                  : false,
+              })}
+              onClick={(e) => {
+                value = e.target.innerText;
+
+                if (activeSizes.some((size) => size.size === value)) {
+                  const filtered = activeSizes.filter((size) => size.size !== value);
+
+                  setActiveSizes(filtered);
+
+                  console.log('filtered', filtered);
+
+                  return;
+                }
+
+                // .push({
+                //   size: value,
+                //   index: index,
+                // });
+
+                let newArr = [...activeSizes];
+
+                newArr.push({
+                  size: value,
+                  index: index,
+                });
+
+                setActiveSizes(newArr);
+
+                console.log('activeSizes', newArr);
+              }}
+            >
               {size}
-              <input type="checkbox" className={cx('sizes')} />
+              <input type="checkbox" className={cx('sizes', 'active')} />
             </div>
           );
         })}

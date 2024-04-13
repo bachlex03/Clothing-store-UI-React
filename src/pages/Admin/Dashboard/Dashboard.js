@@ -17,12 +17,37 @@ import { Button, Input } from '~/components/adminComponents';
 const cx = classNames.bind(styles);
 const regexOnlyNumber = /^[0-9.]*$/;
 
+const Colors = {
+  red: '#dc2626',
+  grey: '#808080',
+  yellow: '#ffff00',
+  white: '#ffffff',
+  pink: '#ffc0cb',
+};
+
+const colorsArr = [Colors.grey, Colors.yellow, Colors.white, Colors.pink, Colors.red];
+
 function Dashboard() {
   const [name, setName] = useState('');
   const [quantity, setQuantity] = useState();
-  const [price, setPrice] = useState('$0.00');
-  const [categories, setCategories] = useState([]);
+  const [price, setPrice] = useState();
   const [valueCategory, setValueCategory] = useState('');
+
+  const handlePrice = (e) => {
+    if (!regexOnlyNumber.test(e.target.value)) {
+      return;
+    }
+
+    setPrice(e.target.value);
+  };
+
+  const handlePriceInputOnBlur = (e) => {
+    if (!parseInt(e.target.value)) {
+      return;
+    }
+
+    setPrice('$' + parseInt(e.target.value).toFixed(2));
+  };
 
   return (
     <div className={cx('container', 'h-screen')} style={{ backgroundColor: '#0f1824', width: '' }}>
@@ -137,16 +162,6 @@ function Dashboard() {
 
               <div className="row mt16">
                 <div className="col c-4">
-                  {/* <Input
-                    name="product_quantity"
-                    placeholder="$00.00"
-                    value={price}
-                    onChange={handlePrice}
-                    onBlur={handlePriceInputOnBlur}
-                  >
-                    Price
-                  </Input> */}
-
                   <Input
                     name="product_quantity"
                     placeholder="quantity"
@@ -169,7 +184,7 @@ function Dashboard() {
                 </div>
 
                 <div className="col c-4">
-                  <Input hint="Code will be generated automatically" readOnly>
+                  <Input hint="Code generated automatically" readOnly>
                     Product Code
                   </Input>
                 </div>
@@ -211,23 +226,9 @@ function Dashboard() {
                 </div>
               </div>
 
-              {/* <div className="row mt16">
+              <div className="row mt16">
                 <div className="col c-6">
-                  <Input
-                    colors={[
-                      '#0ca5e9',
-                      '#f97315',
-                      '#259782',
-                      '#a855f7',
-                      '#ebb305',
-                      '#ef4444',
-                      '#64758b',
-                      '#0f172a',
-                      '#e2e8f0',
-                    ]}
-                  >
-                    Colors Variant
-                  </Input>
+                  <Input colors={colorsArr}>Colors Variant</Input>
                 </div>
                 <div className="col c-6">
                   <Input sizes={['XS', 'S', 'M', 'L', 'XL', '2XL']}>Sizes</Input>
@@ -250,34 +251,34 @@ function Dashboard() {
 
               <div className="row">
                 <div className="col c-4">
-                  <Input type="number" placeholder="$00.00">
+                  <Input
+                    name="product_quantity"
+                    placeholder="$0.00"
+                    value={price}
+                    onChange={handlePrice}
+                    onBlur={handlePriceInputOnBlur}
+                  >
                     Price
                   </Input>
                 </div>
 
                 <div className="col c-4">
-                  <Input type="number" placeholder="0%">
+                  {/* <Input type="number" placeholder="0%">
                     Discounts
-                  </Input>
+                  </Input> */}
                 </div>
 
                 <div className="col c-4">
-                  <Input type="number" placeholder="0%">
+                  {/* <Input type="number" placeholder="0%">
                     TAX Applicable
-                  </Input>
+                  </Input> */}
                 </div>
 
-                <div className="col c-4">
-                  <Input>Publish Date & Time</Input>
-                </div>
+                <div className="col c-4">{/* <Input>Publish Date & Time</Input> */}</div>
 
-                <div className="col c-4">
-                  <Input>Status</Input>
-                </div>
+                <div className="col c-4">{/* <Input>Status</Input> */}</div>
 
-                <div className="col c-4">
-                  <Input selectOptions={['Publish', 'Hidden']}>Visibility</Input>
-                </div>
+                <div className="col c-4">{/* <Input selectOptions={['Publish', 'Hidden']}>Visibility</Input> */}</div>
               </div>
 
               <div className={cx('left-block-footer', 'mt16')}>
@@ -285,11 +286,10 @@ function Dashboard() {
                   Reset
                 </Button>
                 <Button hover>Create Product</Button>
-              </div> */}
+              </div>
             </div>
-
             {/* Start::: right-block */}
-            {/* <div image className={cx('right-block')}>
+            <div className={cx('right-block')}>
               <p className={cx('heading-text')}>Product Card Preview</p>
 
               <div className={cx('img-block')}>
@@ -343,7 +343,7 @@ function Dashboard() {
                 <span className={cx('select-size')}>L</span>
                 <span className={cx('select-size')}>XL</span>
               </div>
-            </div> */}
+            </div>
           </div>
         </div>
       </div>
