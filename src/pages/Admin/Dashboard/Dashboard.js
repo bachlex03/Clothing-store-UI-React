@@ -10,12 +10,20 @@ import {
   faTrash,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useState } from 'react';
 
 import { Button, Input } from '~/components/adminComponents';
 
 const cx = classNames.bind(styles);
+const regexOnlyNumber = /^[0-9.]*$/;
 
 function Dashboard() {
+  const [name, setName] = useState('');
+  const [quantity, setQuantity] = useState();
+  const [price, setPrice] = useState('$0.00');
+  const [categories, setCategories] = useState([]);
+  const [valueCategory, setValueCategory] = useState('');
+
   return (
     <div className={cx('container', 'h-screen')} style={{ backgroundColor: '#0f1824', width: '' }}>
       <p className={cx('heading-text')}>List view</p>
@@ -110,30 +118,100 @@ function Dashboard() {
             {/* Start::: left-block */}
             <div className={cx('left-block')}>
               <div className="row">
-                <div className="col c-6">
-                  <Input hint="Do not exceed 20 characters when entering the name.">Product Title</Input>
-                </div>
+                <div className="col c-12">
+                  <Input
+                    name="product_name"
+                    value={name}
+                    onChange={(e) => {
+                      if (e.target.value.length > 40) return;
 
-                <div className="col c-6">
-                  <Input hint="Code will be generated automatically">Product Code</Input>
+                      setName(e.target.value);
+                    }}
+                    hint="Do not exceed 40 characters when entering the name."
+                    big
+                  >
+                    Product Title
+                  </Input>
                 </div>
               </div>
 
               <div className="row mt16">
                 <div className="col c-4">
-                  <Input placeholder="$00.00" type="number">
+                  {/* <Input
+                    name="product_quantity"
+                    placeholder="$00.00"
+                    value={price}
+                    onChange={handlePrice}
+                    onBlur={handlePriceInputOnBlur}
+                  >
+                    Price
+                  </Input> */}
+
+                  <Input
+                    name="product_quantity"
+                    placeholder="quantity"
+                    value={quantity}
+                    onChange={(e) => {
+                      if (!regexOnlyNumber.test(e.target.value)) {
+                        return;
+                      }
+
+                      setQuantity(e.target.value);
+                    }}
+                    onBlur={(e) => {
+                      if (!parseInt(e.target.value)) return;
+
+                      setQuantity(parseInt(e.target.value));
+                    }}
+                  >
                     Quantity
                   </Input>
                 </div>
+
                 <div className="col c-4">
-                  <Input selectOptions={['Shirt', 'clothe', 'shoe']}>Category</Input>
+                  <Input hint="Code will be generated automatically" readOnly>
+                    Product Code
+                  </Input>
                 </div>
+
                 <div className="col c-4">
-                  <Input>Product Type</Input>
+                  <Input selectOptions={['Gucci', 'LV', 'Chanel', 'Dior', 'Prada']} setValue={setValueCategory}>
+                    Brand
+                  </Input>
+                </div>
+
+                <div className="col c-4">
+                  <Input
+                    selectOptions={['Outerwear', 'Dresses', 'T-Shirts', 'Blouses', 'Knitwear', 'Pant']}
+                    placeholder="Select category"
+                    setValue={setValueCategory}
+                  >
+                    Category
+                  </Input>
+                </div>
+
+                <div className="col c-4">
+                  <Input
+                    selectOptions={['Clothe', 'Trousers', 'Shoes']}
+                    placeholder="Select type"
+                    setValue={setValueCategory}
+                  >
+                    Product Type
+                  </Input>
+                </div>
+
+                <div className="col c-4">
+                  <Input
+                    selectOptions={['Man', 'Woman', 'Unisex']}
+                    placeholder="Select type"
+                    setValue={setValueCategory}
+                  >
+                    Gender
+                  </Input>
                 </div>
               </div>
 
-              <div className="row mt16">
+              {/* <div className="row mt16">
                 <div className="col c-6">
                   <Input
                     colors={[
@@ -207,11 +285,11 @@ function Dashboard() {
                   Reset
                 </Button>
                 <Button hover>Create Product</Button>
-              </div>
+              </div> */}
             </div>
 
             {/* Start::: right-block */}
-            <div image className={cx('right-block')}>
+            {/* <div image className={cx('right-block')}>
               <p className={cx('heading-text')}>Product Card Preview</p>
 
               <div className={cx('img-block')}>
@@ -265,7 +343,7 @@ function Dashboard() {
                 <span className={cx('select-size')}>L</span>
                 <span className={cx('select-size')}>XL</span>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

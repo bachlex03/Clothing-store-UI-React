@@ -1,22 +1,97 @@
 import style from './Input.module.scss';
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCaretDown, faUpload } from '@fortawesome/free-solid-svg-icons';
+import { faCaretDown, faUpload, fas } from '@fortawesome/free-solid-svg-icons';
+import { useState, useRef } from 'react';
 
 const cx = classNames.bind(style);
 
-function Input({ hint, selectOptions, colors, sizes, type, image, textarea, placeholder, children }) {
-  let Comp = <input className={cx('input')} type={type || 'text'} placeholder={placeholder || children} />;
+function Input({
+  hint,
+  selectOptions,
+  name = '',
+  value = '',
+  setValue,
+  colors,
+  sizes,
+  type,
+  image,
+  textarea,
+  placeholder,
+  big,
+  children,
+  ...passProps
+}) {
+  const [display, setDisplay] = useState(false);
+  const [category, setCategory] = useState('Select category');
+  const [isChoose, setIsChoose] = useState(false);
+
+  const textRef = useRef(null);
+
+  const handleSelect = (e) => {
+    if (e.target.innerText === children) {
+      textRef.current.textContent = children;
+
+      setIsChoose(false);
+
+      return;
+    }
+
+    textRef.current.textContent = e.target.innerText;
+
+    setValue(e.target.innerText);
+
+    setDisplay(false);
+
+    setIsChoose(true);
+
+    setCategory(e.target.innerText);
+  };
+
+  const props = {
+    ...passProps,
+  };
+
+  let Comp = (
+    <input
+      className={cx('input', {
+        isBig: big,
+      })}
+      name={name}
+      value={value}
+      type={type || 'text'}
+      placeholder={placeholder || children}
+      {...props}
+    />
+  );
 
   if (selectOptions) {
     Comp = (
-      <div className={cx('select')}>
-        Select {children}
+      <div className={cx('select')} onClick={() => setDisplay(!display)}>
+        <p
+          ref={textRef}
+          className={cx('', {
+            isChose: isChoose,
+          })}
+        >
+          {children}
+        </p>
         <FontAwesomeIcon className={cx('caret-icon')} icon={faCaretDown} />
-        <ul className={cx('list', 'none')}>
-          <li className={cx('item-default')}>{'Select ' + children}</li>
-          {selectOptions.map((option) => {
-            return <li>{option}</li>;
+        <ul
+          className={cx('list', {
+            none: !display,
+          })}
+          onMouseLeave={() => setDisplay(false)}
+        >
+          <li className={cx('item-default')} onClick={handleSelect}>
+            {children}
+          </li>
+          {selectOptions.map((option, index) => {
+            return (
+              <li key={index} onClick={handleSelect}>
+                {option}
+              </li>
+            );
           })}
         </ul>
       </div>

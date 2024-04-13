@@ -30,6 +30,12 @@
   }
 }
 
+.input.isBig {
+  height: 44px;
+  font-size: 1.6rem;
+  font-weight: 600;
+}
+
 .hint {
   font-size: 1.3rem;
   color: var(--admin-font-color);
@@ -49,6 +55,8 @@
   transform: translateY(-50%);
 }
 
+// list
+
 .list {
   position: absolute;
   left: 0;
@@ -56,6 +64,8 @@
   display: block;
   width: 100%;
   border: 1px solid var(--admin-border-color);
+  background-color: var(--admin-bg);
+  z-index: 99;
   border-bottom-left-radius: 4px;
   border-bottom-right-radius: 4px;
 
@@ -68,6 +78,11 @@
       background-color: rgba($color: #e2eaf3, $alpha: 0.1);
     }
   }
+}
+
+.isChose {
+  font-weight: 600;
+  color: #0ea5e9;
 }
 
 .none {
