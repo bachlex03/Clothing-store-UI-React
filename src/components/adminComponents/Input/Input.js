@@ -206,7 +206,7 @@ function Input({
       </div>
     );
   } else if (textarea) {
-    Comp = <textarea className={cx('input')} type="text" rows={4} placeholder={placeholder || children} />;
+    Comp = <textarea className={cx('input')} type="text" rows={4} placeholder={placeholder || children} {...props} />;
   }
 
   return (

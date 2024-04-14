@@ -1,4 +1,4 @@
-import request from '~/utils/request';
+import * as request from '~/utils/request';
 
 export const getAllProducts = async () => {
   const result = await request.get('products');

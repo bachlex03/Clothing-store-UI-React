@@ -1,7 +1,11 @@
 import axios from 'axios';
 
 const request = axios.create({
-  baseURL: process.env.REACT_APP_BASE_URL,
+  baseURL: 'http://localhost:3001/',
+  headers: {
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${localStorage.getItem('token')}`,
+  },
 });
 
 request.defaults.withCredentials = true;
@@ -30,7 +34,7 @@ export const get = async (path, options = {}) => {
 export const post = async (path, options = {}) => {
   const response = await request.post('api/v1/' + path, options);
 
-  return response;
+  return response.data;
 };
 
 export const put = async (path, options = {}) => {

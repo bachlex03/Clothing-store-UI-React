@@ -15,6 +15,9 @@ import { useState } from 'react';
 
 import { Button, Input } from '~/components/adminComponents';
 
+import { createProduct } from '~/services/api/productService';
+import { login } from '~/services/api/accessService';
+
 const cx = classNames.bind(styles);
 const regexOnlyNumber = /^[0-9.]*$/;
 
@@ -50,6 +53,57 @@ function Dashboard() {
     }
 
     setPrice('$' + parseInt(e.target.value).toFixed(2));
+  };
+
+  const convertToBase64 = (file) => {
+    const reader = new FileReader();
+
+    reader.readAsDataURL(file);
+
+    reader.onload = () => {
+      console.log(reader.result);
+
+      return reader.result;
+    };
+
+    reader.onerror = (error) => {
+      console.log('Error: ', error);
+
+      return null;
+    };
+  };
+
+  const handleSubmit = async (e) => {
+    const storeImages = images.map((image) => {
+      return convertToBase64(image);
+    });
+
+    const product = {
+      name,
+      description,
+      size: 'S',
+      color: 'Red',
+      price: '100',
+      quantity,
+      category: null,
+      images: storeImages,
+    };
+
+    console.log({
+      product,
+    });
+
+    try {
+      const result = await createProduct(product);
+
+      console.log({
+        result,
+      });
+    } catch (error) {
+      console.log({
+        error,
+      });
+    }
   };
 
   return (
@@ -247,7 +301,7 @@ function Dashboard() {
                   <div className={cx('img-preview-container')}>
                     {images.map((image, index) => {
                       return (
-                        <div className={cx('image-container')}>
+                        <div className={cx('image-container')} key={index}>
                           <img key={index} src={URL.createObjectURL(image)} alt="" className={cx('input-images')} />
                           <i>
                             <FontAwesomeIcon icon={faCircleNotch} className={cx('order-img-icon')} />
@@ -311,7 +365,25 @@ function Dashboard() {
                 <Button reset hover>
                   Reset
                 </Button>
-                <Button hover>Create Product</Button>
+                <Button hover onClick={handleSubmit}>
+                  Create Product
+                </Button>
+
+                <Button
+                  hover
+                  onClick={async () => {
+                    const user = await login({
+                      email: 'lov3rinve146@gmail.com',
+                      password: 'string',
+                    });
+
+                    localStorage.setItem('token', user.data.accessToken);
+
+                    console.log(localStorage.getItem('token'));
+                  }}
+                >
+                  Login
+                </Button>
               </div>
             </div>
             {/* Start::: right-block */}
