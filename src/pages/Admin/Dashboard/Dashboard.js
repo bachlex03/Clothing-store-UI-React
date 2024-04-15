@@ -10,12 +10,13 @@ import {
   faTrash,
   faCircleNotch,
 } from '@fortawesome/free-solid-svg-icons';
+import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Button, Input } from '~/components/adminComponents';
 
-import { createProduct } from '~/services/api/productService';
+import * as productService from '~/services/api/productService';
 import { login } from '~/services/api/accessService';
 
 const cx = classNames.bind(styles);
@@ -38,6 +39,7 @@ function Dashboard() {
   const [valueCategory, setValueCategory] = useState('');
   const [description, setDescription] = useState('');
   const [images, setImages] = useState([]);
+  const [showImage, setShowImage] = useState([]);
 
   const handlePrice = (e) => {
     if (!regexOnlyNumber.test(e.target.value)) {
@@ -55,56 +57,38 @@ function Dashboard() {
     setPrice('$' + parseInt(e.target.value).toFixed(2));
   };
 
-  const convertToBase64 = (file) => {
-    const reader = new FileReader();
-
-    reader.readAsDataURL(file);
-
-    reader.onload = () => {
-      console.log(reader.result);
-
-      return reader.result;
-    };
-
-    reader.onerror = (error) => {
-      console.log('Error: ', error);
-
-      return null;
-    };
-  };
-
   const handleSubmit = async (e) => {
-    const storeImages = images.map((image) => {
-      return convertToBase64(image);
-    });
+    const formData = new FormData();
 
-    const product = {
-      name,
-      description,
-      size: 'S',
-      color: 'Red',
-      price: '100',
-      quantity,
-      category: null,
-      images: storeImages,
-    };
+    formData.append('name', name);
+    formData.append('description', description);
+    formData.append('size', 'S');
+    formData.append('color', 'Red');
+    formData.append('price', price.replace('$', ''));
+    formData.append('quantity', quantity);
 
-    console.log({
-      product,
+    images.forEach((image, index) => {
+      formData.append(`images`, image);
     });
 
     try {
-      const result = await createProduct(product);
+      const result = await productService.createProduct(formData);
 
-      console.log({
-        result,
-      });
+      console.log(result);
     } catch (error) {
       console.log({
         error,
       });
     }
   };
+
+  useEffect(() => {
+    (async () => {
+      const result = await productService.getImages('new-product');
+
+      setShowImage(result);
+    })();
+  }, []);
 
   return (
     <div className={cx('container', 'h-screen')} style={{ backgroundColor: '#0f1824', width: '' }}>
@@ -307,6 +291,21 @@ function Dashboard() {
                             <FontAwesomeIcon icon={faCircleNotch} className={cx('order-img-icon')} />
                             <i className={cx('order-text')}>{index + 1}</i>
                           </i>
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  <div className={cx('img-preview-container')}>
+                    {showImage.map((image, index) => {
+                      return (
+                        <div className={cx('image-container')} key={index}>
+                          <img
+                            key={index}
+                            src={`http://localhost:3001/images/${image.filename}`}
+                            alt=""
+                            className={cx('input-images')}
+                          />
                         </div>
                       );
                     })}

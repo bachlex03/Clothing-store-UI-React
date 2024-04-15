@@ -11,3 +11,9 @@ export const createProduct = async (product) => {
 
   return result;
 };
+
+export const getImages = async (slug) => {
+  const result = await request.get(`products/${slug}/images`);
+
+  return result.data;
+};

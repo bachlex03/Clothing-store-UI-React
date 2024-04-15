@@ -195,7 +195,7 @@ function Input({
 
         <input
           type={type}
-          name=""
+          name="images"
           id=""
           accept="image/*"
           multiple
