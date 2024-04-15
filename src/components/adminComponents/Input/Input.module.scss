@@ -19,14 +19,21 @@
   font-size: 1.4rem;
   outline: none;
   line-height: 21px;
+}
+
+.input {
+  color: #38bdf8;
+
+  &:focus {
+    border: 1px solid var(--admin-background-color);
+  }
+}
+
+.select {
   color: var(--admin-font-color);
 
   &::placeholder {
     color: var(--admin-font-color);
-  }
-
-  &:focus {
-    border: 1px solid var(--admin-background-color);
   }
 }
 
@@ -79,6 +86,14 @@
       background-color: rgba($color: #e2eaf3, $alpha: 0.1);
     }
   }
+}
+
+.list.dropdownTop {
+  top: -187px;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
 }
 
 .isChose {

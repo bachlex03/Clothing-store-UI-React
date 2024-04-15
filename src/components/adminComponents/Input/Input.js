@@ -23,6 +23,7 @@ function Input({
   placeholder,
   big,
   children,
+  dropdownTop,
   ...passProps
 }) {
   const [display, setDisplay] = useState(false);
@@ -91,6 +92,7 @@ function Input({
         <ul
           className={cx('list', {
             none: !display,
+            dropdownTop: dropdownTop,
           })}
           onMouseLeave={() => setDisplay(false)}
         >
