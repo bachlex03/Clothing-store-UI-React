@@ -6,6 +6,11 @@
   font-size: 1.4rem;
   user-select: none;
   cursor: pointer;
+  text-align: center;
+  width: fit-content;
+}
+
+.container + .container {
   margin-right: 10px;
 }
 
@@ -24,5 +29,20 @@
 .reset.hover {
   &:hover {
     background-color: rgba($color: red, $alpha: 0.1);
+  }
+}
+
+// delete
+
+.del {
+  font-size: 1.2rem;
+  background-color: #ef4444;
+  color: #fff;
+  font-weight: 500;
+
+  &.hover {
+    &:hover {
+      background-color: #dc2625;
+    }
   }
 }

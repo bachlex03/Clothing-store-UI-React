@@ -11,90 +11,13 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Button, SideModel } from '~/components/adminComponents';
 
-import * as productService from '~/services/api/productService';
-
 const cx = classNames.bind(styles);
-const regexOnlyNumber = /^[0-9.]*$/;
-
-const Colors = {
-  red: '#dc2626',
-  grey: '#808080',
-  yellow: '#ffff00',
-  white: '#ffffff',
-  pink: '#ffc0cb',
-};
-
-const colorsArr = [Colors.grey, Colors.yellow, Colors.white, Colors.pink, Colors.red];
 
 function Dashboard() {
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
-  const [brand, setBrand] = useState('');
-  const [type, setType] = useState('');
-  const [gender, setGender] = useState('');
-  const [quantity, setQuantity] = useState();
-  const [price, setPrice] = useState();
-  const [valueCategory, setValueCategory] = useState('');
-  const [images, setImages] = useState([]);
-  const [showImage, setShowImage] = useState([]);
-
-  const handlePrice = (e) => {
-    if (!regexOnlyNumber.test(e.target.value)) {
-      return;
-    }
-
-    setPrice(e.target.value);
-  };
-
-  const handlePriceInputOnBlur = (e) => {
-    if (!parseInt(e.target.value)) {
-      return;
-    }
-
-    setPrice('$' + parseInt(e.target.value).toFixed(2));
-  };
-
-  const handleSubmit = async (e) => {
-    const formData = new FormData();
-
-    formData.append('name', name);
-    formData.append('description', description);
-    formData.append('brand', brand);
-    formData.append('type', type);
-    formData.append('gender', gender);
-    formData.append('sizes', ['S']);
-    formData.append('categoryId', '66138a1018286bb5eafa3567');
-    formData.append('categoryName', 'Outerwear');
-    formData.append('color', 'Red');
-    formData.append('price', price.replace('$', ''));
-    formData.append('quantity', quantity);
-    formData.append('status', 'Draft');
-
-    images.forEach((image, index) => {
-      formData.append(`images`, image);
-    });
-
-    try {
-      const result = await productService.createProduct(formData);
-
-      console.log(result);
-    } catch (error) {
-      console.log({
-        error,
-      });
-    }
-  };
-
-  // useEffect(() => {
-  //   (async () => {
-  //     const result = await productService.getImages('new-one');
-
-  //     setShowImage(result);
-  //   })();
-  // }, []);
+  const modelRef = useRef(null);
 
   return (
     <div className={cx('container', 'h-screen')} style={{ backgroundColor: '#0f1824', width: '' }}>
@@ -110,7 +33,12 @@ function Dashboard() {
           </div>
 
           <div className={cx('btn-comp')}>
-            <Button hover>
+            <Button
+              hover
+              onClick={() => {
+                modelRef.current.openModel();
+              }}
+            >
               <FontAwesomeIcon icon={faPlus} /> Add Product
             </Button>
           </div>
@@ -182,7 +110,7 @@ function Dashboard() {
         </div>
       </div>
 
-      <SideModel />
+      <SideModel ref={modelRef} />
     </div>
   );
 }

@@ -1,39 +1,102 @@
 import style from './SideModel.module.scss';
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleNotch } from '@fortawesome/free-solid-svg-icons';
-import { useState } from 'react';
+import { faCircleNotch, faAnglesLeft, faAnglesRight } from '@fortawesome/free-solid-svg-icons';
+import { useEffect, useRef, useState, forwardRef, useImperativeHandle } from 'react';
 
 import { Button, Input } from '~/components/adminComponents';
-import { Colors } from '~/common/constants';
+import { ColorsHash, ColorsString } from '~/common/constants';
 import * as productService from '~/services/api/productService';
 import * as accessService from '~/services/api/accessService';
+import * as categoryService from '~/services/api/categoryService';
 
 const regexOnlyNumber = /^[0-9.]*$/;
 
-const colorsArr = [Colors.BROWN, Colors.GREY, Colors.YELLOW, Colors.WHITE, Colors.PINK, Colors.RED];
+const colorsArr = [
+  ColorsHash.BROWN,
+  ColorsHash.GREY,
+  ColorsHash.YELLOW,
+  ColorsHash.WHITE,
+  ColorsHash.PINK,
+  ColorsHash.RED,
+];
+
+const sizesArr = ['S', 'M', 'L', 'XL', '2XL'];
+const brandsArr = ['Gucci', 'Louis Vuitton', 'Chanel', 'Dior', 'Prada'];
+const typeArr = ['Clothe', 'Trousers', 'Shoes'];
+const genderArr = ['Man', 'Woman', 'Unisex'];
+const StatusArr = ['Draft', 'Published', 'Scheduled'];
 
 const cx = classNames.bind(style);
 
-function SideModel() {
+function SideModel(props, ref) {
+  const overlayRef = useRef(null);
+  const addProductContainerRef = useRef(null);
+  const [visible, setVisible] = useState(null);
+
   const [name, setName] = useState('');
-  const [quantity, setQuantity] = useState();
-  const [price, setPrice] = useState();
+  const [description, setDescription] = useState('');
+  const [brand, setBrand] = useState('');
+  const [type, setType] = useState('');
+  const [gender, setGender] = useState('');
+  const [quantity, setQuantity] = useState(0);
+  const [sizes, setSizes] = useState([]);
+  const [color, setColor] = useState('');
+  const [status, setStatus] = useState('');
+  const [price, setPrice] = useState('');
   const [discount, setDiscount] = useState();
   const [category, setCategory] = useState('');
-  const [description, setDescription] = useState('');
   const [images, setImages] = useState([]);
   const [showImage, setShowImage] = useState([]);
+
+  const [categoriesArr, setCategoriesArr] = useState([
+    'Outerwear',
+    'Dresses',
+    'T-Shirts',
+    'Blouses',
+    'Knitwear',
+    'Pant',
+  ]);
+  const [fetchCategory, setFetchCategory] = useState({});
 
   const handleSubmit = async (e) => {
     const formData = new FormData();
 
+    let formSizes = sizes.map((size) => {
+      return size.size;
+    });
+
+    let formCategoryId = fetchCategory.find((cate) => {
+      return cate.category_name === category;
+    });
+
     formData.append('name', name);
     formData.append('description', description);
-    formData.append('size', 'S');
-    formData.append('color', 'Red');
-    formData.append('price', price.replace('$', ''));
+    formData.append('brand', brand);
+    formData.append('type', type);
+    formData.append('gender', gender);
+    formData.append('sizes', formSizes);
+    formData.append('color', ColorsString[color]);
+    formData.append('status', status);
+    formData.append('categoryId', formCategoryId._id);
+    formData.append('category', category);
+    formData.append('price', price.toString().replace('$', ''));
     formData.append('quantity', quantity);
+
+    // console.log({
+    //   name,
+    //   description,
+    //   brand,
+    //   type,
+    //   gender,
+    //   quantity,
+    //   sizes: formSizes,
+    //   category,
+    //   categoryId: formCategoryId._id,
+    //   color: ColorsString[color],
+    //   status,
+    //   price,
+    // });
 
     images.forEach((image, index) => {
       formData.append(`images`, image);
@@ -50,9 +113,69 @@ function SideModel() {
     }
   };
 
+  const handleOpen = () => {};
+
+  // Fetching categories
+  useEffect(() => {
+    (async () => {
+      let result = await categoryService.getChildren();
+
+      let arr = result.map((category) => {
+        return category.category_name;
+      });
+
+      setCategoriesArr(arr);
+
+      setFetchCategory(result);
+    })();
+  }, []);
+
+  useImperativeHandle(ref, () => ({
+    openModel: () => {
+      console.log('open');
+      overlayRef.current.removeAttribute('close');
+
+      addProductContainerRef.current.removeAttribute('close');
+      addProductContainerRef.current.setAttribute('open', '');
+    },
+  }));
+
   return (
-    <div className={cx('overlay')}>
-      <div className={cx('add-product-container')}>
+    <div
+      className={cx('overlay')}
+      onClick={(e) => {}}
+      onMouseOver={(e) => {
+        e.target.setAttribute('style', 'cursor: pointer');
+      }}
+      ref={overlayRef}
+      close={!visible ? '' : null}
+    >
+      <div
+        className={cx('add-product-container')}
+        ref={addProductContainerRef}
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
+        onMouseOver={(e) => {
+          e.stopPropagation();
+          overlayRef.current.removeAttribute('style');
+        }}
+        onAnimationEnd={() => {
+          console.log(addProductContainerRef.current.getAttribute('open'));
+          if (addProductContainerRef.current.getAttribute('open') !== '') {
+            overlayRef.current.setAttribute('close', '');
+          }
+        }}
+      >
+        <i
+          className={cx('icon-close-model')}
+          onClick={() => {
+            addProductContainerRef.current.removeAttribute('open');
+            addProductContainerRef.current.setAttribute('close', '');
+          }}
+        >
+          <FontAwesomeIcon icon={faAnglesRight} />
+        </i>
         <span className={cx('overlay-heading-text')}>Add New</span>
 
         <div className={cx('inner-container')}>
@@ -101,34 +224,30 @@ function SideModel() {
               </div>
 
               <div className="col c-4">
-                <Input hint="Code generated automatically" readOnly>
+                <Input hint="Code generated automatically" placeholder="#GCOWU-3412523" readOnly disabled>
                   Product Code
                 </Input>
               </div>
 
               <div className="col c-4">
-                <Input selectOptions={['Gucci', 'Louis Vuitton', 'Chanel', 'Dior', 'Prada']} setValue={setCategory}>
+                <Input selectOptions={brandsArr} setValue={setBrand}>
                   Brand
                 </Input>
               </div>
               <div className="col c-4">
-                <Input
-                  selectOptions={['Outerwear', 'Dresses', 'T-Shirts', 'Blouses', 'Knitwear', 'Pant']}
-                  placeholder="Select category"
-                  setValue={setCategory}
-                >
+                <Input selectOptions={categoriesArr} placeholder="Select category" setValue={setCategory}>
                   Category
                 </Input>
               </div>
 
               <div className="col c-4">
-                <Input selectOptions={['Clothe', 'Trousers', 'Shoes']} placeholder="Select type" setValue={setCategory}>
+                <Input selectOptions={typeArr} placeholder="Select type" setValue={setType}>
                   Product Type
                 </Input>
               </div>
 
               <div className="col c-4">
-                <Input selectOptions={['Man', 'Woman', 'Unisex']} placeholder="Select type" setValue={setCategory}>
+                <Input selectOptions={genderArr} placeholder="Select type" setValue={setGender}>
                   Gender
                 </Input>
               </div>
@@ -136,10 +255,14 @@ function SideModel() {
 
             <div className="row mt16">
               <div className="col c-6">
-                <Input colors={colorsArr}>Colors Variant</Input>
+                <Input colors={colorsArr} setValue={setColor}>
+                  Colors Variant
+                </Input>
               </div>
               <div className="col c-6">
-                <Input sizes={['S', 'M', 'L', 'XL', '2XL']}>Sizes</Input>
+                <Input sizes={sizesArr} setValue={setSizes}>
+                  Sizes
+                </Input>
               </div>
             </div>
 
@@ -153,17 +276,39 @@ function SideModel() {
                   {images.map((image, index) => {
                     return (
                       <div className={cx('image-container')} key={index}>
-                        <img key={index} src={URL.createObjectURL(image)} alt="" className={cx('input-images')} />
+                        <div style={{ backgroundColor: '#1c2e45', padding: '8px', borderRadius: '6px' }}>
+                          <img key={index} src={URL.createObjectURL(image)} alt="" className={cx('input-images')} />
+                        </div>
                         <i>
                           <FontAwesomeIcon icon={faCircleNotch} className={cx('order-img-icon')} />
                           <i className={cx('order-text')}>{index + 1}</i>
                         </i>
+                        <p className={cx('file-name')}>{image.name}</p>
+                        <p className={cx('file-size')}>
+                          <strong>{(image.size / (1024 * 1024)).toFixed(3)}</strong> MB
+                        </p>
+
+                        <div className="text-center mt-12px">
+                          <Button
+                            hover
+                            del
+                            onClick={(e) => {
+                              let newImages = images.filter((img, idx) => {
+                                return idx !== index;
+                              });
+
+                              setImages(newImages);
+                            }}
+                          >
+                            Delete
+                          </Button>
+                        </div>
                       </div>
                     );
                   })}
                 </div>
 
-                <div className={cx('img-preview-container')}>
+                {/* <div className={cx('img-preview-container')}>
                   {showImage.map((image, index) => {
                     return (
                       <div className={cx('image-container')} key={index}>
@@ -176,7 +321,7 @@ function SideModel() {
                       </div>
                     );
                   })}
-                </div>
+                </div> */}
               </div>
             </div>
 
@@ -246,18 +391,13 @@ function SideModel() {
               </div>
 
               <div className="col c-4">
-                <Input
-                  selectOptions={['Draft', 'Published', 'Scheduled', 'Out of Stock']}
-                  placeholder="Select status"
-                  setValue={setCategory}
-                  dropdownTop
-                >
+                <Input selectOptions={StatusArr} placeholder="Select status" setValue={setStatus} dropdownTop>
                   Status
                 </Input>
               </div>
             </div>
 
-            <div className={cx('left-block-footer', 'mt16')}>
+            <div className={cx('left-block-footer', 'mt-16px')}>
               <Button reset hover>
                 Reset
               </Button>
@@ -344,4 +484,4 @@ function SideModel() {
   );
 }
 
-export default SideModel;
+export default forwardRef(SideModel);

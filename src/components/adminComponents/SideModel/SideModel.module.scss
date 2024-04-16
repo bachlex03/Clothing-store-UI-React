@@ -27,6 +27,21 @@
   background-color: rgba($color: #000000, $alpha: 0.5);
 }
 
+.overlay[close] {
+  display: none;
+  animation: fadeOut 0.5s forwards;
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 0;
+    display: none;
+  }
+}
+
 .overlay-heading-text {
   display: block;
   margin-bottom: 30px;
@@ -43,6 +58,41 @@
   right: 0;
   bottom: 0;
   padding: 20px;
+}
+
+.add-product-container[open] {
+  animation: SlideInRight 0.8s ease-in-out;
+}
+
+.add-product-container[close] {
+  animation: SlideOutRight 0.5s forwards;
+}
+
+@keyframes SlideInRight {
+  0% {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+
+  50% {
+    opacity: 0.3;
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes SlideOutRight {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateX(100%);
+    display: none;
+  }
 }
 
 .inner-container {
@@ -200,28 +250,73 @@
 }
 
 .input-images {
-  width: 200px;
+  // height: 100%;
+  width: 100%;
   border-radius: 6px;
 }
 
 .image-container {
+  width: 170px;
   position: relative;
   margin-right: 6px;
+  padding: 8px;
+  border: 1px solid #233a57;
+  border-radius: 6px;
 }
 
 .order-img-icon {
   position: absolute;
-  top: 5px;
+  bottom: 6px;
   left: 5px;
-  font-size: 30px;
-  color: var(--admin-bg);
+  font-size: 24px;
+  color: #fff;
 }
 
 .order-text {
   position: absolute;
-  top: 8px;
-  left: 15px;
-  color: #000;
-  font-size: 1.6rem;
+  bottom: 9px;
+  left: 13px;
+  color: #fff;
+  font-size: 1.2rem;
   font-weight: 700;
+}
+
+.file-name {
+  color: #e2eaf3;
+  font-size: 1.5rem;
+  margin-top: 10px;
+  margin-bottom: 6px;
+  text-align: center;
+  font-weight: 600;
+  word-wrap: break-word;
+  padding: 0 6px;
+}
+
+.file-size {
+  color: var(--admin-font-color);
+  font-size: 1.4rem;
+  margin-top: 6px;
+  text-align: center;
+}
+
+///
+.icon-close-model {
+  text-align: center;
+  left: -15px;
+  position: absolute;
+  color: #fff;
+  top: 50%;
+  width: 40px;
+  line-height: 46px;
+  background-color: rgba($color: #142337, $alpha: 1);
+  opacity: 0.5;
+  border-radius: 8px;
+  transition: all 0.3s ease-in-out;
+
+  &:hover {
+    opacity: 1;
+    width: 60px;
+    cursor: pointer;
+    transform: translateX(-20px);
+  }
 }

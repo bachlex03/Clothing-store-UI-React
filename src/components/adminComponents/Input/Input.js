@@ -24,6 +24,8 @@ function Input({
   big,
   children,
   dropdownTop,
+  readOnly,
+  disabled,
   ...passProps
 }) {
   const [display, setDisplay] = useState(false);
@@ -55,11 +57,6 @@ function Input({
     setCategory(e.target.innerText);
   };
 
-  const handleImages = (e) => {
-    console.log(e.target.files);
-    setValue([...e.target.files]);
-  };
-
   const props = {
     ...passProps,
   };
@@ -68,11 +65,13 @@ function Input({
     <input
       className={cx('input', {
         isBig: big,
+        readOnly: readOnly,
       })}
       name={name}
       value={value}
       type={type || 'text'}
       placeholder={placeholder || children}
+      disabled={disabled}
       {...props}
     />
   );
@@ -124,6 +123,8 @@ function Input({
               style={{ backgroundColor: color }}
               onClick={() => {
                 setActiveColor(index);
+
+                setValue(color);
               }}
             />
           );
@@ -134,7 +135,6 @@ function Input({
     Comp = (
       <div className={cx('size-container')}>
         {sizes.map((size, index) => {
-          console.log('render');
           return (
             <div
               key={index}
@@ -153,15 +153,8 @@ function Input({
 
                   setActiveSizes(filtered);
 
-                  console.log('filtered', filtered);
-
                   return;
                 }
-
-                // .push({
-                //   size: value,
-                //   index: index,
-                // });
 
                 let newArr = [...activeSizes];
 
@@ -172,7 +165,7 @@ function Input({
 
                 setActiveSizes(newArr);
 
-                console.log('activeSizes', newArr);
+                setValue(newArr);
               }}
             >
               {size}
@@ -203,7 +196,9 @@ function Input({
           multiple
           style={{ display: 'none' }}
           ref={inputImgRef}
-          onChange={handleImages}
+          onChange={(e) => {
+            setValue([...e.target.files]);
+          }}
         />
       </div>
     );

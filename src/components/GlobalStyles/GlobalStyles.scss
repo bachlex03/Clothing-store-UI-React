@@ -30,6 +30,11 @@ body {
   line-height: 1.5;
 }
 
+// common
+._text-center {
+  text-align: center !important;
+}
+
 // padding px - py
 .px-4px {
   padding-left: 4px;
@@ -101,11 +106,11 @@ body {
 }
 
 // margin
-.mt12 {
+.mt-12px {
   margin-top: 12px;
 }
 
-.mt16 {
+.mt-16px {
   margin-top: 16px;
 }
 
