@@ -107,6 +107,13 @@ tbody {
 
     td[class*='code'] {
       color: #3b82f6;
+      font-weight: 500;
+    }
+
+    td[class*='name'] {
+      color: #fff;
+      font-weight: 600;
+      font-size: 1.4rem;
     }
 
     td[class*='price'] {
@@ -133,7 +140,7 @@ tbody {
     }
 
     &:nth-child(even) {
-      background-color: #111827;
+      background-color: #040508;
     }
 
     &:hover {
@@ -149,9 +156,11 @@ tbody {
   user-select: none;
   cursor: pointer;
   font-size: 1.4rem;
+  opacity: 0.6;
 
   &:hover {
     background-color: #233a57;
+    opacity: 1;
   }
 }
 
@@ -226,4 +235,50 @@ tbody {
 .paging.active {
   background-color: #3c82f6;
   color: #fff;
+}
+
+// repeat icon
+.repeat-icon {
+  font-size: 2.4rem;
+  color: #5bbcff;
+  cursor: pointer;
+  padding: 3px 16px;
+  opacity: 0.5;
+  transition: all 0.3s linear;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+// loading...
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+  background-color: rgba($color: #000000, $alpha: 0.5);
+}
+
+.icon-loading {
+  font-size: 40px;
+  color: #fff;
+  animation: fadeInOut 1.5s infinite;
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.5;
+  }
 }

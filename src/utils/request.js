@@ -25,8 +25,25 @@ request.interceptors.response.use(
   },
 );
 
-export const get = async (path, options = {}) => {
-  const response = await request.get('api/v1/' + path, options);
+// Helper function to handle query params in a consistent way:
+export const buildQueryParams = (options) => {
+  if (!options) {
+    return '';
+  }
+  const params = new URLSearchParams();
+
+  for (const key in options) {
+    params.append(key, options[key]);
+  }
+  const queryString = params.toString();
+
+  return queryString ? `?${queryString}` : ''; // Add ? only if params exist
+};
+
+export const get = async (path, options) => {
+  const queryString = buildQueryParams(options);
+
+  const response = await request.get('api/v1/' + path + queryString);
 
   return response.data;
 };
