@@ -22,14 +22,12 @@ function Admin({ children }) {
   }, []);
 
   return (
-    <div>
-      <div className="flex">
-        <AdminSidebar />
+    <div className={cx('screen')}>
+      <AdminSidebar />
 
-        <div className="w-screen">
-          <AdminHeader />
-          <div className="">{children}</div>
-        </div>
+      <div className={cx('container')}>
+        <AdminHeader />
+        <div className="">{children}</div>
       </div>
     </div>
   );

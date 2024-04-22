@@ -11,7 +11,6 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 import { SidebarMenu, MenuItem } from '~/components/adminComponents';
-import { icon } from '@fortawesome/fontawesome-svg-core';
 
 const cx = classNames.bind(style);
 

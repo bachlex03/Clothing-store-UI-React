@@ -17,11 +17,15 @@
   --admin-background-color: #3c82f6;
   --admin-bg: #142337;
   --admin-bg2: #0f1824;
+
+  --sidebar-admin-width: 259px;
+  --header-admin-height: 70px;
 }
 
 html {
   font-size: 62.5%;
   scroll-behavior: smooth;
+  overflow: auto;
 }
 
 body {
@@ -106,6 +110,14 @@ body {
 }
 
 // margin
+.mt-4px {
+  margin-top: 4px;
+}
+
+.mt-8px {
+  margin-top: 8px;
+}
+
 .mt-12px {
   margin-top: 12px;
 }
@@ -128,6 +140,10 @@ body {
 
 .mb-16px {
   margin-bottom: 16px;
+}
+
+.mr-12px {
+  margin-right: 12px;
 }
 
 // Admin hover

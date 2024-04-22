@@ -8,10 +8,11 @@
   cursor: pointer;
   text-align: center;
   width: fit-content;
+  font-weight: 500;
 }
 
 .container + .container {
-  margin-right: 10px;
+  margin-left: 10px;
 }
 
 .container.hover {

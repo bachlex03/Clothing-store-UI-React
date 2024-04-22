@@ -8,7 +8,7 @@ import {
   faMagnifyingGlass,
   faPlus,
   faTrash,
-  faRepeat,
+  faRotateRight,
   faArrowsSpin,
 } from '@fortawesome/free-solid-svg-icons';
 
@@ -63,14 +63,6 @@ function Dashboard() {
         <div className={cx('table-container')}>
           <div className={cx('header-table', 'flex justify-between items-center')}>
             <div className="flex justify-center items-center">
-              <i
-                className={cx('repeat-icon')}
-                onClick={() => {
-                  handleGetProducts();
-                }}
-              >
-                <FontAwesomeIcon icon={faRepeat} />
-              </i>
               <div className={cx('search')}>
                 <span className={cx('search-icon')}>
                   <FontAwesomeIcon icon={faMagnifyingGlass} />
@@ -96,8 +88,20 @@ function Dashboard() {
             </div>
           </div>
 
+          <div
+            className={cx('refresh-container')}
+            onClick={() => {
+              handleGetProducts();
+            }}
+          >
+            <i className={cx('repeat-icon mr-12px')}>
+              <FontAwesomeIcon icon={faRotateRight} />
+            </i>
+            Refresh
+          </div>
+
           <table className={cx('product-table')}>
-            <thead>
+            <thead className={cx('table-head')}>
               <tr>
                 <th className="code">Product Code</th>
                 <th className="name">Product Name</th>
@@ -109,7 +113,7 @@ function Dashboard() {
               </tr>
             </thead>
 
-            <tbody>
+            <tbody className={cx('table-body')}>
               {products.map((product, index) => {
                 return (
                   <tr key={index}>
@@ -160,13 +164,13 @@ function Dashboard() {
           </div>
         </div>
 
-        <div className={cx('footer')}>
+        {/* <div className={cx('footer')}>
           <div className="flex justify-between">
             <div className={cx('footer-left')}>@tailwindcss</div>
 
             <div className={cx('footer-right')}>Design & Develop by Group 1</div>
           </div>
-        </div>
+        </div> */}
 
         <SideModel ref={modelRef} />
       </div>

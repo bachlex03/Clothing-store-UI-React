@@ -1,3 +1,11 @@
-.w-259 {
-  min-width: 259px;
+.screen {
+  max-height: 100vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.container {
+  margin-left: var(--sidebar-admin-width);
+  background-color: #333;
+  max-width: calc(100vw - var(--sidebar-admin-width)) !important;
 }

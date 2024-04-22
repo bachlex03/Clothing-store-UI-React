@@ -17,13 +17,13 @@ function AdminHeader() {
           <FontAwesomeIcon icon={faAnglesLeft} />
         </span>
 
-        <div className={cx('search')}>
+        {/* <div className={cx('search')}>
           <span className={cx('search-icon')}>
             <FontAwesomeIcon icon={faMagnifyingGlass} />
           </span>
 
           <input className={cx('search-input', 'py-8px pl-32px pr-16px')} type="text" placeholder="Search for ..." />
-        </div>
+        </div> */}
       </div>
 
       <div className={cx('right-block', 'flex justify-center items-center')}>

@@ -42,8 +42,9 @@
 
 .heading-text {
   color: #fff;
-  font-size: 2rem;
+  font-size: 1.6rem;
   padding: 16px 0;
+  font-weight: 700;
 }
 
 .table-container {
@@ -57,9 +58,14 @@
 
 // table
 
+.table-body,
+.table-head {
+  display: block;
+}
+
 .product-table {
   width: 100%;
-  margin-top: 20px;
+  margin-top: 12px;
 
   thead {
     tr {
@@ -67,6 +73,8 @@
       font-size: 1.4rem;
       background-color: #1c2e45;
       height: 42px;
+      display: flex;
+      align-items: center;
 
       th {
         padding: 10px 14px;
@@ -74,20 +82,38 @@
         text-align: left;
       }
 
+      th[class*='code'] {
+        min-width: 18%;
+      }
+
+      th[class*='name'] {
+        min-width: 26%;
+        flex-grow: 1;
+      }
+
+      th[class*='category'] {
+        min-width: 11%;
+        text-align: center;
+      }
+
       th[class*='price'] {
         text-align: center !important;
+        min-width: 11%;
       }
 
       th[class*='stock'] {
         text-align: center !important;
+        min-width: 8%;
       }
 
       th[class*='status'] {
         text-align: center !important;
+        min-width: 12%;
       }
 
       th[class*='action'] {
         text-align: center !important;
+        min-width: 11%;
       }
     }
   }
@@ -97,9 +123,15 @@
   }
 }
 
-tbody {
+.table-body {
+  max-height: 416px;
+  overflow-y: auto;
+
   tr {
     height: 52px;
+    display: flex;
+    align-items: center;
+
     td {
       padding: 10px 14px;
       color: #c8d7e9;
@@ -108,20 +140,34 @@ tbody {
     td[class*='code'] {
       color: #3b82f6;
       font-weight: 500;
+      min-width: 18%;
     }
 
     td[class*='name'] {
       color: #fff;
       font-weight: 600;
       font-size: 1.4rem;
+      min-width: 26%;
+      flex-grow: 1;
+    }
+
+    td[class*='category'] {
+      color: #fff;
+      font-weight: 600;
+      font-size: 1.4rem;
+      min-width: 11%;
+      display: flex;
+      justify-content: center;
     }
 
     td[class*='price'] {
       text-align: center !important;
+      min-width: 11%;
     }
 
     td[class*='stock'] {
       text-align: center !important;
+      min-width: 8%;
     }
 
     td[class*='status'] {
@@ -129,6 +175,7 @@ tbody {
       display: flex;
       align-items: center;
       justify-content: center;
+      min-width: 12%;
 
       span {
         transform: translateY(5px);
@@ -137,10 +184,11 @@ tbody {
 
     td[class*='action'] {
       text-align: center !important;
+      min-width: 11%;
     }
 
     &:nth-child(even) {
-      background-color: #040508;
+      background-color: rgba($color: #040508, $alpha: 0.18);
     }
 
     &:hover {
@@ -237,11 +285,26 @@ tbody {
   color: #fff;
 }
 
-// repeat icon
-.repeat-icon {
-  font-size: 2.4rem;
+// refresh icon
+.refresh-container {
+  padding: 8px;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 4px;
+  margin-top: 8px;
+  font-size: 1.4rem;
+  font-weight: 500;
   color: #5bbcff;
   cursor: pointer;
+  background-color: rgba($color: #5bbcff, $alpha: 0);
+  transition: all 0.3s linear;
+
+  &:hover {
+    background-color: rgba($color: #5bbcff, $alpha: 0.1);
+  }
+}
+
+.repeat-icon {
   padding: 3px 16px;
   opacity: 0.5;
   transition: all 0.3s linear;
