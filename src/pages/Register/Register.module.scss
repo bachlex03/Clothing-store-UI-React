@@ -1,0 +1,105 @@
+$heading-color: #4d5959;
+$text-color: #999999;
+$link-color: #222222;
+$background-hover-color: #91704f;
+
+.topbar {
+  background-color: rgba(0, 0, 0, 0.54) !important;
+  margin-bottom: 50px;
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
+.topbar .title {
+  color: #fff;
+  font-size: 20px;
+  line-height: 26px;
+  font-weight: 400;
+  letter-spacing: 2px;
+  margin-bottom: 0px;
+}
+
+.content-register {
+  margin: 80px auto;
+  max-width: 410px;
+}
+
+.register-wrapper {
+  color: $text-color;
+}
+
+.content-register .button {
+  height: 40px;
+  padding: 0 25px !important;
+  font-size: 14px !important;
+  margin-bottom: 20px;
+  $background-hover-color: #91704f;
+}
+
+.content-register .register-wrapper .button:hover {
+  background-color: $background-hover-color;
+  border: $background-hover-color;
+  border: solid;
+  border-width: 0.727px;
+}
+
+.p-text {
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+.link {
+  font-size: 14px;
+  color: $link-color;
+}
+
+.register-wrapper a:hover {
+  color: $background-hover-color;
+}
+
+//input
+.form-control-ovr {
+  &:focus {
+    box-shadow: none !important;
+    border-color: rgb(153, 153, 153) !important;
+  }
+  height: 4.5rem !important;
+  font-size: 14px !important;
+  padding-left: 14px !important;
+  padding-right: 14px !important;
+  padding-bottom: 0 !important;
+  color: $text-color !important;
+}
+
+.password {
+  font-size: 16px !important;
+}
+
+//lable
+.form-floating-ovr > .label-ovr {
+  padding-top: 10px !important;
+  padding-bottom: 14px !important;
+  padding-left: 15px !important;
+  padding-right: 15px !important;
+  font-size: 13px !important;
+}
+
+.asterisk {
+  color: red;
+}
+
+.error-messsage {
+  font-size: 12px;
+  margin-top: -10px;
+}
+
+.exclamation {
+  color: #eb001b;
+  font-size: 12px;
+}
+
+@media (max-width: 641px) {
+  .content-login {
+    margin: 40px auto;
+  }
+}

@@ -1,0 +1,36 @@
+$heading-color: #4d5959;
+$text-color: #999999;
+$link-color: #222222;
+$background-hover-color: #91704f;
+
+.login-message {
+    color: rgb(235, 0, 27);
+    border: 1px solid rgb(235, 0, 27);
+    background-color: rgba(rgb(235, 0, 27), .05);
+    padding: 1rem 1.3rem;
+    text-align: left;
+    width: 100%;
+    margin: 0 0 27.5px;
+}
+
+.login-message .title {
+    font-size: 16px;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin: 0 0 20px;
+    color: $heading-color;
+    line-height: 1.4;
+    letter-spacing: 2px;
+}
+
+.login-message .errors ul {
+    padding-left: 44px;
+    margin-top: 15px;
+    margin-bottom: 40px;
+    font-size: 14px;
+}
+
+.login-message .exclamation {
+    color: #EB001B;
+    font-size: 22px;
+}

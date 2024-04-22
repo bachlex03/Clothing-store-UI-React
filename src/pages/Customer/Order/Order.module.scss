@@ -1,0 +1,35 @@
+.wrapper {
+  padding: 0px 80px;
+  border-left: 1px solid #ccc;
+  font-size: 1.6rem !important;
+}
+
+.heading {
+  font-size: 3rem;
+  margin: 20px 0;
+}
+
+.thead {
+  th {
+    background-color: #f8f9fa !important;
+    font-size: 1.4rem !important;
+    padding: 12px 15px !important;
+    line-height: 1.5 !important;
+    text-transform: uppercase !important;
+    color: #939393 !important;
+    font-weight: 500 !important;
+  }
+}
+
+.button {
+  padding: 5px 25px !important;
+  font-size: 1.6rem !important;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+tbody {
+  td {
+    vertical-align: middle;
+  }
+}

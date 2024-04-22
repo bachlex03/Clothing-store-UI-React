@@ -1,0 +1,44 @@
+.wrapper {
+  padding: 0px 80px;
+  border-left: 1px solid #ccc;
+}
+
+.heading {
+  font-size: 3rem;
+  margin: 20px 0;
+}
+
+.password {
+  padding: 15px;
+  background-color: #f8f9fa;
+  border: none;
+}
+
+.form-control-ovr {
+  &:focus {
+    box-shadow: none !important;
+    border-color: rgb(153, 153, 153) !important;
+  }
+  height: 5rem !important;
+  font-size: 1.4rem !important;
+  padding-left: 14px !important;
+  padding-right: 14px !important;
+  padding-bottom: 0 !important;
+  color: #999999 !important;
+}
+
+.label-ovr {
+  padding-top: 1.4rem !important;
+  padding-bottom: 14px !important;
+  padding-left: 15px !important;
+  padding-right: 15px !important;
+  font-size: 1.2rem !important;
+  color: #999999 !important;
+}
+
+.button {
+  display: block;
+  padding: 10px 30px !important;
+  font-size: 1.6rem !important;
+  margin-bottom: 30px;
+}
