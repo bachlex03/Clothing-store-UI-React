@@ -137,9 +137,14 @@ $background-hover-color: #91704f;
   color: red;
 }
 
-.login-message .exclamation {
+.error-messsage {
+  font-size: 12px;
+  margin-top: -10px;
+}
+
+.exclamation {
   color: #eb001b;
-  font-size: 22px;
+  font-size: 12px;
 }
 
 @media (max-width: 641px) {
