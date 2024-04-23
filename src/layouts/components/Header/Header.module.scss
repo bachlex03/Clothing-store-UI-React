@@ -25,7 +25,7 @@
   color: #fff;
 
   a {
-    color: rgba($color: #64ffda, $alpha: 0.5);
+    color: rgba($color: #b4b4b8, $alpha: 0.5);
     text-decoration: none;
     text-transform: uppercase;
     margin-left: 20px;
@@ -44,7 +44,7 @@
     }
 
     &:hover {
-      color: #64ffda;
+      color: #b4b4b8;
     }
   }
 
@@ -116,9 +116,26 @@ nav {
   display: flex;
   justify-content: end;
   align-items: center;
+  gap: 30px;
 }
+
+// Search
+
 .search {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .search-component {
+    margin-right: 16px;
+  }
 }
+
+.icon-header {
+  font-size: 2.4rem;
+  font-weight: 600 !important;
+}
+
 .wishlist {
 }
 .cart {

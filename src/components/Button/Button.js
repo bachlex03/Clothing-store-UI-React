@@ -1,4 +1,4 @@
-import style from './Button.module.scss';
+import style from './Button.modules.scss';
 import classNames from 'classnames/bind';
 
 const cx = classNames.bind(style);

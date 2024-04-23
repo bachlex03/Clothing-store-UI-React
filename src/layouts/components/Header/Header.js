@@ -2,14 +2,18 @@ import style from './Header.module.scss';
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
-
-import images from '~/assets/images';
-import { faAngleDown, faRightToBracket, faAddressCard } from '@fortawesome/free-solid-svg-icons';
+import { faAngleDown, faRightToBracket, faAddressCard, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { faHeart } from '@fortawesome/free-regular-svg-icons';
 import { useState } from 'react';
+
+import { Search } from '~/components';
+import images from '~/assets/images';
 const cx = classNames.bind(style);
 
 function Header() {
   const [light, setLight] = useState('');
+  const [logo, setLogo] = useState(true);
+  const [cartQuantity, setCartQuantity] = useState(0);
 
   return (
     <div className={cx('container')}>
@@ -20,7 +24,7 @@ function Header() {
           <Link
             href="#"
             onClick={() => {
-              setLight(!light);
+              setLight(null);
             }}
           >
             <i className={cx('icon')}>
@@ -94,16 +98,58 @@ function Header() {
         </nav>
 
         <div>
-          <img src={light ? images.logoDark : images.logo} alt="" />
+          <img src={logo ? images.logoDark : images.logo} alt="" />
         </div>
 
         <div className={cx('actions-wrapper')}>
           <div className={cx('user-actions')}>
-            <div className={cx('search')}>search</div>
+            {/* Search */}
 
-            <div className={cx('wishlist')}>wishlist</div>
+            <div className={cx('search')}>
+              <div className={cx('search-component')}>
+                <Search />
+              </div>
+              <i className={cx('icon-header', 'ti-search')}></i>
+            </div>
 
-            <div className={cx('cart')}>cart</div>
+            {/* Wishlist */}
+            <div className={cx('wishlist')}>
+              <i className={cx('icon-header')}>
+                <FontAwesomeIcon icon={faHeart} />
+              </i>
+            </div>
+
+            {/* Cart */}
+            <div className={cx('cart')}>
+              <div className={cx('cart-component')}>{/* <Search /> */}</div>
+              <i className={cx('icon-header', 'cart-icon', 'ti-shopping-cart')}></i>
+            </div>
+            {/* 
+            <div
+              className={cx('cart-wrapper', 'icon-wrapper')}
+              onMouseMove={handleOpen} onMouseLeave={handleClose}
+            >
+              <Link to="/cart">
+                <i className={cx('icon', 'cart-icon', 'ti-shopping-cart')}></i>
+                <span className={cx('quantity')}>{cartQuantity}</span>
+              </Link>
+
+              <div
+                className={cx('cart-component')}
+                display-non="true"
+                onMouseMove={(e) => {
+                  e.stopPropagation();
+                }}
+                ref={cartRef}
+                onAnimationEnd={handleDisplay}
+              >
+                <Cart />
+              </div>
+            </div>
+            
+            
+            
+            */}
           </div>
         </div>
       </div>
