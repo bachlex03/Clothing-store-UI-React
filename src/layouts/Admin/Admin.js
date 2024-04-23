@@ -1,7 +1,7 @@
 import { useLayoutEffect } from 'react';
 import { AdminHeader, AdminFooter, AdminSidebar } from '../components';
 
-import style from './Admin.scss';
+import style from './Admin.module.scss';
 import classNames from 'classnames/bind';
 
 const cx = classNames.bind(style);

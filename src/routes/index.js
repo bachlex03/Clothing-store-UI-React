@@ -6,7 +6,12 @@ const publicRoutes = [
   {
     path: '/',
     component: Home,
-    layout: HeaderOnly,
+    layout: Default,
+  },
+  {
+    path: '/home',
+    component: Home,
+    layout: Default,
   },
   {
     path: '/shop',
