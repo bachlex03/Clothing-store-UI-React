@@ -6,12 +6,12 @@ const publicRoutes = [
   {
     path: '/',
     component: Home,
-    layout: Default,
+    layout: HeaderOnly,
   },
   {
     path: '/home',
     component: Home,
-    layout: Default,
+    layout: HeaderOnly,
   },
   {
     path: '/shop',

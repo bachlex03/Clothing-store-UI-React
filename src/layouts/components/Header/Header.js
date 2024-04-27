@@ -4,16 +4,55 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
 import { faAngleDown, faRightToBracket, faAddressCard, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { faHeart } from '@fortawesome/free-regular-svg-icons';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Search } from '~/components';
 import images from '~/assets/images';
 const cx = classNames.bind(style);
 
 function Header() {
-  const [light, setLight] = useState('');
-  const [logo, setLogo] = useState(true);
+  const [light, setLight] = useState(null);
+  const [logo, setLogo] = useState(false);
   const [cartQuantity, setCartQuantity] = useState(0);
+
+  const [scrollPosition, setScrollDirection] = useState('top');
+
+  useEffect(() => {
+    let lastScrollTop = 0;
+
+    const handleScroll = () => {
+      let st = window.pageYOffset;
+
+      console.log(st);
+
+      if (st > lastScrollTop) {
+        setScrollDirection('down');
+      } else if (st < lastScrollTop) {
+        setScrollDirection('up');
+      }
+      if (st < 100) {
+        setLight(null);
+        setLogo(false);
+      } else {
+        setLight('');
+        setLogo(true);
+      }
+
+      lastScrollTop = st;
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  const classes = cx('header-component', {
+    show: scrollPosition === 'up',
+    hide: scrollPosition === 'down',
+    top: scrollPosition === 'top',
+  });
 
   return (
     <div className={cx('container')}>
@@ -107,22 +146,20 @@ function Header() {
 
             <div className={cx('search')}>
               <div className={cx('search-component')}>
-                <Search />
+                <Search light={light} />
               </div>
-              <i className={cx('icon-header', 'ti-search')}></i>
+              <i className={cx('icon-header', 'ti-search')} light={light}></i>
             </div>
 
             {/* Wishlist */}
             <div className={cx('wishlist')}>
-              <i className={cx('icon-header')}>
-                <FontAwesomeIcon icon={faHeart} />
-              </i>
+              <i className={cx('icon-header', 'ti-heart')} light={light}></i>
             </div>
 
             {/* Cart */}
             <div className={cx('cart')}>
               <div className={cx('cart-component')}>{/* <Search /> */}</div>
-              <i className={cx('icon-header', 'cart-icon', 'ti-shopping-cart')}></i>
+              <i className={cx('icon-header', 'cart-icon', 'ti-shopping-cart')} light={light}></i>
             </div>
             {/* 
             <div

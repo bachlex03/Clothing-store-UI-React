@@ -11,7 +11,7 @@ import { Fragment, useState, useRef, useEffect } from 'react';
 
 const cx = classNames.bind(style);
 
-function Search() {
+function Search({ light }) {
   const [inputValue, setInputValue] = useState('');
   const [clearIcon, setClearIcon] = useState(false);
   const [spinner, setSpinner] = useState(false);
@@ -91,6 +91,7 @@ function Search() {
           placeholder="Searching..."
           className={cx('search-input')}
           ref={inputRef}
+          light={light}
           onChange={(e) => {
             setInputValue(e.target.value);
 
