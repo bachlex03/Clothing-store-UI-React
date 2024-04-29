@@ -27,15 +27,12 @@ $background-hover-color: #91704f;
 .login-wrapper {
   color: $text-color;
   font-size: 14px;
+  min-height: 55vh;
 }
 
-.sub-title {
-  color: $heading-color;
-  line-height: 1.4;
+.p-sub-title {
+  font-size: 16px;
   font-weight: 400;
-  letter-spacing: 2px;
-  font-size: 23px;
-  margin-bottom: 10px;
 }
 
 .content-login .button {
@@ -44,27 +41,6 @@ $background-hover-color: #91704f;
   font-size: 14px !important;
   margin-bottom: 20px;
   $background-hover-color: #91704f;
-}
-
-.content-login .login-wrapper .button:hover {
-  background-color: $background-hover-color;
-  border: $background-hover-color;
-  border: solid;
-  border-width: 0.727px;
-}
-
-.p-text {
-  font-size: 14px;
-  margin-bottom: 20px;
-}
-
-.link {
-  font-size: 14px;
-  color: $link-color;
-}
-
-.login-wrapper a:hover {
-  color: $background-hover-color;
 }
 
 //input

@@ -95,6 +95,16 @@ $background-hover-color: #91704f;
   font-size: 13px !important;
 }
 
+.error-messsage {
+  font-size: 12px;
+  margin-top: -10px;
+}
+
+.exclamation {
+  color: #eb001b;
+  font-size: 12px;
+}
+
 @media (max-width: 641px) {
   .content-login {
     margin: 40px auto;

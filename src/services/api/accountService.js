@@ -23,3 +23,15 @@ export const verifyEmail = async (token) => {
 
   return result;
 };
+
+export const recoverPassword = async (email) => {
+  const result = await request.post('auth/recover', email);
+
+  return result;
+};
+
+export const resetPassword = async (token, password) => {
+  const result = await request.post(`auth/reset-password?${token}`, password);
+
+  return result;
+};

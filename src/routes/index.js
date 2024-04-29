@@ -50,7 +50,7 @@ const publicRoutes = [
     layout: HeaderOnly,
   },
   {
-    path: '/reset',
+    path: '/reset-password',
     component: Reset,
     layout: HeaderOnly,
   },

@@ -1,9 +1,9 @@
 import style from './Login.module.scss';
 import classNames from 'classnames/bind';
-import { LoginNoti } from '~/components';
+import { LoginNoti, RecoverNoti } from '~/components';
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate, useLocation, useHistory } from 'react-router-dom';
 import * as accountService from '~/services/api/accountService';
 
 const cx = classNames.bind(style);
@@ -18,7 +18,14 @@ function Login() {
   const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
 
   const navigate = useNavigate();
-
+  const location = useLocation();
+  const fromRecover = location.state?.fromRecover;
+  useEffect(() => {
+    if (location?.state && location?.state?.fromRecover) {
+      // Reset fromRecover to false
+      location.state.fromRecover = false;
+    }
+  }, [location.state]);
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
@@ -32,7 +39,6 @@ function Login() {
           let token = response.data.accessToken;
           let data = response.data;
           localStorage.setItem('token', token);
-          localStorage.setItem('user', JSON.stringify(data));
           navigate('/');
         }
       } catch (error) {
@@ -49,6 +55,7 @@ function Login() {
 
     if (!email.trim()) {
       setEmailEmpty(true);
+      setEmailInvalid(false);
       newErrors.push("Email can't be blank");
       isValid = false;
     } else {
@@ -82,6 +89,7 @@ function Login() {
         <div className={cx('content-login')}>
           <div className={cx('login-wrapper')}>
             <form onSubmit={handleSubmit}>
+              {fromRecover && <RecoverNoti />}
               {/* login message */}
               {(errors.length > 0 || emailEmpty || passwordEmpty) && (
                 <LoginNoti message="Please adjust the following:" errors={errors} />
