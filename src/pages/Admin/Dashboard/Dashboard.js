@@ -11,6 +11,7 @@ import {
   faRotateRight,
   faArrowsSpin,
 } from '@fortawesome/free-solid-svg-icons';
+import { io } from 'socket.io-client';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Fragment, useEffect, useRef, useState } from 'react';
@@ -47,6 +48,26 @@ function Dashboard() {
 
   useEffect(() => {
     handleGetProducts();
+  }, []);
+
+  useEffect(() => {
+    const socket = io('http://localhost:3001');
+
+    socket.on('disconnect', () => {
+      console.log('Disconnected from server', socket.id);
+    });
+
+    socket.on('connect', () => {
+      console.log('Connected to server', socket.id);
+    });
+
+    socket.on('payment-status', (data) => {
+      console.log('Received message from server:', data);
+    });
+
+    return () => {
+      socket.disconnect();
+    };
   }, []);
 
   return (

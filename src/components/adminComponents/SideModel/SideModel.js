@@ -71,6 +71,17 @@ function SideModel(props, ref) {
       return cate.category_name === category;
     });
 
+    const test = JSON.stringify([
+      {
+        name: 'test',
+        value: 'test',
+      },
+      {
+        name: 'test2',
+        value: 'test2',
+      },
+    ]);
+
     formData.append('name', name);
     formData.append('description', description);
     formData.append('brand', brand);
@@ -83,6 +94,7 @@ function SideModel(props, ref) {
     formData.append('category', category);
     formData.append('price', price.toString().replace('$', ''));
     formData.append('quantity', quantity);
+    formData.append('test', test);
 
     // console.log({
     //   name,
@@ -432,6 +444,10 @@ function SideModel(props, ref) {
                   }}
                 >
                   Login
+                </Button>
+
+                <Button hover onClick={async () => {}}>
+                  Socket
                 </Button>
               </div>
             </div>
