@@ -1,6 +1,6 @@
 import { Default, HeaderOnly, Admin } from '~/layouts';
 import { Shop, Home } from '~/pages';
-import { Dashboard } from '~/pages/Admin';
+import { Products, Invoices } from '~/pages/Admin';
 
 const publicRoutes = [
   {
@@ -19,8 +19,13 @@ const publicRoutes = [
     layout: Default,
   },
   {
-    path: '/admin/dashboard',
-    component: Dashboard,
+    path: '/admin/products',
+    component: Products,
+    layout: Admin,
+  },
+  {
+    path: '/admin/invoices',
+    component: Invoices,
     layout: Admin,
   },
 ];

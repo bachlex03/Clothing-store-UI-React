@@ -1,5 +1,5 @@
 import classNames from 'classnames/bind';
-import styles from './Dashboard.module.scss';
+import styles from './Products.module.scss';
 import {
   faAngleLeft,
   faAngleRight,
@@ -15,12 +15,12 @@ import { io } from 'socket.io-client';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Fragment, useEffect, useRef, useState } from 'react';
-import { Button, SideModel } from '~/components/adminComponents';
+import { Button, SideModel, Search } from '~/components/adminComponents';
 import * as productService from '~/services/api/productService';
 
 const cx = classNames.bind(styles);
 
-function Dashboard() {
+function Products() {
   const modelRef = useRef(null);
   const [loading, setLoading] = useState(false);
 
@@ -84,17 +84,7 @@ function Dashboard() {
         <div className={cx('table-container')}>
           <div className={cx('header-table', 'flex justify-between items-center')}>
             <div className="flex justify-center items-center">
-              <div className={cx('search')}>
-                <span className={cx('search-icon')}>
-                  <FontAwesomeIcon icon={faMagnifyingGlass} />
-                </span>
-
-                <input
-                  className={cx('search-input', 'py-8px pl-32px pr-16px')}
-                  type="text"
-                  placeholder="Search for ..."
-                />
-              </div>
+              <Search />
             </div>
 
             <div className={cx('btn-comp')}>
@@ -199,4 +189,4 @@ function Dashboard() {
   );
 }
 
-export default Dashboard;
+export default Products;

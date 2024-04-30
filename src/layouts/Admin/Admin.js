@@ -27,7 +27,7 @@ function Admin({ children }) {
 
       <div className={cx('container')}>
         <AdminHeader />
-        <div className="">{children}</div>
+        <div className={cx('content')}>{children}</div>
       </div>
     </div>
   );
