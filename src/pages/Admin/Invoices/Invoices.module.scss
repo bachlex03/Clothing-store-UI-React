@@ -48,6 +48,7 @@
 .list {
   max-height: 433px;
   overflow-y: scroll;
+  margin-top: 10px;
 }
 
 .item {
@@ -101,4 +102,221 @@
 
 .item-date {
   color: var(--admin-font-color);
+}
+
+// Right container
+.right-container {
+  padding: 20px;
+}
+
+.right-heading-text {
+  color: #fff;
+  font-weight: 500;
+}
+
+.create-date {
+  color: var(--admin-font-color);
+  font-size: 1.4rem;
+}
+
+.due-date {
+  color: var(--admin-font-color);
+  font-size: 1.4rem;
+}
+
+.content {
+  background-color: #1c2e45;
+  border-radius: 4px;
+  margin-top: 20px;
+  padding: 32px;
+}
+
+.company-info {
+  margin-top: 20px;
+}
+
+.company-name {
+  color: #fff;
+  font-weight: 600;
+  margin-top: 30px;
+  font-size: 1.8rem;
+}
+
+.company-title {
+  color: var(--admin-font-color);
+  margin-top: 10px;
+}
+
+.invoice-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.heading-info {
+  padding: 20px 30px;
+}
+
+.heading-info + .heading-info {
+  border-left: 0.5px solid rgba($color: #233a57, $alpha: 1);
+}
+
+.invoice-code .code {
+  color: #fff;
+  font-weight: 500;
+  min-height: 20px;
+}
+
+.invoice-code .sub {
+  font-size: 1.4rem;
+  margin-top: 15px;
+  color: var(--admin-font-color);
+}
+
+.invoice-create-date .date {
+  color: #fff;
+  font-weight: 500;
+  min-height: 20px;
+}
+
+.invoice-create-date .sub {
+  font-size: 1.4rem;
+  margin-top: 15px;
+  color: var(--admin-font-color);
+}
+
+.invoice-status .status {
+  display: inline-block;
+  min-height: 20px;
+  padding: 3px 12px;
+  border-radius: 4px;
+  font-size: 1.2rem;
+  color: #249782;
+  background-color: rgba($color: #249782, $alpha: 0.2);
+}
+
+.invoice-status .sub {
+  font-size: 1.4rem;
+  margin-top: 15px;
+  color: var(--admin-font-color);
+}
+
+.invoice-total .total {
+  color: #fff;
+  font-weight: 500;
+  min-height: 20px;
+}
+
+.invoice-total .sub {
+  font-size: 1.4rem;
+  margin-top: 15px;
+  color: var(--admin-font-color);
+}
+
+.invoice-table {
+  width: 100%;
+  margin-top: 30px;
+}
+
+.border-bottom {
+  border-bottom: 0.5px solid rgba($color: #ccc, $alpha: 0.2);
+}
+
+th {
+  color: var(--admin-font-color);
+  font-size: 1.4rem;
+  font-weight: 600;
+  text-align: left;
+  padding: 10px 14px;
+}
+
+th[class*='order'] {
+  text-align: center;
+}
+
+th[class*='name'] {
+}
+
+th[class*='rate'] {
+}
+
+th[class*='quantity'] {
+  text-align: center;
+}
+
+th[class*='amount'] {
+  text-align: center;
+}
+
+// td
+
+td {
+  font-size: 1.4rem;
+  color: #c8d7e9;
+  padding: 10px 14px;
+}
+
+td[class*='order'] {
+  text-align: center;
+}
+
+td[class*='name'] {
+  text-align: left;
+  font-weight: 500;
+}
+
+p[class*='name'] {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+p[class*='desc'] {
+  color: var(--admin-font-color);
+  margin-top: 8px;
+  font-weight: 400;
+}
+
+td[class*='rate'] {
+  text-align: left;
+}
+
+td[class*='quantity'] {
+  text-align: center;
+}
+
+td[class*='amount'] {
+  text-align: left;
+}
+
+.summary {
+  text-align: left !important;
+  font-size: 1.5rem;
+}
+
+.summary.total {
+  color: #fff;
+  font-weight: 600;
+}
+
+.amount.total {
+  color: #fff;
+  font-weight: 600;
+}
+
+// Note
+
+.note {
+  padding: 12px 16px;
+  margin-top: 60px;
+  background-color: rgba($color: #2278a9, $alpha: 0.3);
+  border-radius: 8px;
+  border: 1px solid rgba($color: #2278a9, $alpha: 1);
+}
+
+.note-content {
+  color: #0ea5e9;
+  font-size: 1.4rem;
 }
