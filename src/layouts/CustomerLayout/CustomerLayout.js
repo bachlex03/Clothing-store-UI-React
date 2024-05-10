@@ -8,11 +8,11 @@ function CustomerLayout({ children }) {
   return (
     <>
       <Header />
-      <main className="container-fluid px-0">
+      <main className={cx('container-fluid px-0')}>
         <div className={cx('container-fluid', 'topbar')}>
           <h1 className={cx('title', 'text-center')}>My Account</h1>
         </div>
-        <div className="container">
+        <div className={cx('container')}>
           <div className={cx('d-flex')}>
             <CustomerSidebar />
             <div className={cx('w-100')}>{children}</div>

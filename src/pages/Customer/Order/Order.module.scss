@@ -1,12 +1,14 @@
 .wrapper {
-  padding: 0px 80px;
+  padding-left: 15px;
   border-left: 1px solid #ccc;
   font-size: 1.6rem !important;
 }
 
 .heading {
-  font-size: 3rem;
+  font-size: 2.6rem;
+  font-family: 'Butler', sans-serif;
   margin: 20px 0;
+  font-weight: 400;
 }
 
 .thead {
@@ -22,10 +24,16 @@
 }
 
 .button {
-  padding: 5px 25px !important;
+  display: block;
+  font-weight: 600 !important;
+  padding: 10px 30px !important;
   font-size: 1.6rem !important;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
+  background-color: #000 !important;
+  border: none !important;
+  &:hover {
+    background-color: rgb(153, 153, 153) !important;
+    border: none !important;
+  }
 }
 
 tbody {

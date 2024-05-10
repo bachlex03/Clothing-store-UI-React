@@ -13,6 +13,11 @@ function CustomerSidebar() {
         </Link>
       </li>
       <li>
+        <Link to="/customer/addresses" className={cx('link')}>
+          Addresses
+        </Link>
+      </li>
+      <li>
         <Link to="/customer/orders" className={cx('link')}>
           Orders
         </Link>

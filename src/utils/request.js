@@ -3,7 +3,7 @@ import axios from 'axios';
 const request = axios.create({
   baseURL: 'http://localhost:3001/',
   headers: {
-    // 'Content-Type': 'application/x-www-form-urlencoded',
+    'Content-Type': 'application/x-www-form-urlencoded',
     Authorization: `Bearer ${localStorage.getItem('token')}`,
   },
 });

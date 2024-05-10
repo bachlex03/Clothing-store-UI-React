@@ -1,6 +1,6 @@
 import { Default, HeaderOnly, Admin, CustomerLayout } from '~/layouts';
 import { Shop, Home, Login, Register, Wishlist, Recover, Reset, Verify } from '~/pages';
-import { Detail, Order } from '~/pages/Customer';
+import { Address, Detail, Order } from '~/pages/Customer';
 import { Dashboard } from '~/pages/Admin';
 
 const publicRoutes = [
@@ -37,6 +37,11 @@ const publicRoutes = [
   {
     path: '/customer/details',
     component: Detail,
+    layout: CustomerLayout,
+  },
+  {
+    path: '/customer/addresses',
+    component: Address,
     layout: CustomerLayout,
   },
   {

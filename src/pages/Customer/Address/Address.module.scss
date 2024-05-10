@@ -46,3 +46,15 @@
     border: none !important;
   }
 }
+
+.form-select-ovr {
+  &:focus {
+    box-shadow: none !important;
+    border-color: rgb(153, 153, 153) !important;
+  }
+  color: #ccc !important;
+  height: 43px !important;
+  font-size: 1.4rem !important;
+  padding-left: 20px !important;
+  padding-right: 20px !important;
+}

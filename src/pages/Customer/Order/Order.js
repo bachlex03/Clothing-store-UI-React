@@ -42,7 +42,7 @@ function Order() {
               <td className={cx()}>
                 <button
                   type="button"
-                  className={cx('btn btn-dark rounded-0', 'button')}
+                  className={cx('btn btn-dark rounded-5 my-4', 'button')}
                   onClick={() => {
                     setShow(true);
                   }}
@@ -59,7 +59,7 @@ function Order() {
               <td className={cx()}>
                 <button
                   type="button"
-                  className={cx('btn btn-dark rounded-0', 'button')}
+                  className={cx('btn btn-dark rounded-5 my-4', 'button')}
                   onClick={() => {
                     setShow(true);
                   }}
