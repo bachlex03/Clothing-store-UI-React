@@ -36,6 +36,7 @@
     font-family: var(--font-yantramanav);
     font-weight: 400;
     transition: all 0.3s ease-in-out;
+    cursor: pointer;
 
     .icon {
       width: 24px;
@@ -43,7 +44,8 @@
     }
 
     &:hover {
-      color: #b4b4b8;
+      // color: #b4b4b8;
+      color: #64ffda;
     }
   }
 
@@ -91,6 +93,13 @@ nav {
   font-weight: 300;
 }
 
+.list-header li:hover {
+  .header-link {
+    transition: all 0.5s;
+    color: #64ffda;
+  }
+}
+
 .list-header li .header-link {
   display: block;
   letter-spacing: 1px;
@@ -118,7 +127,8 @@ nav {
   display: flex;
   justify-content: end;
   align-items: center;
-  gap: 30px;
+  gap: 16px;
+  cursor: pointer;
 }
 
 // Search
@@ -139,6 +149,11 @@ nav {
   color: #fff;
   line-height: inherit !important;
   transition: all 0.5s;
+  padding: 10px;
+
+  &:hover {
+    color: #64ffda;
+  }
 }
 
 .icon-header[light] {
@@ -147,8 +162,6 @@ nav {
 }
 
 .wishlist {
-}
-.cart {
 }
 
 // category-header-component
@@ -213,4 +226,15 @@ nav {
     transform: translateY(20px);
     opacity: 0;
   }
+}
+
+// Cart
+.cart {
+  position: relative;
+}
+
+.cart-component {
+  position: absolute;
+  left: -380px;
+  top: 50px;
 }

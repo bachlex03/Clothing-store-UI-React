@@ -47,6 +47,30 @@ body {
   line-height: 1.5;
 }
 
+// Resets
+a,
+button,
+input,
+[tab-index] {
+  text-decoration: none;
+  border: none;
+  outline: none;
+  display: inline-block;
+  color: #000;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+ul,
+ol {
+  padding: 0;
+  list-style-type: none;
+}
+
 // Common
 .section-1200 {
   min-width: 1200px;
@@ -54,7 +78,7 @@ body {
   margin: 0 auto;
 }
 
-._text-center {
+.text-center {
   text-align: center !important;
 }
 
@@ -145,6 +169,10 @@ body {
   margin-top: 16px;
 }
 
+.mt-20px {
+  margin-top: 16px;
+}
+
 .mr-8px {
   margin-right: 8px;
 }
@@ -171,6 +199,11 @@ body {
 
 .mr-12px {
   margin-right: 12px;
+}
+
+// flex
+.flex-1 {
+  flex: 1;
 }
 
 // Admin hover

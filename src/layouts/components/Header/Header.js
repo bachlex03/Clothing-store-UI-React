@@ -6,7 +6,7 @@ import { faAngleDown, faRightToBracket, faAddressCard, faMagnifyingGlass } from 
 import { faHeart } from '@fortawesome/free-regular-svg-icons';
 import { useEffect, useRef, useState } from 'react';
 
-import { Search, CategoryHeader } from '~/components';
+import { Search, CategoryHeader, Cart } from '~/components';
 import images from '~/assets/images';
 const cx = classNames.bind(style);
 
@@ -19,6 +19,7 @@ function Header() {
   const [scrollPosition, setScrollDirection] = useState('top');
 
   const categoriesRef = useRef();
+  const cartRef = useRef();
 
   useEffect(() => {
     let lastScrollTop = 0;
@@ -210,17 +211,9 @@ function Header() {
 
             {/* Cart */}
             <div className={cx('cart')}>
-              <div className={cx('cart-component')}>{/* <Search /> */}</div>
-              <i className={cx('icon-header', 'cart-icon', 'ti-shopping-cart')} light={light}></i>
-            </div>
-            {/* 
-            <div
-              className={cx('cart-wrapper', 'icon-wrapper')}
-              onMouseMove={handleOpen} onMouseLeave={handleClose}
-            >
-              <Link to="/cart">
-                <i className={cx('icon', 'cart-icon', 'ti-shopping-cart')}></i>
-                <span className={cx('quantity')}>{cartQuantity}</span>
+              <Link to="#">
+                <i className={cx('icon-header', 'cart-icon', 'ti-shopping-cart')} light={light}></i>
+                {/* <span className={cx('quantity')}>{cartQuantity}</span> */}
               </Link>
 
               <div
@@ -235,10 +228,6 @@ function Header() {
                 <Cart />
               </div>
             </div>
-            
-            
-            
-            */}
           </div>
         </div>
       </div>

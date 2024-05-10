@@ -6,6 +6,7 @@ const images = {
   headerCategory_2: require('./header-category-2.webp'),
   headerCategory_3: require('./header-category-3.webp'),
   headerCategory_4: require('./header-category-4.webp'),
+  demoImageCart: require('./demo-image-cart.webp'),
 };
 
 export default images;
