@@ -43,7 +43,7 @@ function Detail() {
     }
 
     // after update infor and password, scroll to top
-    window.scrollTo(0, 0);
+    // window.scrollTo(0, 0);
   };
 
   const onlyUpdateInfor = async () => {
@@ -105,7 +105,7 @@ function Detail() {
             type="text"
             className={cx('form-control', 'my-3', 'rounded-5', 'form-control-ovr')}
             id="basic-url"
-            placeholder="+84 123 456 789"
+            placeholder="Phone number..."
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
           />

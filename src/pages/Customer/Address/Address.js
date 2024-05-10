@@ -15,6 +15,8 @@ function Address() {
   const [lastName, setLastName] = useState('');
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
+  const [userCountry, setUserCountry] = useState('');
+  const [userCity, setUserCity] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -46,13 +48,22 @@ function Address() {
     fetchAccount();
   }, []);
 
-  // useEffect(() => {
-  //   const fetchAddresses = async () => {
-  //     try {
-  //       const response = await accountService.getAddresses();
-  //       if (response.status === 200) {
-  //         setStreet(response.data.street);
-  //       }
+  useEffect(() => {
+    const fetchAddresses = async () => {
+      try {
+        const response = await accountService.getAddresses();
+        if (response.status === 200) {
+          setUserCountry(response.data.address_country);
+          setUserCity(response.data.address_city);
+          setStreet(response.data.address_addressLine);
+        }
+      } catch (error) {
+        console.error('Error during fetch addresses:', error);
+      }
+    };
+
+    fetchAddresses();
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -116,7 +127,7 @@ function Address() {
             className={cx('form-select', 'form-select-ovr', 'rounded-5', 'my-3')}
             aria-label="Default select example"
           >
-            <option selected>-- Choose your opinion --</option>
+            <option selected>{{ userCountry } ? userCountry : '-- Choose your opinion --'}</option>
             <option value="Vietnam">Việt Nam</option>
           </select>
         </div>
@@ -133,7 +144,7 @@ function Address() {
               setCity(selectedCity);
             }}
           >
-            <option selected>-- Choose your opinion --</option>
+            <option selected>{{ userCity } ? userCity : '-- Choose your opinion --'}</option>
             {cities.map((city) => (
               <option value={city.name}>{city.name}</option>
             ))}
