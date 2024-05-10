@@ -4,26 +4,27 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
 import { faAngleDown, faRightToBracket, faAddressCard, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { faHeart } from '@fortawesome/free-regular-svg-icons';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { Search, CategoryHeader } from '~/components';
 import images from '~/assets/images';
 const cx = classNames.bind(style);
 
+let timer;
+
 function Header() {
   const [light, setLight] = useState(null);
   const [logo, setLogo] = useState(false);
   const [cartQuantity, setCartQuantity] = useState(0);
-
   const [scrollPosition, setScrollDirection] = useState('top');
+
+  const categoriesRef = useRef();
 
   useEffect(() => {
     let lastScrollTop = 0;
 
     const handleScroll = () => {
       let st = window.pageYOffset;
-
-      console.log(st);
 
       if (st > lastScrollTop) {
         setScrollDirection('down');
@@ -47,6 +48,35 @@ function Header() {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
+
+  const handleDisplay = () => {
+    let closed = categoriesRef.current.getAttribute('closing');
+
+    if (closed) {
+      categoriesRef.current.setAttribute('display-non', '');
+    }
+  };
+
+  const handleOpen = (e) => {
+    if (!categoriesRef.current) return;
+    categoriesRef.current.removeAttribute('display-non');
+
+    categoriesRef.current.removeAttribute('closing');
+
+    categoriesRef.current.setAttribute('opening', '');
+  };
+
+  const handleClose = (e) => {
+    clearTimeout(timer);
+
+    timer = null;
+
+    categoriesRef.current.removeAttribute('opening');
+
+    categoriesRef.current.setAttribute('closing', true);
+
+    categoriesRef.current.removeEventListener('animationend', () => {});
+  };
 
   const classes = cx('header-component', {
     show: scrollPosition === 'up',
@@ -89,7 +119,17 @@ function Header() {
               </Link>
             </li>
 
-            <li className={cx('header-item', 'shop-header')}>
+            <li
+              className={cx('header-item', 'shop-header')}
+              onMouseOver={() => {
+                if (!timer) {
+                  timer = setTimeout(() => {
+                    handleOpen();
+                  }, 200);
+                }
+              }}
+              onMouseLeave={handleClose}
+            >
               <Link className={cx('header-link')} href="#" light={light}>
                 Shop
                 <i className={cx('nav-icon')}>
@@ -97,8 +137,16 @@ function Header() {
                 </i>
               </Link>
 
-              <div display-non="true" className={cx('category-header-component')}>
-                <CategoryHeader />
+              <div
+                display-non="true"
+                className={cx('category-header-component')}
+                ref={categoriesRef}
+                onMouseMove={(e) => {
+                  e.stopPropagation();
+                }}
+                onAnimationEnd={handleDisplay}
+              >
+                <CategoryHeader handleClose={handleClose} />
               </div>
             </li>
 

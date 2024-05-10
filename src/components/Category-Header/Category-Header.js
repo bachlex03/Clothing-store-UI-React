@@ -4,13 +4,18 @@ import { SubCategoryItemHeader, ImgCategoryItemHeader } from '~/components';
 import images from '~/assets/images';
 const cx = classNames.bind(style);
 
-function CategoryHeader() {
+function CategoryHeader({ handleClose }) {
   return (
     <div className={cx('container')}>
       <div className="row">
         <div className="col l-6">
           <div className="row">
-            <div className="col l-4">
+            <div
+              className="col l-4"
+              onClick={() => {
+                handleClose();
+              }}
+            >
               <SubCategoryItemHeader />
             </div>
             <div className="col l-4">
