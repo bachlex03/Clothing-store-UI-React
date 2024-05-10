@@ -1,6 +1,8 @@
 import * as request from '~/utils/request';
 
 export const getAllProducts = async (options = {}) => {
+  // const result = await request.get('products', options);
+
   const result = await request.get('products', options);
 
   return result.data;

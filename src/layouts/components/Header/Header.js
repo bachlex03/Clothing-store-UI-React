@@ -6,7 +6,7 @@ import { faAngleDown, faRightToBracket, faAddressCard, faMagnifyingGlass } from 
 import { faHeart } from '@fortawesome/free-regular-svg-icons';
 import { useEffect, useState } from 'react';
 
-import { Search } from '~/components';
+import { Search, CategoryHeader } from '~/components';
 import images from '~/assets/images';
 const cx = classNames.bind(style);
 
@@ -82,24 +82,28 @@ function Header() {
 
       <div className={cx('main')} light={light}>
         <nav>
-          <ul className={cx('list')}>
-            <li>
-              <Link href="/home" light={light}>
+          <ul className={cx('list-header')}>
+            <li className={cx('header-item')}>
+              <Link className={cx('header-link')} href="/home" light={light}>
                 Home{' '}
               </Link>
             </li>
 
-            <li>
-              <Link href="#" light={light}>
+            <li className={cx('header-item', 'shop-header')}>
+              <Link className={cx('header-link')} href="#" light={light}>
                 Shop
                 <i className={cx('nav-icon')}>
                   <FontAwesomeIcon icon={faAngleDown} />
                 </i>
               </Link>
+
+              <div display-non="true" className={cx('category-header-component')}>
+                <CategoryHeader />
+              </div>
             </li>
 
-            <li>
-              <Link href="#" light={light}>
+            <li className={cx('header-item')}>
+              <Link className={cx('header-link')} href="#" light={light}>
                 Product
                 <i className={cx('nav-icon')}>
                   <FontAwesomeIcon icon={faAngleDown} />
@@ -107,8 +111,8 @@ function Header() {
               </Link>
             </li>
 
-            <li>
-              <Link href="#" light={light}>
+            <li className={cx('header-item')}>
+              <Link className={cx('header-link')} href="#" light={light}>
                 Pages
                 <i className={cx('nav-icon')}>
                   <FontAwesomeIcon icon={faAngleDown} />
@@ -116,8 +120,8 @@ function Header() {
               </Link>
             </li>
 
-            <li>
-              <Link href="#" light={light}>
+            <li className={cx('header-item')}>
+              <Link className={cx('header-link')} href="#" light={light}>
                 Blog
                 <i className={cx('nav-icon')}>
                   <FontAwesomeIcon icon={faAngleDown} />
@@ -125,8 +129,8 @@ function Header() {
               </Link>
             </li>
 
-            <li>
-              <Link href="#" light={light}>
+            <li className={cx('header-item')}>
+              <Link className={cx('header-link')} href="#" light={light}>
                 Features
                 <i className={cx('nav-icon')}>
                   <FontAwesomeIcon icon={faAngleDown} />

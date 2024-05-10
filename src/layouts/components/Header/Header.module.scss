@@ -76,31 +76,32 @@ nav {
   flex: 1 0;
 }
 
-.list {
+.list-header {
   display: flex;
   list-style-type: none;
-
-  li + li {
-    margin-left: 20px;
-  }
   font-family: var(--font-yantramanav);
+}
 
-  li {
-    font-size: 1.5rem;
-    font-weight: 300;
-    a {
-      display: block;
-      letter-spacing: 1px;
-      line-height: 79px;
-      text-transform: uppercase;
-      text-decoration: none;
-      color: #fff;
-    }
+.list-header > li + li {
+  margin-left: 20px;
+}
 
-    a[light] {
-      color: #000;
-    }
-  }
+.list-header li {
+  font-size: 1.5rem;
+  font-weight: 300;
+}
+
+.list-header li .header-link {
+  display: block;
+  letter-spacing: 1px;
+  line-height: 79px;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: #fff;
+}
+
+.list-header li .header-link[light] {
+  color: #000;
 }
 
 .nav-icon {
@@ -148,4 +149,18 @@ nav {
 .wishlist {
 }
 .cart {
+}
+
+// category-header-component
+
+.shop-header {
+  position: relative;
+}
+
+.category-header-component {
+  position: absolute;
+  left: -100px;
+  width: 100vw;
+  height: 412px;
+  background-color: #ccc;
 }
