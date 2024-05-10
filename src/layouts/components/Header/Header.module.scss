@@ -235,6 +235,18 @@ nav {
 
 .cart-component {
   position: absolute;
-  left: -380px;
+  left: -350px;
   top: 50px;
+}
+
+.cart-component[display-non] {
+  display: none;
+}
+
+.cart-component[opening] {
+  animation: fade-up 0.5s linear forwards;
+}
+
+.cart-component[closing] {
+  animation: fade-out 0.5s linear forwards;
 }

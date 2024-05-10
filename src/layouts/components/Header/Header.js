@@ -50,33 +50,38 @@ function Header() {
     };
   }, []);
 
-  const handleDisplay = () => {
-    let closed = categoriesRef.current.getAttribute('closing');
+  const handleDisplay = (current) => {
+    if (!current) return;
+
+    let closed = current.getAttribute('closing');
 
     if (closed) {
-      categoriesRef.current.setAttribute('display-non', '');
+      current.setAttribute('display-non', '');
     }
   };
 
-  const handleOpen = (e) => {
-    if (!categoriesRef.current) return;
-    categoriesRef.current.removeAttribute('display-non');
+  const handleOpen = (current) => {
+    if (!current) return;
 
-    categoriesRef.current.removeAttribute('closing');
+    current.removeAttribute('display-non');
 
-    categoriesRef.current.setAttribute('opening', '');
+    current.removeAttribute('closing');
+
+    current.setAttribute('opening', '');
   };
 
-  const handleClose = (e) => {
+  const handleClose = (current) => {
+    if (!current) return;
+
     clearTimeout(timer);
 
     timer = null;
 
-    categoriesRef.current.removeAttribute('opening');
+    current.removeAttribute('opening');
 
-    categoriesRef.current.setAttribute('closing', true);
+    current.setAttribute('closing', true);
 
-    categoriesRef.current.removeEventListener('animationend', () => {});
+    current.removeEventListener('animationend', () => {});
   };
 
   const classes = cx('header-component', {
@@ -122,14 +127,16 @@ function Header() {
 
             <li
               className={cx('header-item', 'shop-header')}
-              onMouseOver={() => {
+              onMouseOver={(e) => {
                 if (!timer) {
                   timer = setTimeout(() => {
-                    handleOpen();
+                    handleOpen(categoriesRef.current);
                   }, 200);
                 }
               }}
-              onMouseLeave={handleClose}
+              onMouseLeave={(e) => {
+                handleClose(categoriesRef.current);
+              }}
             >
               <Link className={cx('header-link')} href="#" light={light}>
                 Shop
@@ -145,9 +152,11 @@ function Header() {
                 onMouseMove={(e) => {
                   e.stopPropagation();
                 }}
-                onAnimationEnd={handleDisplay}
+                onAnimationEnd={() => {
+                  handleDisplay(categoriesRef.current);
+                }}
               >
-                <CategoryHeader handleClose={handleClose} />
+                <CategoryHeader handleClose={handleClose(categoriesRef.current)} />
               </div>
             </li>
 
@@ -210,7 +219,16 @@ function Header() {
             </div>
 
             {/* Cart */}
-            <div className={cx('cart')}>
+            <div
+              className={cx('cart')}
+              onMouseMove={() => {
+                handleOpen(cartRef.current);
+              }}
+              // onMouseMove={}
+              onMouseLeave={() => {
+                handleClose(cartRef.current);
+              }}
+            >
               <Link to="#">
                 <i className={cx('icon-header', 'cart-icon', 'ti-shopping-cart')} light={light}></i>
                 {/* <span className={cx('quantity')}>{cartQuantity}</span> */}
@@ -223,7 +241,7 @@ function Header() {
                   e.stopPropagation();
                 }}
                 ref={cartRef}
-                onAnimationEnd={handleDisplay}
+                onAnimationEnd={handleDisplay(cartRef.current)}
               >
                 <Cart />
               </div>
