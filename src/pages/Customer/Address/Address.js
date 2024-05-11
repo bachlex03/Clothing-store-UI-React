@@ -2,10 +2,13 @@ import style from './Address.module.scss';
 import classNames from 'classnames/bind';
 import { useState, useEffect } from 'react';
 import * as accountService from '~/services/api/accountService';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const cx = classNames.bind(style);
 
 function Address() {
+  const [country, setCountry] = useState('');
   const [cities, setCities] = useState([]);
   const [city, setCity] = useState({});
   const [districts, setDistricts] = useState([]);
@@ -17,6 +20,7 @@ function Address() {
   const [email, setEmail] = useState('');
   const [userCountry, setUserCountry] = useState('');
   const [userCity, setUserCity] = useState('');
+  const [userDistrict, setUserDistrict] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -54,7 +58,8 @@ function Address() {
         const response = await accountService.getAddresses();
         if (response.status === 200) {
           setUserCountry(response.data.address_country);
-          setUserCity(response.data.address_city);
+          setUserCity(response.data.address_province);
+          setUserDistrict(response.data.address_city);
           setStreet(response.data.address_addressLine);
         }
       } catch (error) {
@@ -67,7 +72,7 @@ function Address() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await accountService.getDistricts(city.id);
+      const data = await accountService.getDistricts(city?.id);
       if (data) {
         console.log(data.data);
         setDistricts(data.data);
@@ -84,14 +89,59 @@ function Address() {
   //   console.log(streetLines);
   // };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (validateAddress()) {
+      let address = {
+        country: country,
+        province: city.name,
+        city: district.name,
+        addressLine: street,
+      };
+
+      try {
+        const response = await accountService.updateAddress(address);
+        if (response.status === 200) {
+          toast.success('Address updated successfully');
+        }
+      } catch (error) {
+        console.error('Error during update address:', error);
+        toast.error('Address updated failed');
+      }
+    }
+
+    window.scrollTo(0, 0);
+  };
+
+  const validateAddress = () => {
+    if (!country) {
+      toast.warn('Country is required');
+      return false;
+    }
+    if (!city) {
+      toast.warn('City is required');
+      return false;
+    }
+    if (!district) {
+      toast.warn('District is required');
+      return false;
+    }
+    if (!street) {
+      toast.warn('Street is required');
+      return false;
+    }
+    return true;
+  };
+
   return (
     <div className={cx('wrapper')}>
       <h3 className={cx('heading')}>Billing Address</h3>
-      <form>
+      <form onSubmit={handleSubmit}>
         <div className="d-flex justify-content-between">
           <div className={cx('w-50', 'px-3')}>
             <label for="basic-url" className={cx('form-label', 'mb-0', 'label-ovr')}>
-              First name <span style={{ color: 'red' }}>*</span>
+              First name
             </label>
             <input
               type="text"
@@ -105,7 +155,7 @@ function Address() {
           </div>
           <div className={cx('w-50', 'px-3')}>
             <label for="basic-url" className={cx('form-label', 'mb-0', 'label-ovr')}>
-              Last name <span style={{ color: 'red' }}>*</span>
+              Last name
             </label>
             <input
               type="text"
@@ -126,9 +176,10 @@ function Address() {
           <select
             className={cx('form-select', 'form-select-ovr', 'rounded-5', 'my-3')}
             aria-label="Default select example"
+            onChange={(e) => setCountry(e.target.value)}
           >
-            <option selected>{{ userCountry } ? userCountry : '-- Choose your opinion --'}</option>
-            <option value="Vietnam">Việt Nam</option>
+            <option selected>{userCountry || '-- Choose your opinion --'}</option>
+            <option value="Việt Nam">Việt Nam</option>
           </select>
         </div>
 
@@ -144,7 +195,7 @@ function Address() {
               setCity(selectedCity);
             }}
           >
-            <option selected>{{ userCity } ? userCity : '-- Choose your opinion --'}</option>
+            <option selected>{userCity || '-- Choose your opinion --'}</option>
             {cities.map((city) => (
               <option value={city.name}>{city.name}</option>
             ))}
@@ -163,7 +214,7 @@ function Address() {
               setDistrict(selectedDistrict);
             }}
           >
-            <option selected>-- Choose your opinion --</option>
+            <option selected>{userDistrict || '-- Choose your opinion --'}</option>
             {districts.map((district) => (
               <option value={district.name}>{district.name}</option>
             ))}
@@ -186,13 +237,13 @@ function Address() {
 
         <div className={cx('w-100', 'px-3', 'mt-4')}>
           <label for="basic-url" className={cx('form-label', 'mb-0', 'label-ovr')}>
-            Phone number <span style={{ color: 'red' }}>*</span>
+            Phone number
           </label>
           <input
             type="text"
             className={cx('form-control', 'my-3', 'rounded-5', 'form-control-ovr')}
             id="basic-url"
-            placeholder="+84 123 456 789"
+            placeholder="Phone number..."
             disabled
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
@@ -201,7 +252,7 @@ function Address() {
 
         <div className={cx('w-100', 'px-3', 'mt-4')}>
           <label for="basic-url" className={cx('form-label', 'mb-0', 'label-ovr')}>
-            Email address <span style={{ color: 'red' }}>*</span>
+            Email address
           </label>
           <input
             type="text"
@@ -220,6 +271,7 @@ function Address() {
           </button>
         </div>
       </form>
+      <ToastContainer position="bottom-left" />
     </div>
   );
 }

@@ -2,6 +2,8 @@ import style from './Detail.module.scss';
 import classNames from 'classnames/bind';
 import * as accountService from '~/services/api/accountService';
 import { useEffect, useState } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const cx = classNames.bind(style);
 
@@ -35,7 +37,7 @@ function Detail() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     // if user doesn't change password, only update infor
-    if (!password && !newPassword && !confirmPassword) {
+    if (!password && !newPassword && !confirmPassword && validateOnlyUpdateInfor()) {
       onlyUpdateInfor();
     } else {
       // if user change password, update infor and password
@@ -43,7 +45,15 @@ function Detail() {
     }
 
     // after update infor and password, scroll to top
-    // window.scrollTo(0, 0);
+    window.scrollTo(0, 0);
+  };
+
+  const validateOnlyUpdateInfor = () => {
+    if (!firstName || !lastName) {
+      toast.warn('First name and last name are required');
+      return false;
+    }
+    return true;
   };
 
   const onlyUpdateInfor = async () => {
@@ -55,12 +65,11 @@ function Detail() {
       };
       const response = await accountService.updateProfile(user);
       if (response.status === 200) {
-        setFirstName(response.data.profile_firstName);
-        setLastName(response.data.profile_lastName);
-        setPhone(response.data.profile_phoneNumber);
+        toast.success('Profile updated successfully');
       }
     } catch (error) {
       console.error('Error during update profile:', error);
+      toast.error('Profile updated failed');
     }
   };
 
@@ -113,7 +122,7 @@ function Detail() {
 
         <div className={cx('w-100', 'px-3', 'mt-4')}>
           <label for="basic-url" className={cx('form-label', 'mb-0', 'label-ovr')}>
-            Email address <span style={{ color: 'red' }}>*</span>
+            Email address
           </label>
           <input
             type="text"
@@ -172,6 +181,7 @@ function Detail() {
           </button>
         </div>
       </form>
+      <ToastContainer position="bottom-left" />
     </div>
   );
 }

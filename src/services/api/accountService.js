@@ -76,3 +76,9 @@ export const getAddresses = async () => {
 
   return result;
 }
+
+export const updateAddress = async (address) => {
+  const result = await request.put('users/addresses', address);
+
+  return result;
+};

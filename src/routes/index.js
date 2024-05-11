@@ -26,7 +26,7 @@ const publicRoutes = [
   },
   {
     path: '/register',
-    component: Register,
+    component: Login,
     layout: HeaderOnly,
   },
   {
