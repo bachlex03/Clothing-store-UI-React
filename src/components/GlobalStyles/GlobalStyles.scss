@@ -202,8 +202,31 @@ ol {
 }
 
 // flex
+.flex {
+  display: flex;
+}
+
 .flex-1 {
   flex: 1;
 }
 
-// Admin hover
+.align-center {
+  align-items: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.baseline {
+  align-items: baseline;
+}
+
+// position
+.relative {
+  position: relative;
+}
+
+.w100 {
+  width: 100%;
+}

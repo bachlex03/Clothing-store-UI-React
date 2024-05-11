@@ -39,8 +39,8 @@
 
 .icon {
   position: absolute;
-  top: 13.5px;
-  right: 10px;
+  top: 11px;
+  right: 12px;
   color: #888686;
 }
 
@@ -62,19 +62,27 @@
 }
 
 .list {
+  display: none;
   position: absolute;
   z-index: 9999;
-  //   display: none;
   width: 400px;
+  max-height: 400px;
+  overflow-y: scroll;
+  overscroll-behavior: contain;
   background-color: #fff;
   border-radius: 4px;
-  padding: 10px 0;
+  padding: 20px 0;
   margin-top: 10px;
   box-shadow: rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px,
     rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset;
 
+  // border-bottom: 1px solid #e1e1e1;
+  // &:hover {
+  //   box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
+  // }
+
   li {
-    padding: 10px 20px 10px 10px;
+    padding: 10px 20px;
     margin-bottom: 5px;
     transition: all 0.2s;
     cursor: pointer;
@@ -91,7 +99,7 @@
 
 .name {
   line-height: 1.4;
-  width: 310px;
+  width: 100%;
   font-weight: 400;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -99,8 +107,8 @@
 }
 
 .img {
-  width: 50px;
-  height: 50px;
+  width: 60px;
+  height: 70px;
   margin-right: 10px;
   border: 1px solid #ccc;
 }
@@ -116,4 +124,17 @@
 .not-found {
   padding: 10px;
   text-align: center;
+}
+
+// variation
+.variations {
+  display: inline-block;
+  width: 45px;
+  text-align: center;
+}
+
+.link {
+  display: flex;
+  width: 100%;
+  align-items: center;
 }
