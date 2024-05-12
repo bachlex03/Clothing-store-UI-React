@@ -1,6 +1,5 @@
 import style from './Verify.module.scss';
 import classNames from 'classnames/bind';
-import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -11,7 +10,7 @@ const cx = classNames.bind(style);
 
 function Verify() {
   const urlParams = new URLSearchParams(window.location.search);
-  const [jwtMailToken, setJwtMailToken] = useState(urlParams.get('q'));
+  const [jwtMailToken] = useState(urlParams.get('q'));
   const [otp, setOtp] = useState('');
   const [otpEmpty, setOtpEmpty] = useState(false);
   const [otpInvalid, setOtpInvalid] = useState(false);
@@ -19,7 +18,7 @@ function Verify() {
 
   const handleResendOTP = async () => {
     try {
-      const response = await accountService.sendMailToken(qs.stringify({ q: jwtMailToken }));
+      await accountService.sendMailToken(qs.stringify({ q: jwtMailToken }));
     } catch (error) {
       console.error('Error during resend OTP:', error);
     }
@@ -54,11 +53,11 @@ function Verify() {
   };
 
   return (
-    <div className={cx('container-fluid px-0')}>
-      <div className={cx('container-fluid', 'topbar')}>
-        <h1 className={cx('title', 'text-center')}>Verify registration</h1>
+    <div className={cx('container-fl')}>
+      <div className={cx('topbar')}>
+        <h1 className={cx('title')}>Verify registration</h1>
       </div>
-      <div className={cx('container-fluid px-4')}>
+      <div className={cx('container-login')}>
         <div className={cx('content-login')}>
           <div className={cx('login-wrapper')}>
             <h2 className={cx('sub-title')}>
@@ -67,26 +66,21 @@ function Verify() {
               </span>
               We've sent you an email with a code to verify your registration.
             </h2>
-            <p className={cx('mb-4')}>
+            <p className={cx('sub-title2')}>
               A verify registration email has been sent to the email address on file for your account, but may take
               several minutes to show up in your inbox. Please wait at least 10 minutes before attempting another
               re-send.
             </p>
             <form onSubmit={handleSubmitOTP}>
               {/* input fiels */}
-              <div className={cx('form-floating mb-4', 'form-floating-ovr')}>
-                <input
-                  type="password"
-                  className={cx('form-control rounded-0', 'form-control-ovr')}
-                  id="floatingInput"
-                  placeholder=""
-                  value={otp}
-                  onChange={(e) => setOtp(e.target.value)}
-                />
-                <label htmlFor="floatingInput" className={cx('label-ovr')}>
-                  OTP Code
-                </label>
-              </div>
+              <input
+                type="text"
+                className={cx('form-control rounded-0', 'form-control-ovr')}
+                id="floatingInput"
+                placeholder="OTP Code"
+                value={otp}
+                onChange={(e) => setOtp(e.target.value)}
+              />
               {otpEmpty && (
                 <p className={cx('error-messsage')}>
                   <span className={cx('bi bi-exclamation-circle-fill', 'exclamation')}></span> OTP can't be blank
@@ -114,6 +108,20 @@ function Verify() {
                 </Link>
               </p>
             </form>
+          </div>
+
+          <div className={cx('guest-login-wrapper')}>
+            <hr />
+            <h2 className={cx('title')}>CONTINUE AS A GUEST</h2>
+            <button
+              type="button"
+              className={cx('button-guest')}
+              onClick={() => {
+                navigate('/');
+              }}
+            >
+              Continue
+            </button>
           </div>
         </div>
       </div>

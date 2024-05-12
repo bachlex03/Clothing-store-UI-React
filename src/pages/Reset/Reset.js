@@ -14,7 +14,7 @@ function Reset() {
   const [errors, setErrors] = useState([]);
   const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/;
   const urlParams = new URLSearchParams(window.location.search);
-  const [jwtMailToken, setJwtMailToken] = useState(urlParams.get('q'));
+  const [jwtMailToken] = useState(urlParams.get('q'));
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -60,45 +60,37 @@ function Reset() {
   };
 
   return (
-    <div className={cx('container-fluid px-0')}>
-      <div className={cx('container-fluid', 'topbar')}>
-        <h1 className={cx('title', 'text-center')}>Reset account password</h1>
+    <div className={cx('container-fl')}>
+      <div className={cx('topbar')}>
+        <h1 className={cx('title')}>Reset account password</h1>
       </div>
-      <div className={cx('container-fluid px-4')}>
+      <div className={cx('container-login')}>
         <div className={cx('content-login')}>
-          <div className={cx('login-wrapper', 'd-flex flex-column justify-content-center')}>
+          <div className={cx('login-wrapper')}>
             {errors.length > 0 && <LoginNoti message="Please adjust the following:" errors={errors} />}
-            <p className={cx('mb-5 text-center', 'p-sub-title')}>Enter new password for</p>
+            <p className={cx('p-sub-title')}>Enter new password for</p>
             <form onSubmit={handleSubmit}>
               {/* input fiels */}
-              <div className={cx('form-floating mb-5', 'form-floating-ovr')}>
-                <input
-                  type="password"
-                  className={cx('form-control rounded-0', 'form-control-ovr')}
-                  id="floatingInput1"
-                  placeholder=""
-                  value={newpassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
-                />
-                <label htmlFor="floatingInput1" className={cx('label-ovr')}>
-                  New Password
-                </label>
-              </div>
-              <div className={cx('form-floating mb-5', 'form-floating-ovr')}>
-                <input
-                  type="password"
-                  className={cx('form-control rounded-0', 'form-control-ovr')}
-                  id="floatingInput2"
-                  placeholder=""
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                />
-                <label htmlFor="floatingInput2" className={cx('label-ovr')}>
-                  Confirm Password
-                </label>
-              </div>
-              <div className={cx('text-center')}>
-                <button type="submit" className={cx('btn btn-dark rounded-0', 'button')}>
+              <input
+                type="password"
+                className={cx('form-control-ovr')}
+                id="floatingInput1"
+                placeholder="New password"
+                value={newpassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+              />
+
+              <input
+                type="password"
+                className={cx('form-control-ovr')}
+                id="floatingInput2"
+                placeholder="Confirm password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+              />
+
+              <div className={cx('button-wrapper')}>
+                <button type="submit" className={cx('button')}>
                   Reset Password
                 </button>
               </div>

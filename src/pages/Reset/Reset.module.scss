@@ -3,7 +3,17 @@ $text-color: #999999;
 $link-color: #222222;
 $background-hover-color: #91704f;
 
+.container-fl {
+  padding: 0;
+  margin: 0;
+  background-color: #ffffff;
+  width: 100%;
+}
+
 .topbar {
+  background: url('../../assets/images/bg.webp') no-repeat;
+  background-size: cover;
+  background-position: top;
   background-color: rgba(0, 0, 0, 0.54) !important;
   margin-bottom: 50px;
   padding-top: 50px;
@@ -14,9 +24,16 @@ $background-hover-color: #91704f;
   color: #fff;
   font-size: 20px;
   line-height: 26px;
-  font-weight: 400;
+  font-weight: 500;
   letter-spacing: 2px;
   margin-bottom: 0px;
+  text-align: center;
+}
+
+.container-login {
+  padding: 0px 15px;
+  margin: 0;
+  width: 100%;
 }
 
 .content-login {
@@ -28,11 +45,20 @@ $background-hover-color: #91704f;
   color: $text-color;
   font-size: 14px;
   min-height: 55vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .p-sub-title {
   font-size: 16px;
   font-weight: 400;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.button-wrapper{
+  text-align: center;
 }
 
 .content-login .button {
@@ -40,35 +66,33 @@ $background-hover-color: #91704f;
   padding: 0 25px !important;
   font-size: 14px !important;
   margin-bottom: 20px;
-  $background-hover-color: #91704f;
+  border: none;
+  background-color: #000;
+  border-radius: 0;
+  color: #fff;
+  transition: box-shadow 0.3s ease-in-out;
+  &:hover {
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  }
 }
 
 //input
 .form-control-ovr {
+  width: 100%;
+  border: 1px solid #dddddd;
+  border-radius: 0;
+  margin-bottom: 30px;
   &:focus {
-    box-shadow: none !important;
-    border-color: rgb(153, 153, 153) !important;
+    border-color: #999999;
+    outline: none;
   }
-  height: 4.5rem !important;
-  font-size: 14px !important;
-  padding-left: 14px !important;
-  padding-right: 14px !important;
-  padding-bottom: 0 !important;
-  color: $text-color !important;
-}
-
-.password {
-  font-size: 16px !important;
-  line-height: 10px !important;
-}
-
-//lable
-.form-floating-ovr > .label-ovr {
-  padding-top: 10px !important;
-  padding-bottom: 14px !important;
-  padding-left: 15px !important;
-  padding-right: 15px !important;
-  font-size: 13px !important;
+  height: 4.5rem;
+  font-size: 14px;
+  padding-left: 14px;
+  padding-right: 14px;
+  padding-bottom: 0;
+  color: $text-color;
 }
 
 @media (max-width: 641px) {

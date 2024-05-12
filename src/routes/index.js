@@ -1,5 +1,5 @@
 import { Default, HeaderOnly, Admin, CustomerLayout } from '~/layouts';
-import { Shop, Home, Login, Register, Wishlist, Recover, Reset, Verify } from '~/pages';
+import { Shop, Home, Login, Wishlist, Recover, Reset, Verify } from '~/pages';
 import { Address, Detail, Order } from '~/pages/Customer';
 import { Dashboard } from '~/pages/Admin';
 

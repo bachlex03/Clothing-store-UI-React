@@ -3,7 +3,17 @@ $text-color: #999999;
 $link-color: #222222;
 $background-hover-color: #91704f;
 
+.container-fl {
+  padding: 0;
+  margin: 0;
+  background-color: #ffffff;
+  width: 100%;
+}
+
 .topbar {
+  background: url('../../assets/images/bg.webp') no-repeat;
+  background-size: cover;
+  background-position: top;
   background-color: rgba(0, 0, 0, 0.54) !important;
   margin-bottom: 50px;
   padding-top: 50px;
@@ -14,9 +24,16 @@ $background-hover-color: #91704f;
   color: #fff;
   font-size: 20px;
   line-height: 26px;
-  font-weight: 400;
+  font-weight: 500;
   letter-spacing: 2px;
   margin-bottom: 0px;
+  text-align: center;
+}
+
+.container-login {
+  padding: 0px 15px;
+  margin: 0;
+  width: 100%;
 }
 
 .content-login {
@@ -34,8 +51,12 @@ $background-hover-color: #91704f;
   line-height: 1.4;
   font-weight: 400;
   letter-spacing: 2px;
-  font-size: 23px;
-  margin-bottom: 10px;
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+.sub-title2 {
+  margin-bottom: 20px;
 }
 
 .content-login .button {
@@ -43,14 +64,18 @@ $background-hover-color: #91704f;
   padding: 0 25px !important;
   font-size: 14px !important;
   margin-bottom: 20px;
-  $background-hover-color: #91704f;
+  border: 1px solid #000;
+  background-color: #fff;
+  border-radius: 0;
 }
 
 .content-login .login-wrapper .button:hover {
   background-color: $background-hover-color;
-  border: $background-hover-color;
+  border-color: $background-hover-color;
   border: solid;
   border-width: 0.727px;
+  color: #fff;
+  transition: 0.1s ease-in-out;
 }
 
 .p-text {
@@ -69,30 +94,67 @@ $background-hover-color: #91704f;
 
 //input
 .form-control-ovr {
+  width: 100%;
+  border: 1px solid #dddddd;
+  border-radius: 0;
+  margin-bottom: 20px;
   &:focus {
-    box-shadow: none !important;
-    border-color: rgb(153, 153, 153) !important;
+    border-color: #999999;
+    outline: none;
   }
-  height: 4.5rem !important;
-  font-size: 14px !important;
-  padding-left: 14px !important;
-  padding-right: 14px !important;
-  padding-bottom: 0 !important;
-  color: $text-color !important;
+  height: 4.5rem;
+  font-size: 14px;
+  padding-left: 14px;
+  padding-right: 14px;
+  padding-bottom: 0;
+  color: $text-color;
 }
 
-.password {
-  font-size: 16px !important;
-  line-height: 10px !important;
+.error-messsage {
+  font-size: 12px;
+  margin-top: -10px;
+  margin-bottom: 10px;
 }
 
-//lable
-.form-floating-ovr > .label-ovr {
-  padding-top: 10px !important;
-  padding-bottom: 14px !important;
-  padding-left: 15px !important;
-  padding-right: 15px !important;
-  font-size: 13px !important;
+.exclamation {
+  color: #eb001b;
+  font-size: 12px;
+}
+
+.login-guest-wrapper {
+  color: $heading-color;
+  text-transform: uppercase;
+  font-weight: 300;
+  letter-spacing: 2px;
+  margin: 0 0 20px;
+}
+
+.guest-login-wrapper .title {
+  color: $heading-color;
+  line-height: 1.4;
+  font-weight: 400;
+  letter-spacing: 2px;
+  margin-bottom: 20px;
+  font-size: 20px;
+}
+
+.guest-login-wrapper hr {
+  margin: 60px 0 50px;
+}
+
+.button-guest {
+  padding: 11px 15px;
+  font-size: 14px;
+  margin-bottom: 20px;
+  border: none;
+  background-color: #000;
+  border-radius: 0;
+  color: #fff;
+  transition: box-shadow 0.3s ease-in-out;
+  &:hover {
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  }
 }
 
 @media (max-width: 641px) {
@@ -103,14 +165,4 @@ $background-hover-color: #91704f;
   .guest-login-wrapper hr {
     margin: 30px 0 30px;
   }
-}
-
-.error-messsage {
-  font-size: 12px;
-  margin-top: -10px;
-}
-
-.exclamation {
-  color: #eb001b;
-  font-size: 12px;
 }

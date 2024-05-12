@@ -55,33 +55,28 @@ function Recover() {
   };
 
   return (
-    <div className={cx('container-fluid px-0')}>
-      <div className={cx('container-fluid', 'topbar')}>
-        <h1 className={cx('title', 'text-center')}>Reset account password</h1>
+    <div className={cx('container-fl')}>
+      <div className={cx('topbar')}>
+        <h1 className={cx('title')}>Reset account password</h1>
       </div>
-      <div className={cx('container-fluid px-4')}>
+      <div className={cx('container-login')}>
         <div className={cx('content-login')}>
           <div className={cx('login-wrapper')}>
             <h2 className={cx('sub-title')}>RESET YOUR PASSWORD</h2>
-            <p className={cx('mb-4')}>
+            <p className={cx('sub-title2')}>
               Lost your password? Please enter your email address. You will receive a link to create a new password via
               email.
             </p>
             <form onSubmit={handleSubmit}>
               {/* input fiels */}
-              <div className={cx('form-floating mb-4', 'form-floating-ovr')}>
-                <input
-                  type="text"
-                  className={cx('form-control rounded-0', 'form-control-ovr')}
-                  id="floatingInput"
-                  placeholder=""
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-                <label htmlFor="floatingInput" className={cx('label-ovr')}>
-                  Email address
-                </label>
-              </div>
+              <input
+                type="text"
+                className={cx('form-control-ovr')}
+                id="floatingInput"
+                placeholder="Email address"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
               {emailEmpty && (
                 <p className={cx('error-messsage')}>
                   <span className={cx('bi bi-exclamation-circle-fill', 'exclamation')}></span> Email can't be blank
@@ -93,7 +88,7 @@ function Recover() {
                   format
                 </p>
               )}
-              <button type="submit" className={cx('btn btn-outline-dark rounded-0', 'button')}>
+              <button type="submit" className={cx('button')}>
                 Reset password
               </button>
             </form>
@@ -102,6 +97,20 @@ function Recover() {
                 Cancel
               </Link>
             </p>
+          </div>
+
+          <div className={cx('guest-login-wrapper')}>
+            <hr />
+            <h2 className={cx('title')}>CONTINUE AS A GUEST</h2>
+            <button
+              type="button"
+              className={cx('button-guest')}
+              onClick={() => {
+                navigate('/');
+              }}
+            >
+              Continue
+            </button>
           </div>
         </div>
       </div>
