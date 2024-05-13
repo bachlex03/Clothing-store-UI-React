@@ -1,4 +1,4 @@
-import { Default, HeaderOnly, Admin } from '~/layouts';
+import { Default, HeaderOnly, Admin, Shop as ShopLayout } from '~/layouts';
 import { Shop, Home } from '~/pages';
 import { Products, Invoices } from '~/pages/Admin';
 
@@ -16,7 +16,7 @@ const publicRoutes = [
   {
     path: '/shop',
     component: Shop,
-    layout: Default,
+    layout: ShopLayout,
   },
   {
     path: '/admin/products',

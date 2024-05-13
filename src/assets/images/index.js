@@ -7,6 +7,12 @@ const images = {
   headerCategory_3: require('./header-category-3.webp'),
   headerCategory_4: require('./header-category-4.webp'),
   demoImageCart: require('./demo-image-cart.webp'),
+  demoShopImg: require('./demo-shop-img.webp'),
+  card1: require('./Visa-Card.webp'),
+  card2: require('./Master-Card.webp'),
+  card3: require('./Dinner-Club.webp'),
+  card4: require('./American-Express.webp'),
+  card5: require('./Discover.webp'),
 };
 
 export default images;

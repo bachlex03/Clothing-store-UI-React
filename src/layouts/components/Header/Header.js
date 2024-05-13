@@ -224,9 +224,9 @@ function Header() {
               onMouseMove={() => {
                 handleOpen(cartRef.current);
               }}
-              // onMouseLeave={() => {
-              //   handleClose(cartRef.current);
-              // }}
+              onMouseLeave={() => {
+                handleClose(cartRef.current);
+              }}
             >
               <Link to="#">
                 <i className={cx('icon-header', 'cart-icon', 'ti-shopping-cart')} light={light}></i>
