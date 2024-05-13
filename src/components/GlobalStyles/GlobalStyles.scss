@@ -1,7 +1,9 @@
 @import url('normalize.css');
 @import './gridLayout.css';
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 @import '../../assets/vendors/themify-icons/themify-icons.css';
+@import './butlerFont.css';
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Yantramanav:wght@100;300;400;500;700;900&display=swap');
 
 * {
   box-sizing: border-box;
@@ -10,18 +12,33 @@
 }
 
 :root {
+  --font-butler: 'Butler', sans-serif;
+  --font-poppins: 'Poppins', sans-serif;
+  --font-yantramanav: 'Yantramanav', sans-serif;
+
   --admin-font-color: #92afd3;
   --admin-font-color-2: #e2eaf3;
   --admin-border-color: #233a57;
   --admin-font-color-hover: #3b82f6;
   --admin-background-color: #3c82f6;
   --admin-bg: #142337;
-  --admin-bg2: #5a9aee;
+  --admin-bg2: #0f1824;
+
+  --sidebar-admin-width: 259px;
+  --header-admin-height: 70px;
+
+  --header-height: 120px;
+
+  --rounded-full: 9999px;
+
+  --border-color-outline: #00d1b7;
 }
 
 html {
   font-size: 62.5%;
   scroll-behavior: smooth;
+  overflow: auto;
+  background-color: #333;
 }
 
 body {
@@ -30,8 +47,38 @@ body {
   line-height: 1.5;
 }
 
-// common
-._text-center {
+// Resets
+a,
+button,
+input,
+[tab-index] {
+  text-decoration: none;
+  border: none;
+  outline: none;
+  display: inline-block;
+  color: #000;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+ul,
+ol {
+  padding: 0;
+  list-style-type: none;
+}
+
+// Common
+.section-1200 {
+  min-width: 1200px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.text-center {
   text-align: center !important;
 }
 
@@ -106,6 +153,14 @@ body {
 }
 
 // margin
+.mt-4px {
+  margin-top: 4px;
+}
+
+.mt-8px {
+  margin-top: 8px !important;
+}
+
 .mt-12px {
   margin-top: 12px;
 }
@@ -114,8 +169,20 @@ body {
   margin-top: 16px;
 }
 
+.mt-20px {
+  margin-top: 20px !important;
+}
+
 .mr-8px {
   margin-right: 8px;
+}
+
+.ml-8px {
+  margin-left: 8px;
+}
+
+.ml-4px {
+  margin-left: 4px;
 }
 
 .mb-4px {
@@ -130,4 +197,36 @@ body {
   margin-bottom: 16px;
 }
 
-// Admin hover
+.mr-12px {
+  margin-right: 12px;
+}
+
+// flex
+.flex {
+  display: flex;
+}
+
+.flex-1 {
+  flex: 1;
+}
+
+.align-center {
+  align-items: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.baseline {
+  align-items: baseline;
+}
+
+// position
+.relative {
+  position: relative;
+}
+
+.w100 {
+  width: 100%;
+}

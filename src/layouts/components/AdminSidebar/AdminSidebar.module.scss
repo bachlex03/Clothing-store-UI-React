@@ -1,3 +1,10 @@
 .menu {
+  height: 100vh;
+  min-width: var(--sidebar-admin-width);
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 99;
   border-right: 0.5px solid rgba($color: #92afd3, $alpha: 0.2);
 }

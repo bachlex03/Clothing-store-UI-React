@@ -12,38 +12,11 @@
   border-top: 0.5px solid rgba($color: #333, $alpha: 0.5);
 }
 
-.search {
-  position: relative;
-}
-
-.search-icon {
-  color: var(--admin-font-color);
-  position: absolute;
-  left: 8px;
-  top: 8px;
-  font-size: 1.4rem;
-}
-
-.search-input {
-  height: 38px;
-  width: 250px;
-  background-color: inherit;
-  color: #fff;
-  opacity: 0.8;
-  font-size: 1.2rem;
-  outline: none;
-  border: 1px solid var(--admin-border-color);
-  border-radius: 4px;
-
-  ::-ms-input-placeholder {
-    color: #64758b;
-  }
-}
-
 .heading-text {
   color: #fff;
-  font-size: 2rem;
+  font-size: 1.6rem;
   padding: 16px 0;
+  font-weight: 700;
 }
 
 .table-container {
@@ -57,9 +30,14 @@
 
 // table
 
+.table-body,
+.table-head {
+  display: block;
+}
+
 .product-table {
   width: 100%;
-  margin-top: 20px;
+  margin-top: 12px;
 
   thead {
     tr {
@@ -67,6 +45,8 @@
       font-size: 1.4rem;
       background-color: #1c2e45;
       height: 42px;
+      display: flex;
+      align-items: center;
 
       th {
         padding: 10px 14px;
@@ -74,20 +54,38 @@
         text-align: left;
       }
 
+      th[class*='code'] {
+        min-width: 18%;
+      }
+
+      th[class*='name'] {
+        min-width: 26%;
+        flex-grow: 1;
+      }
+
+      th[class*='category'] {
+        min-width: 11%;
+        text-align: center;
+      }
+
       th[class*='price'] {
         text-align: center !important;
+        min-width: 11%;
       }
 
       th[class*='stock'] {
         text-align: center !important;
+        min-width: 8%;
       }
 
       th[class*='status'] {
         text-align: center !important;
+        min-width: 12%;
       }
 
       th[class*='action'] {
         text-align: center !important;
+        min-width: 11%;
       }
     }
   }
@@ -97,9 +95,15 @@
   }
 }
 
-tbody {
+.table-body {
+  max-height: 416px;
+  overflow-y: auto;
+
   tr {
     height: 52px;
+    display: flex;
+    align-items: center;
+
     td {
       padding: 10px 14px;
       color: #c8d7e9;
@@ -107,14 +111,35 @@ tbody {
 
     td[class*='code'] {
       color: #3b82f6;
+      font-weight: 500;
+      min-width: 18%;
+    }
+
+    td[class*='name'] {
+      color: #fff;
+      font-weight: 600;
+      font-size: 1.4rem;
+      min-width: 26%;
+      flex-grow: 1;
+    }
+
+    td[class*='category'] {
+      color: #fff;
+      font-weight: 600;
+      font-size: 1.4rem;
+      min-width: 11%;
+      display: flex;
+      justify-content: center;
     }
 
     td[class*='price'] {
       text-align: center !important;
+      min-width: 11%;
     }
 
     td[class*='stock'] {
       text-align: center !important;
+      min-width: 8%;
     }
 
     td[class*='status'] {
@@ -122,18 +147,16 @@ tbody {
       display: flex;
       align-items: center;
       justify-content: center;
-
-      span {
-        transform: translateY(5px);
-      }
+      min-width: 12%;
     }
 
     td[class*='action'] {
       text-align: center !important;
+      min-width: 11%;
     }
 
     &:nth-child(even) {
-      background-color: #111827;
+      background-color: rgba($color: #040508, $alpha: 0.18);
     }
 
     &:hover {
@@ -149,9 +172,11 @@ tbody {
   user-select: none;
   cursor: pointer;
   font-size: 1.4rem;
+  opacity: 0.6;
 
   &:hover {
     background-color: #233a57;
+    opacity: 1;
   }
 }
 
@@ -226,4 +251,65 @@ tbody {
 .paging.active {
   background-color: #3c82f6;
   color: #fff;
+}
+
+// refresh icon
+.refresh-container {
+  padding: 8px;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 4px;
+  margin-top: 8px;
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: #5bbcff;
+  cursor: pointer;
+  background-color: rgba($color: #5bbcff, $alpha: 0);
+  transition: all 0.3s linear;
+
+  &:hover {
+    background-color: rgba($color: #5bbcff, $alpha: 0.1);
+  }
+}
+
+.repeat-icon {
+  padding: 3px 16px;
+  opacity: 0.5;
+  transition: all 0.3s linear;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+// loading...
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+  background-color: rgba($color: #000000, $alpha: 0.5);
+}
+
+.icon-loading {
+  font-size: 40px;
+  color: #fff;
+  animation: fadeInOut 1.5s infinite;
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.5;
+  }
 }

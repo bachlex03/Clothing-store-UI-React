@@ -1,7 +1,7 @@
 import { useLayoutEffect } from 'react';
 import { AdminHeader, AdminFooter, AdminSidebar } from '../components';
 
-import style from './Admin.scss';
+import style from './Admin.module.scss';
 import classNames from 'classnames/bind';
 
 const cx = classNames.bind(style);
@@ -22,14 +22,12 @@ function Admin({ children }) {
   }, []);
 
   return (
-    <div>
-      <div className="flex">
-        <AdminSidebar />
+    <div className={cx('screen')}>
+      <AdminSidebar />
 
-        <div className="w-screen">
-          <AdminHeader />
-          <div className="">{children}</div>
-        </div>
+      <div className={cx('container')}>
+        <AdminHeader />
+        <div className={cx('content')}>{children}</div>
       </div>
     </div>
   );

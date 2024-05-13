@@ -1,9 +1,10 @@
 import style from './Detail.module.scss';
 import classNames from 'classnames/bind';
-import * as accountService from '~/services/api/accountService';
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
+import { Input, Button } from '~/components';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import * as accountService from '~/services/api/accountService';
 
 const cx = classNames.bind(style);
 
@@ -75,108 +76,90 @@ function Detail() {
 
   return (
     <div className={cx('wrapper')}>
+      <h3 className={cx('heading')}>Billing Addresses</h3>
       <form onSubmit={handleSubmit}>
-        <h3 className={cx('heading')}>Account Infor</h3>
-        <div className="d-flex justify-content-between">
-          <div className={cx('w-50', 'px-3')}>
-            <label for="basic-url" className={cx('form-label', 'mb-0', 'label-ovr')}>
-              First name <span style={{ color: 'red' }}>*</span>
-            </label>
-            <input
-              type="text"
-              className={cx('form-control', 'my-3', 'rounded-5', 'form-control-ovr')}
-              id="basic-url"
+        <div className="flex">
+          <div className="w100 px-10px">
+            <Input
+              label="First name"
               placeholder="First name..."
+              isRequired
+              required
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
             />
           </div>
-          <div className={cx('w-50', 'px-3')}>
-            <label for="basic-url" className={cx('form-label', 'mb-0', 'label-ovr')}>
-              Last name <span style={{ color: 'red' }}>*</span>
-            </label>
-            <input
-              type="text"
-              className={cx('form-control', 'my-3', 'rounded-5', 'form-control-ovr')}
-              id="basic-url"
+          <div className="w100 px-10px">
+            <Input
+              label="Last name"
               placeholder="Last name..."
+              isRequired
+              required
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
             />
           </div>
         </div>
 
-        <div className={cx('w-100', 'px-3', 'mt-4')}>
-          <label for="basic-url" className={cx('form-label', 'mb-0', 'label-ovr')}>
-            Phone number
-          </label>
-          <input
+        <div className="w100 px-10px mt-16px">
+          <Input
+            label="Phone number"
+            placeholder="example..."
             type="text"
-            className={cx('form-control', 'my-3', 'rounded-5', 'form-control-ovr')}
-            id="basic-url"
-            placeholder="Phone number..."
+            note="Enter your phone number. This will be used for account recovery and verification purposes only and will not be publicly displayed."
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
           />
         </div>
 
-        <div className={cx('w-100', 'px-3', 'mt-4')}>
-          <label for="basic-url" className={cx('form-label', 'mb-0', 'label-ovr')}>
-            Email address
-          </label>
-          <input
-            type="text"
-            className={cx('form-control', 'my-3', 'rounded-5', 'form-control-ovr')}
-            id="basic-url"
+        <div className="w100 px-10px mt-16px">
+          <Input
+            label="Email address"
             placeholder="email@gmail.com"
+            type="email"
+            isRequired
+            required
             disabled
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
           />
         </div>
 
-        <div className={cx('wrapper', 'password', 'mt-5 mb-5')}>
+        <div className={cx('wrapper', 'password', 'mt-16px')}>
           <h3 className={cx('heading')}>Change password</h3>
 
-          <div className={cx('w-100', 'px-3', 'mt-4')}>
-            <label for="basic-url" className={cx('form-label', 'mb-0', 'label-ovr')}>
-              Current password <span style={{ color: 'red' }}>*</span>
-            </label>
-            <input
-              type="password"
-              className={cx('form-control', 'my-3', 'rounded-5', 'form-control-ovr')}
-              id="basic-url"
+          <div className="w100 px-10px mt-16px">
+            <Input
+              label="Current password"
               placeholder="Current password..."
+              type="text"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
           </div>
 
-          <div className={cx('w-100', 'px-3', 'mt-4')}>
-            <label for="basic-url" className={cx('form-label', 'mb-0', 'label-ovr')}>
-              New password <span style={{ color: 'red' }}>*</span>
-            </label>
-            <input
-              type="password"
-              className={cx('form-control', 'my-3', 'rounded-5', 'form-control-ovr')}
-              id="basic-url"
+          <div className="w100 px-10px mt-16px">
+            <Input
+              label="New password"
               placeholder="New password..."
+              type="text"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
             />
           </div>
 
-          <div className={cx('w-100', 'px-3', 'mt-4')}>
-            <label for="basic-url" className={cx('form-label', 'mb-0', 'label-ovr')}>
-              Confirm new password <span style={{ color: 'red' }}>*</span>
-            </label>
-            <input
-              type="password"
-              className={cx('form-control', 'my-3', 'rounded-5', 'form-control-ovr')}
-              id="basic-url"
+          <div className="w100 px-10px mt-16px">
+            <Input
+              label="Confirm new password"
               placeholder="Confirm new password..."
+              type="text"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
             />
           </div>
         </div>
 
-        <div className={cx('mt-5 d-flex flex-row-reverse')}>
-          <button type="submit" className={cx('btn btn-dark rounded-5 mb-0 text-uppercase', 'button')}>
+        <div className={cx('btn-wrapper')}>
+          <button type="submit" className={cx('button')}>
             Save Changes
           </button>
         </div>

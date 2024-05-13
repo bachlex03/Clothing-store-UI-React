@@ -1,0 +1,27 @@
+.search {
+  position: relative;
+}
+
+.search-icon {
+  color: var(--admin-font-color);
+  position: absolute;
+  left: 8px;
+  top: 8px;
+  font-size: 1.4rem;
+}
+
+.search-input {
+  height: 38px;
+  width: 100%;
+  background-color: inherit;
+  color: #fff;
+  opacity: 0.8;
+  font-size: 1.2rem;
+  outline: none;
+  border: 1px solid var(--admin-border-color);
+  border-radius: 4px;
+
+  ::-ms-input-placeholder {
+    color: #64758b;
+  }
+}

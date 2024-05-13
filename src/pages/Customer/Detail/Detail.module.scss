@@ -1,4 +1,4 @@
-@import '../butlerFont.css';
+@import '../../../components/GlobalStyles/butlerFont.css';
 
 .wrapper {
   padding-left: 15px;
@@ -6,7 +6,7 @@
 }
 
 .heading {
-  font-size: 2.6rem;
+  font-size: 2.4rem;
   font-family: 'Butler', sans-serif;
   margin: 20px 0;
   font-weight: 400;
@@ -18,31 +18,27 @@
   border: none;
 }
 
-.form-control-ovr {
-  &:focus {
-    box-shadow: none !important;
-    border-color: rgb(153, 153, 153) !important;
-  }
-  height: 43px !important;
-  font-size: 1.4rem !important;
-  padding-left: 20px !important;
-  padding-right: 20px !important;
-}
-
-.label-ovr {
-  font-size: 1.4rem !important;
+.btn-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  margin-top: 20px;
 }
 
 .button {
   display: block;
-  font-weight: 600 !important;
-  padding: 10px 30px !important;
-  font-size: 1.6rem !important;
-  background-color: #000 !important;
-  border: none !important;
+  color: #fff;
+  font-weight: 600;
+  padding: 10px 30px;
+  font-size: 1.6rem;
+  background-color: #000;
+  border: none;
   margin-bottom: 30px;
+  border-radius: 999px;
+  text-transform: uppercase;
   &:hover {
-    background-color: rgb(153, 153, 153) !important;
-    border: none !important;
+    cursor: pointer;
+    background-color: rgb(153, 153, 153);
+    border: none;
   }
 }

@@ -1,5 +1,9 @@
 .header-container {
-  height: 70px;
+  min-height: var(--header-admin-height);
+  position: sticky;
+  top: 0;
+  max-width: calc(100vw - var(--sidebar-admin-width));
+  z-index: 99;
 }
 
 .arrow-left-i {

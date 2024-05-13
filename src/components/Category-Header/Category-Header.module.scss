@@ -1,0 +1,16 @@
+.container {
+  width: 100%;
+  min-height: 400px;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: -2px 2px 25px -8px #00000040;
+}
+
+.new-collection {
+  font-size: 1.6rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-family: var(--font-poppins);
+  font-style: italic;
+}

@@ -1,0 +1,72 @@
+.label {
+  font-size: 1.4rem;
+  position: relative;
+}
+
+.isRequired.label {
+  &::after {
+    position: absolute;
+    right: -15px;
+    top: 0;
+    content: '*';
+    display: block;
+    color: red;
+  }
+}
+
+.input {
+  color: #333;
+  font-size: 1.4rem;
+  background-color: transparent;
+  background-color: #fff;
+  border: 1px solid #e1e1e1;
+  border-radius: 2rem;
+  padding: 0 20px;
+  margin: 10px 0;
+  border-radius: var(--rounded-full);
+  font-family: var(--ff-poppins);
+  width: 100%;
+  line-height: 43px;
+  transition: all 0.3s;
+
+  &:focus {
+    border-color: var(--outline);
+  }
+}
+
+.selection {
+  display: block;
+  height: 45px;
+  padding: 10px 15px;
+  color: #888686;
+  background-color: transparent;
+  border: 1px solid #e1e1e1;
+  border-radius: var(--rounded-full);
+  font-family: var(--ff-poppins);
+  width: 100%;
+  margin-top: 10px;
+}
+
+.text-area {
+  display: block;
+  padding: 10px 15px;
+  color: #888686;
+  background-color: transparent;
+  border: 1px solid #e1e1e1;
+  border-radius: 8px;
+  width: 100%;
+  margin-top: 10px;
+  min-height: 190px;
+}
+
+.note {
+  font-style: italic;
+  font-size: 1.3rem;
+}
+
+.notEditable {
+  color: #888686;
+  &:focus {
+    border: 1px solid #e1e1e1;
+  }
+}

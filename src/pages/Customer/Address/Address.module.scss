@@ -1,4 +1,4 @@
-@import '../butlerFont.css';
+@import '../../../components/GlobalStyles/butlerFont.css';
 
 .wrapper {
   padding-left: 15px;
@@ -6,55 +6,51 @@
 }
 
 .heading {
-  font-size: 2.6rem;
+  font-size: 2.4rem;
   font-family: 'Butler', sans-serif;
   margin: 20px 0;
   font-weight: 400;
 }
 
-.password {
-  padding: 15px;
-  background-color: #f8f9fa;
-  border: none;
+.label {
+  font-size: 1.4rem;
+  position: relative;
+}
+.selection {
+  display: block;
+  height: 45px;
+  padding: 10px 15px;
+  color: #888686;
+  background-color: transparent;
+  border: 1px solid #e1e1e1;
+  border-radius: var(--rounded-full);
+  font-family: var(--ff-poppins);
+  width: 100%;
+  margin-top: 10px;
+  font-size: 1.4rem;
 }
 
-.form-control-ovr {
-  &:focus {
-    box-shadow: none !important;
-    border-color: rgb(153, 153, 153) !important;
-  }
-  height: 43px !important;
-  font-size: 1.4rem !important;
-  padding-left: 20px !important;
-  padding-right: 20px !important;
-}
-
-.label-ovr {
-  font-size: 1.4rem !important;
+.btn-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  margin-top: 20px;
 }
 
 .button {
   display: block;
-  font-weight: 600 !important;
-  padding: 10px 30px !important;
-  font-size: 1.6rem !important;
-  background-color: #000 !important;
-  border: none !important;
+  color: #fff;
+  font-weight: 600;
+  padding: 10px 30px;
+  font-size: 1.6rem;
+  background-color: #000;
+  border: none;
   margin-bottom: 30px;
+  border-radius: 999px;
+  text-transform: uppercase;
   &:hover {
-    background-color: rgb(153, 153, 153) !important;
-    border: none !important;
+    cursor: pointer;
+    background-color: rgb(153, 153, 153);
+    border: none;
   }
-}
-
-.form-select-ovr {
-  &:focus {
-    box-shadow: none !important;
-    border-color: rgb(153, 153, 153) !important;
-  }
-  color: #ccc !important;
-  height: 43px !important;
-  font-size: 1.4rem !important;
-  padding-left: 20px !important;
-  padding-right: 20px !important;
 }

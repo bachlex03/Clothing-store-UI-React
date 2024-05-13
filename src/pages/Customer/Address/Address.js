@@ -1,9 +1,9 @@
 import style from './Address.module.scss';
 import classNames from 'classnames/bind';
-import { useState, useEffect } from 'react';
+import { Input, Button } from '~/components';
+import { useEffect, useState } from 'react';
+import { toast, ToastContainer } from 'react-toastify';
 import * as accountService from '~/services/api/accountService';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 const cx = classNames.bind(style);
 
@@ -21,18 +21,6 @@ function Address() {
   const [userCountry, setUserCountry] = useState('');
   const [userCity, setUserCity] = useState('');
   const [userDistrict, setUserDistrict] = useState('');
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const data = await accountService.getCities();
-      if (data) {
-        console.log(data.data);
-        setCities(data.data);
-      }
-    };
-
-    fetchData();
-  }, []);
 
   useEffect(() => {
     const fetchAccount = async () => {
@@ -53,6 +41,30 @@ function Address() {
   }, []);
 
   useEffect(() => {
+    const fetchData = async () => {
+      const data = await accountService.getCities();
+      if (data) {
+        console.log(data.data);
+        setCities(data.data);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await accountService.getDistricts(city?.id);
+      if (data) {
+        console.log(data.data);
+        setDistricts(data.data);
+      }
+    };
+
+    fetchData();
+  }, [city]);
+
+  useEffect(() => {
     const fetchAddresses = async () => {
       try {
         const response = await accountService.getAddresses();
@@ -69,25 +81,6 @@ function Address() {
 
     fetchAddresses();
   }, []);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const data = await accountService.getDistricts(city?.id);
-      if (data) {
-        console.log(data.data);
-        setDistricts(data.data);
-      }
-    };
-
-    fetchData();
-  }, [city]);
-
-  // const inputStreet = (e) => {
-  //   let street = e.target.value;
-  //   let streetLines = street.trim().concat(', ', district.name);
-  //   setStreet(streetLines);
-  //   console.log(streetLines);
-  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -136,45 +129,40 @@ function Address() {
 
   return (
     <div className={cx('wrapper')}>
-      <h3 className={cx('heading')}>Billing Address</h3>
+      <h3 className={cx('heading')}>Billing Addresses</h3>
       <form onSubmit={handleSubmit}>
-        <div className="d-flex justify-content-between">
-          <div className={cx('w-50', 'px-3')}>
-            <label for="basic-url" className={cx('form-label', 'mb-0', 'label-ovr')}>
-              First name
-            </label>
-            <input
-              type="text"
-              className={cx('form-control', 'my-3', 'rounded-5', 'form-control-ovr')}
-              id="basic-url"
+        <div className="flex">
+          <div className="w100 px-10px">
+            <Input
+              name="firstName"
+              label="First name"
               placeholder="First name..."
-              disabled
+              isRequired
+              disable
               value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
+              notEditable
             />
           </div>
-          <div className={cx('w-50', 'px-3')}>
-            <label for="basic-url" className={cx('form-label', 'mb-0', 'label-ovr')}>
-              Last name
-            </label>
-            <input
-              type="text"
-              className={cx('form-control', 'my-3', 'rounded-5', 'form-control-ovr')}
-              id="basic-url"
+
+          <div className="w100 px-10px">
+            <Input
+              name="lastName"
+              label="Last name"
               placeholder="Last name..."
-              disabled
+              isRequired
+              disable
               value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
+              notEditable
             />
           </div>
         </div>
 
-        <div className={cx('w-100', 'px-3', 'mt-4')}>
-          <label className={cx('form-label', 'mb-0', 'label-ovr')}>
+        <div className="w100 px-10px mt-16px">
+          <label className={cx('lable')}>
             Country <span style={{ color: 'red' }}>*</span>
           </label>
           <select
-            className={cx('form-select', 'form-select-ovr', 'rounded-5', 'my-3')}
+            className={cx('selection')}
             aria-label="Default select example"
             onChange={(e) => setCountry(e.target.value)}
           >
@@ -183,12 +171,12 @@ function Address() {
           </select>
         </div>
 
-        <div className={cx('w-100', 'px-3', 'mt-4')}>
-          <label className={cx('form-label', 'mb-0', 'label-ovr')}>
+        <div className="w100 px-10px mt-16px">
+          <label className={cx('lable')}>
             Province / City <span style={{ color: 'red' }}>*</span>
           </label>
           <select
-            className={cx('form-select', 'form-select-ovr', 'rounded-5', 'my-3')}
+            className={cx('selection')}
             aria-label="Default select example"
             onChange={(e) => {
               const selectedCity = cities.find((city) => city.name === e.target.value);
@@ -202,12 +190,12 @@ function Address() {
           </select>
         </div>
 
-        <div className={cx('w-100', 'px-3', 'mt-4')}>
-          <label className={cx('form-label', 'mb-0', 'label-ovr')}>
+        <div className="w100 px-10px mt-16px">
+          <label className={cx('lable')}>
             District <span style={{ color: 'red' }}>*</span>
           </label>
           <select
-            className={cx('form-select', 'form-select-ovr', 'rounded-5', 'my-3')}
+            className={cx('selection')}
             aria-label="Default select example"
             onChange={(e) => {
               const selectedDistrict = districts.find((district) => district.name === e.target.value);
@@ -221,53 +209,38 @@ function Address() {
           </select>
         </div>
 
-        <div className={cx('w-100', 'px-3', 'mt-4')}>
-          <label for="basic-url" className={cx('form-label', 'mb-0', 'label-ovr')}>
-            Street address <span style={{ color: 'red' }}>*</span>
-          </label>
-          <input
-            type="text"
-            className={cx('form-control', 'my-3', 'rounded-5', 'form-control-ovr')}
-            id="basic-url"
+        <div className="w100 px-10px mt-16px">
+          <Input
+            name="addressLine"
+            label="Street address"
             placeholder="Street address..."
-            onChange={(e) => setStreet(e.target.value)}
+            isRequired
+            required
             value={street}
+            onChange={(e) => setStreet(e.target.value)}
           />
         </div>
 
-        <div className={cx('w-100', 'px-3', 'mt-4')}>
-          <label for="basic-url" className={cx('form-label', 'mb-0', 'label-ovr')}>
-            Phone number
-          </label>
-          <input
-            type="text"
-            className={cx('form-control', 'my-3', 'rounded-5', 'form-control-ovr')}
-            id="basic-url"
-            placeholder="Phone number..."
-            disabled
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-          />
+        <div className="w100 px-10px mt-16px">
+          <Input name="phoneNumber" label="Phone number" placeholder="(+84)" notEditable value={phone} />
         </div>
 
-        <div className={cx('w-100', 'px-3', 'mt-4')}>
-          <label for="basic-url" className={cx('form-label', 'mb-0', 'label-ovr')}>
-            Email address
-          </label>
-          <input
-            type="text"
-            className={cx('form-control', 'my-3', 'rounded-5', 'form-control-ovr')}
-            id="basic-url"
+        <div className="w100 px-10px mt-16px">
+          <Input
+            name="email"
+            label="Email address"
             placeholder="email@gmail.com"
-            disabled
+            type="email"
+            isRequired
+            notEditable
+            disable
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
           />
         </div>
 
-        <div className={cx('mt-5 d-flex flex-row-reverse')}>
-          <button type="submit" className={cx('btn btn-dark rounded-5 mb-0 text-uppercase', 'button')}>
-            Save Address
+        <div className={cx('btn-wrapper')}>
+          <button type="submit" className={cx('button')}>
+            Save address
           </button>
         </div>
       </form>
