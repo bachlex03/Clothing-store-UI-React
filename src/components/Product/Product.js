@@ -38,7 +38,7 @@ function Product({ product, children, ...passProps }) {
 
       <p className={cx('name')}>{children}</p>
       <div className={cx('price-component')}>
-        <Price value={100} />
+        <Price value={100} promotion={20} pos_shop />
       </div>
     </div>
   );

@@ -20,15 +20,20 @@
   font-size: 1.4rem;
 }
 
-// pos__shop
-.wrapper.pos__shop {
+// pos_shop
+.wrapper.pos_shop {
   position: relative;
 }
 
-.old-price.pos__shop {
+.old-price.pos_shop {
   position: absolute;
   left: 180px;
   top: 2px;
+  font-size: 1.4rem;
+}
+
+.new-price.pos_shop {
+  font-size: 1.6rem;
 }
 
 // old_new_price

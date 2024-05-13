@@ -13,6 +13,7 @@ const images = {
   card3: require('./Dinner-Club.webp'),
   card4: require('./American-Express.webp'),
   card5: require('./Discover.webp'),
+  breadcrumb: require('./breadcrumb.webp'),
 };
 
 export default images;

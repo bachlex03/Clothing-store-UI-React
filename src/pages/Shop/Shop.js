@@ -4,14 +4,16 @@ import style from './Shop.module.scss';
 import classNames from 'classnames/bind';
 import { Fragment } from 'react';
 import { Product } from '~/components';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import images from '~/assets/images';
+
 const cx = classNames.bind(style);
 
 function Shop() {
   return (
     <Fragment>
-      <div className={cx('breadcrumb')}>
-        <h2>Breadcrumb</h2>
-      </div>
+      <div className={cx('breadcrumb')} style={{ background: `url(${images.breadcrumb}) 50% / cover no-repeat` }}></div>
       <div className="grid wide">
         <div className="row">
           <div className="col l-3">
@@ -21,14 +23,22 @@ function Shop() {
           </div>
           <div className="col l-9">
             <div className={cx('shop-header')}>
-              <div>Showing 1 - 12 of 35 results</div>
-              <div className="flex justify-between">
+              <div className="flex justify-between align-center mb-10px">
                 <div className={cx('tabs')}>
                   <div className={cx('tab-item')}>All Products</div>
                   <div className={cx('tab-item')}>Suggestions</div>
-                  <div className={cx('tab-item')}>Sale Product</div>
+                  <div className={cx('tab-item')}>Sale Products</div>
                 </div>
-                <div>Sorting</div>
+                <div className={cx('sorting')}>
+                  <p className={cx('counter-product')}>Showing 1 - 12 of 35</p>
+                  <div className={cx('sorting-content', 'flex align-center')}>
+                    <p className={cx('sorting-text')}>Default sorting</p>
+
+                    <i className={cx('sort-icon')}>
+                      <FontAwesomeIcon icon={faChevronDown} />
+                    </i>
+                  </div>
+                </div>
               </div>
             </div>
             <div className="row">

@@ -12,9 +12,10 @@ const cx = classNames.bind(style);
 
 let timer;
 
-function Header() {
-  const [light, setLight] = useState(null);
+function Header({ animation = false, blur = false, light = null, color }) {
+  const [lightEffect, setLightEffect] = useState(light);
   const [logo, setLogo] = useState(false);
+  const [blurEffect, setBlurEffect] = useState(blur);
   const [cartQuantity, setCartQuantity] = useState(0);
   const [scrollPosition, setScrollDirection] = useState('top');
 
@@ -22,6 +23,12 @@ function Header() {
   const cartRef = useRef();
 
   useEffect(() => {
+    if (!animation) {
+      setLightEffect('');
+      setLogo(true);
+
+      return;
+    }
     let lastScrollTop = 0;
 
     const handleScroll = () => {
@@ -33,10 +40,10 @@ function Header() {
         setScrollDirection('up');
       }
       if (st < 100) {
-        setLight(null);
+        setLightEffect(null);
         setLogo(false);
       } else {
-        setLight('');
+        setLightEffect('');
         setLogo(true);
       }
 
@@ -99,7 +106,7 @@ function Header() {
           <Link
             href="#"
             onClick={() => {
-              setLight(null);
+              setLightEffect(null);
             }}
           >
             <i className={cx('icon')}>
@@ -116,11 +123,16 @@ function Header() {
         </div>
       </div>
 
-      <div className={cx('main')} light={light}>
+      <div
+        className={cx('main', {
+          blur,
+        })}
+        light={lightEffect}
+      >
         <nav>
           <ul className={cx('list-header')}>
             <li className={cx('header-item')}>
-              <Link className={cx('header-link')} href="/home" light={light}>
+              <Link className={cx('header-link')} href="/home" light={lightEffect}>
                 Home{' '}
               </Link>
             </li>
@@ -138,7 +150,7 @@ function Header() {
                 handleClose(categoriesRef.current);
               }}
             >
-              <Link className={cx('header-link')} href="#" light={light}>
+              <Link className={cx('header-link')} href="#" light={lightEffect}>
                 Shop
                 <i className={cx('nav-icon')}>
                   <FontAwesomeIcon icon={faAngleDown} />
@@ -161,7 +173,7 @@ function Header() {
             </li>
 
             <li className={cx('header-item')}>
-              <Link className={cx('header-link')} href="#" light={light}>
+              <Link className={cx('header-link')} href="#" light={lightEffect}>
                 Product
                 <i className={cx('nav-icon')}>
                   <FontAwesomeIcon icon={faAngleDown} />
@@ -170,7 +182,7 @@ function Header() {
             </li>
 
             <li className={cx('header-item')}>
-              <Link className={cx('header-link')} href="#" light={light}>
+              <Link className={cx('header-link')} href="#" light={lightEffect}>
                 Pages
                 <i className={cx('nav-icon')}>
                   <FontAwesomeIcon icon={faAngleDown} />
@@ -179,7 +191,7 @@ function Header() {
             </li>
 
             <li className={cx('header-item')}>
-              <Link className={cx('header-link')} href="#" light={light}>
+              <Link className={cx('header-link')} href="#" light={lightEffect}>
                 Blog
                 <i className={cx('nav-icon')}>
                   <FontAwesomeIcon icon={faAngleDown} />
@@ -188,7 +200,7 @@ function Header() {
             </li>
 
             <li className={cx('header-item')}>
-              <Link className={cx('header-link')} href="#" light={light}>
+              <Link className={cx('header-link')} href="#" light={lightEffect}>
                 Features
                 <i className={cx('nav-icon')}>
                   <FontAwesomeIcon icon={faAngleDown} />
@@ -208,14 +220,14 @@ function Header() {
 
             <div className={cx('search')}>
               <div className={cx('search-component')}>
-                <Search light={light} />
+                <Search light={lightEffect} color={color} />
               </div>
-              <i className={cx('icon-header', 'ti-search')} light={light}></i>
+              <i className={cx('icon-header', 'ti-search')} light={lightEffect} blur={blurEffect}></i>
             </div>
 
             {/* Wishlist */}
             <div className={cx('wishlist')}>
-              <i className={cx('icon-header', 'ti-heart')} light={light}></i>
+              <i className={cx('icon-header', 'ti-heart')} light={lightEffect} blur={blurEffect}></i>
             </div>
 
             {/* Cart */}
@@ -229,7 +241,11 @@ function Header() {
               }}
             >
               <Link to="#">
-                <i className={cx('icon-header', 'cart-icon', 'ti-shopping-cart')} light={light}></i>
+                <i
+                  className={cx('icon-header', 'cart-icon', 'ti-shopping-cart')}
+                  light={lightEffect}
+                  blur={blurEffect}
+                ></i>
                 {/* <span className={cx('quantity')}>{cartQuantity}</span> */}
               </Link>
 
