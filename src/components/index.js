@@ -8,3 +8,8 @@ export { default as Cart } from './Cart';
 export { default as Price } from './Price';
 export { default as Text } from './Text';
 export { default as Product } from './Product';
+export { default as Paging } from './Paging';
+export { default as Variation } from './Variation';
+export { default as PriceFilter } from './Price-Filter';
+export { default as Category } from './Category';
+export { default as SideProduct } from './Side-Product';

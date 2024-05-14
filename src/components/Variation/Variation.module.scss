@@ -1,0 +1,20 @@
+.wrapper {
+  padding: 5px 0;
+  margin: 8px 0;
+  cursor: pointer;
+}
+
+.name {
+  font-weight: 500;
+  user-select: none;
+}
+
+.quantity {
+  color: #888686;
+  font-size: 1.3rem;
+}
+
+.icon {
+  width: 25px;
+  font-size: 1.4rem;
+}
