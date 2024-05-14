@@ -121,3 +121,26 @@
   color: #484f56;
   margin-top: 10px;
 }
+
+.wishlist-top.icon[liked] {
+  position: absolute;
+  z-index: 99;
+  top: 12px;
+  right: 20px;
+  transition: all 0.2s linear;
+  color: #fe6767;
+}
+
+.tag {
+  position: absolute;
+  display: block;
+  font-size: 1.2rem;
+  font-weight: 500;
+  width: max-content;
+  padding: 2px 5px;
+  background-color: #cf2929;
+  color: #fff;
+  top: 12px;
+  left: 10px;
+  z-index: 99;
+}

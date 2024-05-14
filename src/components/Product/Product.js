@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye } from '@fortawesome/free-regular-svg-icons';
 import { faHeart as faHeartRegular } from '@fortawesome/free-regular-svg-icons';
 import { faHeart as faHeartSolid } from '@fortawesome/free-solid-svg-icons';
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 
 const cx = classNames.bind(style);
 
@@ -16,7 +16,14 @@ function Product({ product, children, ...passProps }) {
   return (
     <div className={cx('wrapper')}>
       <div className={cx('img-wrapper')}>
-        <img src={images.demoShopImg} className={cx('img')} alt="" />
+        <div className="relative">
+          <i className={cx('wishlist-top', 'icon')} liked={isWishlist ? '' : false}>
+            {isWishlist ? <FontAwesomeIcon icon={faHeartSolid} /> : ''}
+          </i>
+          {product?.promotion ? <span className={cx('tag')}>-{product.promotion}% OFF</span> : ''}
+
+          <img src={images.demoShopImg} className={cx('img')} alt="" />
+        </div>
         <div className={cx('actions')}>
           <i
             className={cx('icon')}

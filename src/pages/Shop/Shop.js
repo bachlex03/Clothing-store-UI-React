@@ -83,6 +83,31 @@ function Shop() {
                   <Product product={{}}>Oversized cardigan</Product>
                 </div>
               </div>
+              <div className="col l-4">
+                <div className={cx('product-component')}>
+                  <Product product={{}}>Oversized cardigan</Product>
+                </div>
+              </div>
+              <div className="col l-4">
+                <div className={cx('product-component')}>
+                  <Product product={{}}>Oversized cardigan</Product>
+                </div>
+              </div>
+              <div className="col l-4">
+                <div className={cx('product-component')}>
+                  <Product product={{}}>Oversized cardigan</Product>
+                </div>
+              </div>
+              <div className="col l-4">
+                <div className={cx('product-component')}>
+                  <Product product={{}}>Oversized cardigan</Product>
+                </div>
+              </div>
+              <div className="col l-4">
+                <div className={cx('product-component')}>
+                  <Product product={{}}>Oversized cardigan</Product>
+                </div>
+              </div>
             </div>
           </div>
         </div>
