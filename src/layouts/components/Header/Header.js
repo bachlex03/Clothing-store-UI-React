@@ -6,13 +6,13 @@ import { faAngleDown, faRightToBracket, faAddressCard, faMagnifyingGlass } from 
 import { faHeart } from '@fortawesome/free-regular-svg-icons';
 import { useEffect, useRef, useState } from 'react';
 
-import { Search, CategoryHeader, Cart } from '~/components';
+import { Search, CategoryHeader, Cart, Text } from '~/components';
 import images from '~/assets/images';
 const cx = classNames.bind(style);
 
 let timer;
 
-function Header({ animation = false, blur = false, light = null, color }) {
+function Header({ animation = false, blur = false, light = null, color, lightLogo = false }) {
   const [lightEffect, setLightEffect] = useState(light);
   const [logo, setLogo] = useState(false);
   const [blurEffect, setBlurEffect] = useState(blur);
@@ -41,10 +41,14 @@ function Header({ animation = false, blur = false, light = null, color }) {
       }
       if (st < 100) {
         setLightEffect(null);
+
         setLogo(false);
       } else {
         setLightEffect('');
-        setLogo(true);
+
+        if (!lightLogo) {
+          setLogo(true);
+        }
       }
 
       lastScrollTop = st;
@@ -133,7 +137,7 @@ function Header({ animation = false, blur = false, light = null, color }) {
           <ul className={cx('list-header')}>
             <li className={cx('header-item')}>
               <Link className={cx('header-link')} href="/home" light={lightEffect}>
-                Home{' '}
+                <p className={cx('header-link-text')}>Home</p>
               </Link>
             </li>
 
@@ -151,10 +155,12 @@ function Header({ animation = false, blur = false, light = null, color }) {
               }}
             >
               <Link className={cx('header-link')} href="#" light={lightEffect}>
-                Shop
-                <i className={cx('nav-icon')}>
-                  <FontAwesomeIcon icon={faAngleDown} />
-                </i>
+                <p className={cx('header-link-text')}>
+                  Shop
+                  <i className={cx('nav-icon')}>
+                    <FontAwesomeIcon icon={faAngleDown} />
+                  </i>
+                </p>
               </Link>
 
               <div
@@ -174,37 +180,24 @@ function Header({ animation = false, blur = false, light = null, color }) {
 
             <li className={cx('header-item')}>
               <Link className={cx('header-link')} href="#" light={lightEffect}>
-                Product
-                <i className={cx('nav-icon')}>
-                  <FontAwesomeIcon icon={faAngleDown} />
-                </i>
+                <p className={cx('header-link-text')}>About Us</p>
               </Link>
             </li>
 
             <li className={cx('header-item')}>
               <Link className={cx('header-link')} href="#" light={lightEffect}>
-                Pages
-                <i className={cx('nav-icon')}>
-                  <FontAwesomeIcon icon={faAngleDown} />
-                </i>
+                <p className={cx('header-link-text')}>Blog</p>
               </Link>
             </li>
 
             <li className={cx('header-item')}>
               <Link className={cx('header-link')} href="#" light={lightEffect}>
-                Blog
-                <i className={cx('nav-icon')}>
-                  <FontAwesomeIcon icon={faAngleDown} />
-                </i>
-              </Link>
-            </li>
-
-            <li className={cx('header-item')}>
-              <Link className={cx('header-link')} href="#" light={lightEffect}>
-                Features
-                <i className={cx('nav-icon')}>
-                  <FontAwesomeIcon icon={faAngleDown} />
-                </i>
+                <p className={cx('header-link-text')}>
+                  Pages
+                  <i className={cx('nav-icon')}>
+                    <FontAwesomeIcon icon={faAngleDown} />
+                  </i>
+                </p>
               </Link>
             </li>
           </ul>
