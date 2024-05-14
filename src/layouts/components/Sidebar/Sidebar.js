@@ -1,63 +1,56 @@
 import style from './Sidebar.module.scss';
 import classNames from 'classnames/bind';
-import { Category, PriceFilter, Variation, SideProduct } from '~/components';
+import { Category, PriceFilter, SizeVariation, ColorVariation, SideProduct } from '~/components';
+import { sizesArr, ColorsHash, ColorsString } from '~/common/constants';
+import { useEffect, useState } from 'react';
+
 const cx = classNames.bind(style);
 
 function Sidebar() {
+  const [sizesArray, setSizesArray] = useState(sizesArr);
+  const [colorsArray, setColorsArray] = useState([]);
+
+  useEffect(() => {
+    const objColorKeys = Object.keys(ColorsHash);
+
+    setColorsArray(objColorKeys);
+  }, []);
+
   return (
     <aside className={cx('sidebar')}>
-      <div>
+      <div className="mt-50px">
         <h3 className={cx('heading')}>Product Categories</h3>
         {/* {categories.map((category, index) => {
-          return <Category category={category} key={index} />;
+            return <Category category={category} key={index} />;
         })} */}
 
-        <Category name="Category" />
-
-        <span className={cx('separate')}></span>
-      </div>
-
-      <div>
-        <h3 className={cx('heading')}>Filter By Price</h3>
-
-        {/* <PriceFilter /> */}
+        <div className={cx('category-components-wrapper')}>
+          <Category name="Category" />
+        </div>
 
         <span className={cx('separate')}></span>
       </div>
 
       <div>
         <h3 className={cx('heading')}>Filter By Color</h3>
-        {/* {colorsFilter.map((color, index) => {
-          return <VariationItem name="colors" key={index} colorObj={color} />;
-        })} */}
-
-        <Variation name="Color" />
-        <Variation name="Color" />
-        <Variation name="Color" />
-        <Variation name="Color" />
-        <Variation name="Color" />
+        {colorsArray.map((color, index) => {
+          return <ColorVariation valueStr={color} key={index} />;
+        })}
 
         <span className={cx('separate')}></span>
       </div>
 
       <div>
         <h3 className={cx('heading')}>Filter By Size</h3>
-        {/* {sizesFilter.map((size, index) => {
-          return <VariationItem name="sizes" key={index} colorObj={size} />;
-        })} */}
-
-        <Variation name="Size" />
-        <Variation name="Size" />
-        <Variation name="Size" />
-        <Variation name="Size" />
-        <Variation name="Size" />
+        {sizesArray.map((size, index) => {
+          return <SizeVariation valueStr={size} key={index} quantity={index} />;
+        })}
 
         <span className={cx('separate')}></span>
       </div>
 
       <div>
         <h3 className={cx('heading')}>Best Selling Products</h3>
-        {/* {products ? <SideProduct product={products[4]} /> : <SideProduct name="Product" price sale />} */}
 
         <div className={cx('side-product-component')}>
           <SideProduct name="Product" />

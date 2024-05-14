@@ -43,7 +43,7 @@ function Category({ category = {} }) {
     <div className={cx('parent')}>
       <div className="flex justify-between align-center">
         <Link to={`/categories/${category.slug}`}>
-          <h4 className={cx('heading')}>{category?.name ?? 'Default name'}</h4>
+          <h4 className={cx('heading')}>{category?.name ?? 'Accessories'}</h4>
         </Link>
         <i className={cx('icon', classes)} ref={iconRefs} onClick={handleOpen}>
           <FontAwesomeIcon icon={faPlus} />
