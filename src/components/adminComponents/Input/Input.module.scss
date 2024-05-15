@@ -87,9 +87,17 @@
     font-size: 1.3rem;
 
     &:hover {
-      background-color: rgba($color: #e2eaf3, $alpha: 0.1);
+      background-color: rgba($color: #e2eaf3, $alpha: 0.05);
+      color: #0ea5e9;
     }
   }
+}
+
+.list.parent {
+  height: 400px;
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+  overscroll-behavior: contain;
 }
 
 .list.dropdownTop {
@@ -185,4 +193,26 @@
 
 .upload-icon {
   font-size: 40px;
+}
+
+/// categories with parent
+.parent {
+  // padding: 8px 16px;
+  font-weight: 600;
+  user-select: none;
+  margin-bottom: 4px;
+  cursor: auto;
+
+  &:hover {
+    color: #ccc !important;
+  }
+}
+
+.child {
+  cursor: pointer;
+  font-weight: 500;
+
+  &:hover {
+    color: #0ea5e9;
+  }
 }

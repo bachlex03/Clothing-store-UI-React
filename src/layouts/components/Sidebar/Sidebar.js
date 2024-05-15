@@ -3,6 +3,8 @@ import classNames from 'classnames/bind';
 import { Category, PriceFilter, SizeVariation, ColorVariation, SideProduct } from '~/components';
 import { sizesArr, ColorsHash, ColorsString } from '~/common/constants';
 import { useEffect, useState } from 'react';
+import { getCategories } from '~/services/api/categoryService';
+import { renderCategories } from '~/utils/render-category';
 
 const cx = classNames.bind(style);
 
@@ -14,6 +16,14 @@ function Sidebar() {
     const objColorKeys = Object.keys(ColorsHash);
 
     setColorsArray(objColorKeys);
+  }, []);
+
+  useEffect(async () => {
+    try {
+      const data = await getCategories();
+    } catch (error) {
+      console.log(error);
+    }
   }, []);
 
   return (

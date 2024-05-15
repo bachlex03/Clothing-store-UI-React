@@ -17,6 +17,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Fragment, useEffect, useRef, useState } from 'react';
 import { Button, SideModel, Search } from '~/components/adminComponents';
 import * as productService from '~/services/api/productService';
+import { getCategories } from '~/services/api/categoryService';
+import { renderCategories } from '~/utils/render-category';
 
 const cx = classNames.bind(styles);
 
@@ -33,8 +35,6 @@ function Products() {
       const data = await productService.getAllProducts({
         q: 'min',
       });
-
-      console.log('data: ', data);
 
       setProducts(data);
     } catch (error) {

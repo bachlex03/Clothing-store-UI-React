@@ -1,5 +1,5 @@
 const ColorsHash = {
-  BROWN: '#422006',
+  BROWN: '#91450b',
   RED: '#dc2626',
   GREY: '#808080',
   YELLOW: '#ffff00',
