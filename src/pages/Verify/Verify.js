@@ -30,7 +30,9 @@ function Verify() {
       try {
         const response = await accountService.verifyEmail(qs.stringify({ q: jwtMailToken, mailToken: otp }));
         if (response.status === 200) {
-          navigate('/login');
+          navigate('/login', {
+            state: { fromVerify: true, message: 'Your account activation was successful. Welcome!' },
+          });
         }
       } catch (error) {
         setOtpInvalid(true);

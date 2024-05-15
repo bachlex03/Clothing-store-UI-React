@@ -46,7 +46,9 @@ function Recover() {
         };
         const response = await accountService.recoverPassword(emailReset);
         if (response.status === 200) {
-          navigate('/login', { state: { fromRecover: true } });
+          navigate('/login', {
+            state: { fromRecover: true, message: "We've sent you an email with a link to update your password." },
+          });
         }
       } catch (error) {
         console.error('Error sending email to reset password:', error);

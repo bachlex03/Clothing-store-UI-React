@@ -87,9 +87,9 @@ function Address() {
 
     if (validateAddress()) {
       let address = {
-        country: country,
-        province: city.name,
-        city: district.name,
+        country: country || userCountry,
+        province: city.name || userCity,
+        city: district.name || userCity,
         addressLine: street,
       };
 
@@ -108,15 +108,15 @@ function Address() {
   };
 
   const validateAddress = () => {
-    if (!country) {
+    if (!country && !userCountry) {
       toast.warn('Country is required');
       return false;
     }
-    if (!city) {
+    if (!city && !userCity) {
       toast.warn('City is required');
       return false;
     }
-    if (!district) {
+    if (!district && !userDistrict) {
       toast.warn('District is required');
       return false;
     }
@@ -137,7 +137,6 @@ function Address() {
               name="firstName"
               label="First name"
               placeholder="First name..."
-              isRequired
               disable
               value={firstName}
               notEditable
@@ -149,7 +148,6 @@ function Address() {
               name="lastName"
               label="Last name"
               placeholder="Last name..."
-              isRequired
               disable
               value={lastName}
               notEditable
@@ -158,7 +156,7 @@ function Address() {
         </div>
 
         <div className="w100 px-10px mt-16px">
-          <label className={cx('lable')}>
+          <label className={cx('label')}>
             Country <span style={{ color: 'red' }}>*</span>
           </label>
           <select
@@ -172,7 +170,7 @@ function Address() {
         </div>
 
         <div className="w100 px-10px mt-16px">
-          <label className={cx('lable')}>
+          <label className={cx('label')}>
             Province / City <span style={{ color: 'red' }}>*</span>
           </label>
           <select
@@ -191,7 +189,7 @@ function Address() {
         </div>
 
         <div className="w100 px-10px mt-16px">
-          <label className={cx('lable')}>
+          <label className={cx('label')}>
             District <span style={{ color: 'red' }}>*</span>
           </label>
           <select
@@ -229,9 +227,8 @@ function Address() {
           <Input
             name="email"
             label="Email address"
-            placeholder="email@gmail.com"
+            placeholder="Email address..."
             type="email"
-            isRequired
             notEditable
             disable
             value={email}

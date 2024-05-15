@@ -1,43 +1,93 @@
+@import '../../../components/GlobalStyles/butlerFont.css';
+
 .wrapper {
   padding-left: 15px;
   border-left: 1px solid #ccc;
-  font-size: 1.6rem !important;
 }
 
 .heading {
-  font-size: 2.6rem;
+  font-size: 2.4rem;
   font-family: 'Butler', sans-serif;
   margin: 20px 0;
   font-weight: 400;
 }
 
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
 .thead {
+  background-color: #f8f9fa;
   th {
-    background-color: #f8f9fa !important;
-    font-size: 1.4rem !important;
-    padding: 12px 15px !important;
-    line-height: 1.5 !important;
-    text-transform: uppercase !important;
-    color: #939393 !important;
-    font-weight: 500 !important;
+    font-size: 1.4rem;
+    padding: 12px 15px;
+    line-height: 1.5;
+    text-transform: uppercase;
+    color: #939393;
+    font-weight: 500;
   }
+}
+
+.tbody {
+  color: #000 !important;
+}
+
+.btn-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin: 10px 0;
 }
 
 .button {
   display: block;
-  font-weight: 600 !important;
-  padding: 10px 30px !important;
-  font-size: 1.6rem !important;
-  background-color: #000 !important;
-  border: none !important;
+  color: #fff;
+  font-weight: 600;
+  padding: 10px 30px;
+  font-size: 1.6rem;
+  background-color: #000;
+  border: none;
+  border-radius: 999px;
+  text-transform: uppercase;
   &:hover {
-    background-color: rgb(153, 153, 153) !important;
-    border: none !important;
+    cursor: pointer;
+    background-color: rgb(153, 153, 153);
+    border: none;
   }
 }
 
-tbody {
-  td {
-    vertical-align: middle;
-  }
+th.order {
+}
+
+th.date {
+}
+
+th.status {
+}
+
+th.total {
+}
+
+th.action {
+}
+
+td.order {
+  color: #000;
+}
+
+td.date {
+  color: #000;
+}
+
+td.status {
+  color: #000;
+}
+
+td.total {
+  color: #000;
+}
+
+td.action {
+  color: #000;
 }

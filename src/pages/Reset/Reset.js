@@ -12,7 +12,7 @@ function Reset() {
   const [newpassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [errors, setErrors] = useState([]);
-  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/;
+  // const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/;
   const urlParams = new URLSearchParams(window.location.search);
   const [jwtMailToken] = useState(urlParams.get('q'));
   const navigate = useNavigate();
@@ -27,7 +27,9 @@ function Reset() {
         };
         const response = await accountService.resetPassword(qs.stringify({ q: jwtMailToken }), resetPassword);
         if (response.status === 200) {
-          navigate('/login');
+          navigate('/login', {
+            state: { fromRecover: true, message: 'Your password has been updated. Now you can Sign in' },
+          });
         }
       } catch (error) {
         console.error('Error resetting password:', error);
@@ -47,8 +49,8 @@ function Reset() {
       newErrors.push("Confirm Password can't be blank");
       isValid = false;
     }
-    if (!passwordRegex.test(newpassword)) {
-      newErrors.push('Password must contain at least 8 characters, including uppercase, lowercase letters and numbers');
+    if (newpassword.length < 8) {
+      newErrors.push('Password must contain at least 8 characters');
       isValid = false;
     }
     if (newpassword !== confirmPassword) {
