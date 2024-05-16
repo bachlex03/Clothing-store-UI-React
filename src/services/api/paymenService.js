@@ -18,3 +18,15 @@ export const paymentVNPay = async (data) => {
 
   return result;
 };
+
+export const paymentCash = async (data) => {
+  const result = await request.post('payment/cash', data);
+
+  return result;
+};
+
+export const vnpayIPN = async (param) => {
+  const result = await request.get(`vnpay/vnpay_ipn${param}`);
+
+  return result.data;
+};

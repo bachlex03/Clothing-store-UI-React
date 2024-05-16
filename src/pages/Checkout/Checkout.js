@@ -3,7 +3,11 @@ import classNames from 'classnames/bind';
 import Input from './Input';
 import { useEffect, useState } from 'react';
 import { getAllCity, getAllDistrictByCity } from '~/services/api/shippingService';
-import { getInfoCheckout, paymentVNPay, updateInfo } from '~/services/api/paymenService';
+import { getInfoCheckout, paymentCash, paymentVNPay, updateInfo } from '~/services/api/paymenService';
+import { AxiosError } from 'axios';
+import { useMutation } from '@tanstack/react-query'; // Ensure correct import
+import { toast } from 'sonner';
+import { useNavigate } from 'react-router-dom';
 
 const cx = classNames.bind(style);
 
@@ -25,6 +29,7 @@ function Checkout() {
   const [listItems, setListItems] = useState([]);
   const [total, setTotal] = useState(0);
   const [method, setMethod] = useState(0);
+  const navigate = useNavigate();
 
   useEffect(() => {
     let total = 0;
@@ -44,8 +49,27 @@ function Checkout() {
   }, []);
 
   useEffect(() => {
-    getCheckoutInfo();
+    getCheckoutInfoMutate.mutate();
   }, []);
+
+  const getCheckoutInfoMutate = useMutation({
+    mutationFn: async () => {
+      return await getCheckoutInfo();
+    },
+    onSuccess: (data) => {
+      console.log('data', data);
+    },
+    onError: (error) => {
+      if (error instanceof AxiosError) {
+        console.log('error.response.data', error.response?.data);
+        console.log('error.response.status', error.response?.status);
+
+        toast.error(`Error ${error.response?.status}`, {
+          description: `${error.response?.data?.message}`,
+        });
+      }
+    },
+  });
 
   const getCheckoutInfo = async () => {
     const result = await getInfoCheckout();
@@ -122,20 +146,57 @@ function Checkout() {
   };
 
   useEffect(() => {
-    getAllCityData();
+    getAllCityDataMutate.mutate();
   }, []);
 
+  const getAllCityDataMutate = useMutation({
+    mutationFn: async () => {
+      return await getAllCityData();
+    },
+    onSuccess: (data) => {
+      console.log('data', data);
+    },
+    onError: (error) => {
+      if (error instanceof AxiosError) {
+        console.log('error.response.data', error.response?.data);
+        console.log('error.response.status', error.response?.status);
+
+        toast.error(`Error ${error.response?.status}`, {
+          description: `${error.response?.data?.message}`,
+        });
+      }
+    },
+  });
+
   useEffect(() => {
-    let objectCity;
-    if (selectedCity && selectedCity.startsWith('{') && selectedCity.endsWith('}')) {
-      objectCity = JSON.parse(selectedCity);
-    }
-    setDistrict({});
     if (selectedCity) {
-      console.log(objectCity?.key);
-      getAllDistrict(objectCity?.key);
+      getDetailProductMutate.mutate();
     }
   }, [selectedCity]);
+
+  const getDetailProductMutate = useMutation({
+    mutationFn: async () => {
+      let objectCity;
+      if (selectedCity && selectedCity.startsWith('{') && selectedCity.endsWith('}')) {
+        objectCity = JSON.parse(selectedCity);
+      }
+      setDistrict({});
+      return await getAllDistrict(objectCity?.key);
+    },
+    onSuccess: (data) => {
+      console.log('data', data);
+    },
+    onError: (error) => {
+      if (error instanceof AxiosError) {
+        console.log('error.response.data', error.response?.data);
+        console.log('error.response.status', error.response?.status);
+
+        toast.error(`Error ${error.response?.status}`, {
+          description: `${error.response?.data?.message}`,
+        });
+      }
+    },
+  });
 
   const handleUpdateInfo = async () => {
     const data = {
@@ -157,6 +218,33 @@ function Checkout() {
       }
     }
   };
+
+  const updateInfoMutate = useMutation({
+    mutationFn: async () => {
+      return await handleUpdateInfo();
+    },
+    onSuccess: (data) => {
+      toast.success('Success', {
+        description: 'Update information successfully',
+      });
+
+      console.log('data', data);
+    },
+    onError: (error) => {
+      if (error instanceof AxiosError) {
+        console.log('error.response.data', error.response?.data);
+        console.log('error.response.status', error.response?.status);
+
+        toast.error(`Error ${error.response?.status}`, {
+          description: `${error.response?.data?.message}`,
+        });
+      }
+    },
+  });
+
+  useEffect(() => {
+    localStorage.setItem('cartList', JSON.stringify(cartList));
+  }, [cartList]);
 
   const handlePlaceOrder = async () => {
     console.log('Place order', listItems);
@@ -180,12 +268,46 @@ function Checkout() {
       boughtItems: boughtItems,
       totalPrice: total,
     };
-    if (method === 1) {
+    if (method === 0) {
+      const response = await paymentCash(data);
+      console.log('response', response);
+      if (response.status == 200) {
+        setCartList([]);
+        await new Promise(resolve => setTimeout(resolve, 0)); // Wait for state update
+        navigate('/cart');
+        toast.success('Success', {
+          description: 'Checkout successfully!',
+        });
+      } else {
+        navigate('/cart');
+        toast.error('Error', {
+          description: 'Checkout failed!',
+        });
+      }
+    } else if (method === 1) {
       const response = await paymentVNPay(data);
-      console.log('response: ', response.data.url);
       window.location.href = response.data.url;
     }
   };
+
+  const placeOrderMutate = useMutation({
+    mutationFn: async () => {
+      return await handlePlaceOrder();
+    },
+    onSuccess: (data) => {
+      console.log('data', data);
+    },
+    onError: (error) => {
+      if (error instanceof AxiosError) {
+        console.log('error.response.data', error.response?.data);
+        console.log('error.response.status', error.response?.status);
+
+        toast.error(`Error ${error.response?.status}`, {
+          description: `${error.response?.data?.message}`,
+        });
+      }
+    },
+  });
 
   return (
     <>
@@ -294,12 +416,10 @@ function Checkout() {
                   setNote(e.target.value);
                 }}
                 textarea
-                isRequired
-                required
               />
             </div>
             <div className={cx('update-area')}>
-              <button className={cx('update-button')} onClick={() => handleUpdateInfo()}>
+              <button className={cx('update-button')} onClick={() => updateInfoMutate.mutate()}>
                 UPDATE INFORMATION
               </button>
             </div>
@@ -386,7 +506,7 @@ function Checkout() {
                 </div>
               </div>
               <div className={cx('place-area')}>
-                <button className={cx('place-button')} onClick={() => handlePlaceOrder()}>
+                <button className={cx('place-button')} onClick={() => placeOrderMutate.mutate()}>
                   PLACE ORDER
                 </button>
               </div>

@@ -9,10 +9,6 @@ const cx = classNames.bind(style);
 const defaultIcon = <FontAwesomeIcon icon={faStar} />;
 
 function MenuItem({ name = 'Default', icon = defaultIcon, to = '/admin', toUrl = '/admin' }) {
-  console.log('to', to);
-
-  console.log('toUrl', toUrl);
-
   return (
     <Link to={to} className={cx('link')}>
       <div className={cx('menu-item', 'flex items-center')}>

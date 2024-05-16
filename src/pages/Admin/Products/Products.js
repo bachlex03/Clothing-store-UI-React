@@ -19,6 +19,9 @@ import { Button, SideModel, Search } from '~/components/adminComponents';
 import * as productService from '~/services/api/productService';
 import { getCategories } from '~/services/api/categoryService';
 import { renderCategories } from '~/utils/render-category';
+import { AxiosError } from 'axios';
+import { useMutation } from '@tanstack/react-query'; // Ensure correct import
+import { toast } from 'sonner';
 
 const cx = classNames.bind(styles);
 
@@ -28,27 +31,61 @@ function Products() {
 
   const [products, setProducts] = useState([]);
 
-  const handleGetProducts = async () => {
-    setLoading(true);
+  // Call API
+  const { mutate } = useMutation({
+    mutationFn: async () => {
+      setLoading(true);
 
-    try {
-      const data = await productService.getAllProducts({
-        q: 'min',
+      return await productService.getAllProducts({ q: 'min' });
+    },
+    onSuccess: (data) => {
+      toast.success('Success', {
+        description: 'All products have been fetched successfully',
       });
 
       setProducts(data);
-    } catch (error) {
-      console.error(error);
-    } finally {
+
       setTimeout(() => {
         setLoading(false);
       }, 500);
-    }
-  };
+    },
+    onError: (error) => {
+      if (error instanceof AxiosError) {
+        console.log('error.response.data', error.response?.data);
+        console.log('error.response.status', error.response?.status);
+
+        toast.error(`Error ${error.response?.status}`, {
+          description: `${error.response?.data?.message}`,
+        });
+      }
+
+      setTimeout(() => {
+        setLoading(false);
+      }, 500);
+    },
+  });
 
   useEffect(() => {
-    handleGetProducts();
+    mutate();
   }, []);
+
+  // const handleGetProducts = async () => {
+  //   setLoading(true);
+
+  //   try {
+  //     const data = await productService.getAllProducts({
+  //       q: 'min',
+  //     });
+
+  //     setProducts(data);
+  //   } catch (error) {
+  //     console.error(error);
+  //   } finally {
+  //     setTimeout(() => {
+  //       setLoading(false);
+  //     }, 500);
+  //   }
+  // };
 
   useEffect(() => {
     const socket = io('http://localhost:3001');
@@ -102,7 +139,7 @@ function Products() {
           <div
             className={cx('refresh-container')}
             onClick={() => {
-              handleGetProducts();
+              mutate();
             }}
           >
             <i className={cx('repeat-icon mr-12px')}>
@@ -178,12 +215,12 @@ function Products() {
         </div>
 
         {/* <div className={cx('footer')}>
-          <div className="flex justify-between">
-            <div className={cx('footer-left')}>@tailwindcss</div>
-
-            <div className={cx('footer-right')}>Design & Develop by Group 1</div>
-          </div>
-        </div> */}
+              <div className="flex justify-between">
+                <div className={cx('footer-left')}>@tailwindcss</div>
+    
+                <div className={cx('footer-right')}>Design & Develop by Group 1</div>
+              </div>
+            </div> */}
 
         <SideModel ref={modelRef} />
       </div>

@@ -3,12 +3,59 @@ import classNames from 'classnames/bind';
 import { Link } from 'react-router-dom';
 import { TbCurrencyDollar } from 'react-icons/tb';
 import { useEffect, useState } from 'react';
+import { vnpayIPN } from '~/services/api/paymenService';
+import { AxiosError } from 'axios';
+import { useMutation } from '@tanstack/react-query'; // Ensure correct import
+import { toast } from 'sonner';
 
 const cx = classNames.bind(style);
 
 function Cart() {
   const [cartList, setCartList] = useState(JSON.parse(localStorage.getItem('cartList')) || []);
   const [total, setTotal] = useState(0);
+
+  useEffect(() => {
+    const params = window.location.search;
+    if (params && params.includes('vnp_BankCode')) {
+      getVNpayIpnMutate.mutate();
+    }
+  }, []);
+
+  const getVNpayIpnMutate = useMutation({
+    mutationFn: async () => {
+      return await getVNPayIpn();
+    },
+    onSuccess: (data) => {
+      console.log('data', data);
+    },
+    onError: (error) => {
+      if (error instanceof AxiosError) {
+        console.log('error.response.data', error.response?.data);
+        console.log('error.response.status', error.response?.status);
+
+        toast.error(`Error ${error.response?.status}`, {
+          description: `${error.response?.data?.message}`,
+        });
+      }
+    },
+  });
+
+  const getVNPayIpn = async () => {
+    const params = window.location.search;
+    console.log(params);
+    const response = await vnpayIPN(params);
+    console.log(response);
+    if (response.RspCode === '00') {
+      setCartList([]);
+      toast.success('Success', {
+        description: 'Checkout successfully!',
+      });
+    } else {
+      toast.error(`Error`, {
+        description: `Checkout failed!`,
+      });
+    }
+  };
 
   const handleChangeQuantity = (value, id) => {
     if (+value === 0) return;
@@ -58,7 +105,7 @@ function Cart() {
         <table className={cx('table-container')}>
           <thead>
             <tr>
-              <th className="choose"></th>
+              {/* <th className="choose"></th> */}
               <th className="thumbnail"></th>
               <th>Product</th>
               <th>Price</th>
@@ -72,9 +119,9 @@ function Cart() {
               cartList.map((item) => {
                 return (
                   <tr className={cx('cart-item')}>
-                    <td className="choose">
+                    {/* <td className="choose">
                       <input value="test" type="checkbox" />
-                    </td>
+                    </td> */}
                     <td className={cx('product-thumbnail')}>
                       <img
                         width="110"
@@ -215,7 +262,7 @@ function Cart() {
             </tbody>
           </table>
           <div className={cx('proceed-to-checkout')}>
-            <Link to="/" className={cx('btn', 'btn-accent', 'text-white', 'btn-hover-primary')}>
+            <Link to="/checkout" className={cx('btn', 'btn-accent', 'text-white', 'btn-hover-primary')}>
               Proceed to checkout
             </Link>
           </div>

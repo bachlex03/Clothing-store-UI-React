@@ -108,7 +108,7 @@ function Header({ animation = false, blur = false, light = null, color, lightLog
 
         <div className={cx('auth-actions')}>
           <Link
-            href="#"
+            to="/login"
             onClick={() => {
               setLightEffect(null);
             }}
@@ -118,7 +118,7 @@ function Header({ animation = false, blur = false, light = null, color, lightLog
             </i>
             Login
           </Link>
-          <Link href="#">
+          <Link to="/customer/details">
             <i className={cx('icon')}>
               <FontAwesomeIcon icon={faAddressCard} />
             </i>

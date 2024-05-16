@@ -10,6 +10,9 @@ import Tabs from './Tabs';
 import { useParams } from 'react-router-dom';
 import { getDetails } from '~/services/api/productService';
 import _ from 'lodash';
+import { AxiosError } from 'axios';
+import { useMutation } from '@tanstack/react-query'; // Ensure correct import
+import { toast } from 'sonner';
 
 const cx = classNames.bind(style);
 
@@ -27,8 +30,27 @@ function Details() {
   const [cartList, setCartList] = useState(JSON.parse(localStorage.getItem('cartList')) || []);
 
   useEffect(() => {
-    getDetailProduct();
+    getDetailProductMutate.mutate();
   }, []);
+
+  const getDetailProductMutate = useMutation({
+    mutationFn: async () => {
+      return await getDetailProduct();
+    },
+    onSuccess: (data) => {
+      console.log('data', data);
+    },
+    onError: (error) => {
+      if (error instanceof AxiosError) {
+        console.log('error.response.data', error.response?.data);
+        console.log('error.response.status', error.response?.status);
+
+        toast.error(`Error ${error.response?.status}`, {
+          description: `${error.response?.data?.message}`,
+        });
+      }
+    },
+  });
 
   useEffect(() => {
     if (product && product.skus && product.skus.length > 0) {
@@ -105,6 +127,10 @@ function Details() {
     } else {
       setCartList([...cartList, { ...product, quantity, selectedColor, selectedSize }]);
     }
+
+    toast.success('Success', {
+      description: 'Add to cart successfully',
+    });
   };
 
   return (

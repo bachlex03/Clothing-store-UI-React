@@ -3,6 +3,10 @@ import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleNotch, faAnglesRight, faArrowsSpin } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useRef, useState, forwardRef, useImperativeHandle, Fragment } from 'react';
+import { useMutation } from '@tanstack/react-query'; // Ensure correct import
+import { toast } from 'sonner';
+import { AxiosError } from 'axios';
+
 import { Button, Input } from '~/components/adminComponents';
 import { ColorsHash, ColorsString } from '~/common/constants';
 import * as productService from '~/services/api/productService';
@@ -61,7 +65,7 @@ function SideModel(props, ref) {
   ]);
   const [fetchCategory, setFetchCategory] = useState([]);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async () => {
     const formData = new FormData();
 
     let formSizes = sizes.map((size) => {
@@ -137,6 +141,29 @@ function SideModel(props, ref) {
       setLoading(false);
     }
   };
+
+  const createProduct = useMutation({
+    mutationFn: async () => {
+      return await handleSubmit();
+    },
+    onSuccess: (data) => {
+      toast.success('Success', {
+        description: 'Create product successfully',
+      });
+
+      console.log('data', data);
+    },
+    onError: (error) => {
+      if (error instanceof AxiosError) {
+        console.log('error.response.data', error.response?.data);
+        console.log('error.response.status', error.response?.status);
+
+        toast.error(`Error ${error.response?.status}`, {
+          description: `${error.response?.data?.message}`,
+        });
+      }
+    },
+  });
 
   useEffect(() => {
     console.log('images', images);
@@ -493,7 +520,13 @@ function SideModel(props, ref) {
                 >
                   Reset
                 </Button>
-                <Button hover onClick={handleSubmit} active>
+                <Button
+                  hover
+                  onClick={() => {
+                    createProduct.mutate();
+                  }}
+                  active
+                >
                   Create Product
                 </Button>
 
@@ -512,10 +545,17 @@ function SideModel(props, ref) {
                 >
                   Login
                 </Button>
-                {/* 
-                <Button hover onClick={async () => {}}>
+
+                <Button
+                  hover
+                  onClick={async () => {
+                    toast.success('Event has been created', {
+                      description: 'Monday, January 3rd at 6:00pm',
+                    });
+                  }}
+                >
                   Socket
-                </Button> */}
+                </Button>
               </div>
             </div>
 
@@ -582,14 +622,6 @@ function SideModel(props, ref) {
                     </span>
                   );
                 })}
-
-                {/* <span
-                      className={cx('select-size', {
-                        active: sizes.some((activeSize) => activeSize.index === index) ? true : false,
-                      })}
-                    >
-                      {activeSize.size}
-                    </span> */}
               </div>
             </div>
           </div>
