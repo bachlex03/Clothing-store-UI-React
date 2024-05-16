@@ -60,4 +60,11 @@ export const put = async (path, options = {}) => {
   return response;
 };
 
+export const remove = async (path, options = {}) => {
+  console.log('path', path);
+  const response = await request.delete('api/v1/' + path, options);
+
+  return response;
+};
+
 export default request;
