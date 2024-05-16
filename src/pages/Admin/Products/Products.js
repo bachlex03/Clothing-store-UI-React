@@ -126,6 +126,8 @@ function Products() {
 
             <tbody className={cx('table-body')}>
               {products.map((product, index) => {
+                const status = product.product_status === 'Publish' ? true : false;
+
                 return (
                   <tr key={index}>
                     <td className="code">{product.product_code}</td>
@@ -138,7 +140,7 @@ function Products() {
                     </td>
                     <td className="stock">{product.product_stocks}</td>
                     <td className="status">
-                      <span className={cx('box', 'inactive')}>{product.product_status}</span>
+                      <span className={cx('box', { Publish: status, Draft: !status })}>{product.product_status}</span>
                     </td>
                     <td className="action">
                       <span className={cx('actions')}>

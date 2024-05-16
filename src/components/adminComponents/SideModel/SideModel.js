@@ -32,7 +32,7 @@ function SideModel(props, ref) {
   const [loading, setLoading] = useState(false);
   const [reset, setReset] = useState(false);
 
-  const [name, setName] = useState("Default product'name");
+  const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [brand, setBrand] = useState('');
   const [type, setType] = useState('');
@@ -88,23 +88,23 @@ function SideModel(props, ref) {
       quantity,
     });
 
-    if (
-      !name ||
-      !description ||
-      !brand ||
-      !type ||
-      !status ||
-      !category ||
-      !price ||
-      !quantity ||
-      !formSizes.length ||
-      !ColorsString[color] ||
-      categoryData === undefined
-    ) {
-      console.log('Please fill all fields');
+    // if (
+    //   !name ||
+    //   !description ||
+    //   !brand ||
+    //   !type ||
+    //   !status ||
+    //   !category ||
+    //   !price ||
+    //   !quantity ||
+    //   !formSizes.length ||
+    //   !ColorsString[color] ||
+    //   categoryData === undefined
+    // ) {
+    //   console.log('Please fill all fields');
 
-      return;
-    }
+    //   return;
+    // }
 
     formData.append('name', name);
     formData.append('description', description);
@@ -493,11 +493,11 @@ function SideModel(props, ref) {
                 >
                   Reset
                 </Button>
-                <Button hover onClick={handleSubmit}>
+                <Button hover onClick={handleSubmit} active>
                   Create Product
                 </Button>
 
-                {/* <Button
+                <Button
                   hover
                   onClick={async () => {
                     const user = await accessService.login({
@@ -511,7 +511,7 @@ function SideModel(props, ref) {
                   }}
                 >
                   Login
-                </Button> */}
+                </Button>
                 {/* 
                 <Button hover onClick={async () => {}}>
                   Socket
@@ -538,7 +538,7 @@ function SideModel(props, ref) {
                 <p className={cx('sell-price')}>{price ? price : '$200.99'}</p>
               )}
 
-              <p className={cx('name-text')}>{name}</p>
+              <p className={cx('name-text')}>{name ? name : 'Default Product Name'}</p>
 
               <p className={cx('category-text')}>{description ? description : "Woman's Fashion"}</p>
 

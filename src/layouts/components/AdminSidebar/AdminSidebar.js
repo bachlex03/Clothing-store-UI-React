@@ -19,13 +19,14 @@ function AdminSidebar() {
     <div className={cx('menu', 'w-259')} style={{ backgroundColor: '#132337' }}>
       <div>
         <SidebarMenu name="MENU" shine>
-          <MenuItem name="Dashboard" icon={<FontAwesomeIcon icon={faChartLine} />} />
+          <MenuItem name="Dashboard" icon={<FontAwesomeIcon icon={faChartLine} />} to="/admin/products" />
+
           <MenuItem name="Landing pages" />
         </SidebarMenu>
 
         <SidebarMenu name="USUALLY">
-          <MenuItem name="Products" icon={<FontAwesomeIcon icon={faShirt} />} />
-          <MenuItem name="Invoices" icon={<FontAwesomeIcon icon={faFileInvoiceDollar} />} />
+          <MenuItem name="Products" icon={<FontAwesomeIcon icon={faShirt} />} to="/admin/products" />
+          <MenuItem name="Invoices" icon={<FontAwesomeIcon icon={faFileInvoiceDollar} />} to="/admin/invoices" />
           <MenuItem name="Customers" icon={<FontAwesomeIcon icon={faUsers} />} />
           <MenuItem name="Employees" />
         </SidebarMenu>
