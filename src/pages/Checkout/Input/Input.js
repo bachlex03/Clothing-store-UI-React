@@ -22,12 +22,18 @@ function Input({ label, isRequired, selection, textarea, note, selectValue, notE
   const setSelectedOption = props.setOption || (() => {});
   if (selection) {
     inputType = (
-      <select className={cx('selection')} onChange={(e) => setSelectedOption(e.target.value)}>
-        <option>-- Choose your option --</option>
+      <select
+        className={cx('selection')}
+        onChange={(e) => {
+          console.log(e.target.value);
+          setSelectedOption(e.target.value);
+        }}
+      >
+        <option selected>{selectValue || '-- Choose your option --'}</option>
         {data &&
           data.length > 0 &&
           data.map((item) => (
-            <option key={item.key} value={item.key}>
+            <option key={item.key} value={JSON.stringify({ key: item.key, value: item.value })}>
               {item.value}
             </option>
           ))}

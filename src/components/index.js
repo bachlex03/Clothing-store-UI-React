@@ -1,4 +1,5 @@
 export { default as Button } from './Button';
+export { default as Input } from './Input';
 // export { default as Cart } from './Cart';
 export { default as Search } from './Search';
 export { default as CategoryHeader } from './Category-Header';
@@ -14,3 +15,5 @@ export { default as ColorVariation } from './Variation-Color';
 export { default as PriceFilter } from './Price-Filter';
 export { default as Category } from './Category';
 export { default as SideProduct } from './Side-Product';
+export { default as LoginNoti } from './LoginNoti';
+export { default as RecoverNoti } from './RecoverNoti';

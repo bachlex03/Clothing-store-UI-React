@@ -1,0 +1,110 @@
+$heading-color: #4d5959;
+$text-color: #999999;
+$link-color: #222222;
+$background-hover-color: #91704f;
+
+.container-fl {
+  padding: 0;
+  margin: 0;
+  background-color: #ffffff;
+  width: 100%;
+}
+
+.topbar {
+  background: url('../../assets/images/bg.webp') no-repeat;
+  background-size: cover;
+  background-position: top;
+  background-color: rgba(0, 0, 0, 0.54) !important;
+  margin-bottom: 50px;
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
+.topbar .title {
+  color: #fff;
+  font-size: 20px;
+  line-height: 26px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  margin-bottom: 0px;
+  text-align: center;
+}
+
+.container-login {
+  padding: 0px 15px;
+  margin: 0;
+  width: 100%;
+}
+
+.content-login {
+  margin: 80px auto;
+  max-width: 410px;
+}
+
+.login-wrapper {
+  color: $text-color;
+  font-size: 14px;
+  min-height: 55vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.p-sub-title {
+  color: $heading-color;
+  line-height: 1.4;
+  font-weight: 400;
+  letter-spacing: 2px;
+  font-size: 20px;
+  margin-bottom: 40px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.button-wrapper {
+  text-align: center;
+}
+
+.content-login .button {
+  height: 40px;
+  padding: 0 25px !important;
+  font-size: 14px !important;
+  margin-bottom: 20px;
+  border: none;
+  background-color: #000;
+  border-radius: 0;
+  color: #fff;
+  transition: box-shadow 0.3s ease-in-out;
+  &:hover {
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  }
+}
+
+//input
+.form-control-ovr {
+  width: 100%;
+  border: 1px solid #dddddd;
+  border-radius: 0;
+  margin-bottom: 30px;
+  &:focus {
+    border-color: #999999;
+    outline: none;
+  }
+  height: 4.5rem;
+  font-size: 14px;
+  padding-left: 14px;
+  padding-right: 14px;
+  padding-bottom: 0;
+  color: $text-color;
+}
+
+@media (max-width: 641px) {
+  .content-login {
+    margin: 40px auto;
+  }
+
+  .guest-login-wrapper hr {
+    margin: 30px 0 30px;
+  }
+}

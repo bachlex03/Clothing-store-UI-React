@@ -50,11 +50,17 @@ function Details() {
       sizes.sort((a, b) => {
         return order.indexOf(a.sku_size) - order.indexOf(b.sku_size);
       });
-      setSizeAvailable(sizes);
+      const available = sizes.filter((item) => item.sku_quantity > 0);
+      setSizeAvailable(available);
       setSelectedSize(sizes[0].sku_size);
-      console.log(sizes);
     }
   }, [sizesByColor, selectedColor]);
+
+  useEffect(() => {
+    if (sizeAvailable && sizeAvailable.length > 0) {
+      setSelectedSize(sizeAvailable[0].sku_size);
+    }
+  }, [sizeAvailable]);
 
   const getDetailProduct = async () => {
     const result = await getDetails(slug);
@@ -84,7 +90,21 @@ function Details() {
   }, [cartList]);
 
   const handleAddToCart = () => {
-    setCartList([...cartList, { ...product, quantity, selectedColor, selectedSize }]);
+    const productExist = cartList.find(
+      (item) => item._id === product._id && item.selectedColor === selectedColor && item.selectedSize === selectedSize,
+    );
+
+    if (productExist) {
+      setCartList(
+        cartList.map((item) =>
+          item._id === product._id && item.selectedColor === selectedColor && item.selectedSize === selectedSize
+            ? { ...item, quantity: item.quantity + quantity }
+            : item,
+        ),
+      );
+    } else {
+      setCartList([...cartList, { ...product, quantity, selectedColor, selectedSize }]);
+    }
   };
 
   return (

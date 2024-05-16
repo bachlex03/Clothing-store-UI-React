@@ -8,6 +8,7 @@ const cx = classNames.bind(style);
 
 function Cart() {
   const [cartList, setCartList] = useState(JSON.parse(localStorage.getItem('cartList')) || []);
+  const [total, setTotal] = useState(0);
 
   const handleChangeQuantity = (value, id) => {
     if (+value === 0) return;
@@ -35,13 +36,20 @@ function Cart() {
     setCartList(newCartList);
   };
 
-  const removeProduct = (id) => {
-    const newCartList = cartList.filter((item) => item._id !== id);
+  const removeProduct = (id, color, size) => {
+    const newCartList = cartList.filter(
+      (item) => item._id !== id || item.selectedColor !== color || item.selectedSize !== size,
+    );
     setCartList(newCartList);
   };
 
   useEffect(() => {
+    let total = 0;
     localStorage.setItem('cartList', JSON.stringify(cartList));
+    cartList.map((item) => {
+      total += item.product_price * item.quantity;
+    });
+    setTotal(total);
   }, [cartList]);
 
   return (
@@ -77,9 +85,11 @@ function Cart() {
                       />
                     </td>
                     <td className="product-name">
-                      <Link to={`/products/${item.product_slug}`}>{item.product_name}</Link>
-                      <div>Color: {item.selectedColor} </div>
-                      <div>Size: {item.selectedSize}</div>
+                      <Link to={`/products/${item.product_slug}`} style={{ fontSize: '2rem', marginBottom: '8px' }}>
+                        {item.product_name}
+                      </Link>
+                      <div style={{ marginBottom: '8px' }}>Color: {item.selectedColor} </div>
+                      <div style={{ marginBottom: '8px' }}>Size: {item.selectedSize}</div>
                     </td>
                     <td className={cx('product-price')} data-title="Price">
                       <bdi>
@@ -124,7 +134,10 @@ function Cart() {
                         {parseFloat(item.product_price * item.quantity).toFixed(2)}
                       </bdi>
                     </td>
-                    <td className={cx('product-remove')} onClick={() => removeProduct(item._id)}>
+                    <td
+                      className={cx('product-remove')}
+                      onClick={() => removeProduct(item._id, item.selectedColor, item.selectedSize)}
+                    >
                       X
                     </td>
                   </tr>
@@ -137,33 +150,13 @@ function Cart() {
                 </td>
               </tr>
             )}
-            <tr>
-              <td colSpan={'6'} className="actions">
-                <div className={cx('coupon')}>
-                  <input
-                    type="text"
-                    name="coupon_code"
-                    className="input-coupon"
-                    id="coupon_code"
-                    value=""
-                    placeholder="Coupon code"
-                  />
-                  <button type="submit" className={cx('button')} name="apply_coupon" value="Apply coupon">
-                    Apply coupon
-                  </button>
-                </div>
-                <button type="submit" className={cx('button')} name="update_cart" value="Update cart" disabled="">
-                  Update cart
-                </button>
-              </td>
-            </tr>
           </tbody>
         </table>
       </form>
       <div className={cx('cart-collaterals')}>
         <div className={cx('cart_totals')}>
-          <h2>Cart totals</h2>
-          <table className={cx('table-container')}>
+          <h2 style={{ textAlign: 'right' }}>Cart totals</h2>
+          <table className={cx('table-container')} style={{ textAlign: 'right' }}>
             <tbody>
               <tr className={cx('cart-subtotal')}>
                 <th>Subtotal</th>
@@ -172,13 +165,13 @@ function Cart() {
                     <span className={cx('icon')}>
                       <TbCurrencyDollar />
                     </span>
-                    79.00
+                    {parseFloat(total).toFixed(2)}
                   </bdi>
                 </td>
               </tr>
               <tr className={cx('shipping-totals')}>
                 <th>Shipping</th>
-                <td data-title="Shipping">
+                <td data-title="Shipping" className={cx('shipping')}>
                   <ul id="shipping_method" className={cx('shipping-methods')}>
                     <li>
                       <input
@@ -204,12 +197,9 @@ function Cart() {
                       <label for="shipping_method_0_wc_pickup_store">Pickup Store</label>
                     </li>
                   </ul>
-                  <p class="shipping-destination">
-                    Shipping to <strong>CA</strong>.
-                  </p>
                 </td>
               </tr>
-              <tr class={cx('order-total')}>
+              <tr class={cx('order-total')} style={{ marginTop: '10px' }}>
                 <th>Total</th>
                 <td data-title="Total">
                   <strong>
@@ -217,7 +207,7 @@ function Cart() {
                       <span className={cx('icon')}>
                         <TbCurrencyDollar />
                       </span>
-                      79.00
+                      {parseFloat(total).toFixed(2)}
                     </bdi>
                   </strong>
                 </td>

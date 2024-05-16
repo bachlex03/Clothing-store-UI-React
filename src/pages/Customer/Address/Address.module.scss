@@ -1,0 +1,56 @@
+@import '../../../components/GlobalStyles/butlerFont.css';
+
+.wrapper {
+  padding-left: 15px;
+  border-left: 1px solid #ccc;
+}
+
+.heading {
+  font-size: 2.4rem;
+  font-family: 'Butler', sans-serif;
+  margin: 20px 0;
+  font-weight: 400;
+}
+
+.label {
+  font-size: 1.4rem;
+  position: relative;
+}
+.selection {
+  display: block;
+  height: 45px;
+  padding: 10px 15px;
+  color: #888686;
+  background-color: transparent;
+  border: 1px solid #e1e1e1;
+  border-radius: var(--rounded-full);
+  font-family: var(--ff-poppins);
+  width: 100%;
+  margin-top: 10px;
+  font-size: 1.4rem;
+}
+
+.btn-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.button {
+  display: block;
+  color: #fff;
+  font-weight: 600;
+  padding: 10px 30px;
+  font-size: 1.6rem;
+  background-color: #000;
+  border: none;
+  margin-bottom: 30px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  &:hover {
+    cursor: pointer;
+    background-color: rgb(153, 153, 153);
+    border: none;
+  }
+}

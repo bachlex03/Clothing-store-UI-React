@@ -3,20 +3,98 @@ import classNames from 'classnames/bind';
 import Input from './Input';
 import { useEffect, useState } from 'react';
 import { getAllCity, getAllDistrictByCity } from '~/services/api/shippingService';
+import { getInfoCheckout, paymentVNPay, updateInfo } from '~/services/api/paymenService';
 
 const cx = classNames.bind(style);
 
 function Checkout() {
+  const [checkoutInfo, setCheckoutInfo] = useState({});
+  const [city, setCity] = useState({});
+  const [selectedCity, setSelectedCity] = useState('');
+  const [district, setDistrict] = useState({});
+  const [selectedDistrict, setSelectedDistrict] = useState('');
+  const [selectedCountry, setSelectedCountry] = useState('');
+  const [street, setStreet] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [userCity, setUserCity] = useState('');
+  const [userDistrict, setUserDistrict] = useState('');
+  const [phone, setPhone] = useState('');
+  const [note, setNote] = useState('');
+  const [cartList, setCartList] = useState(JSON.parse(localStorage.getItem('cartList')) || []);
+  const [listItems, setListItems] = useState([]);
+  const [total, setTotal] = useState(0);
+  const [method, setMethod] = useState(0);
+
+  useEffect(() => {
+    let total = 0;
+    const boughtItems = cartList.map((item) => {
+      total = total + item.product_price * item.quantity;
+      return {
+        name: item.product_name,
+        slug: item.product_slug,
+        size: item.selectedSize,
+        color: item.selectedColor,
+        quantity: item.quantity,
+        price: item.product_price,
+      };
+    });
+    setListItems(boughtItems);
+    setTotal(total);
+  }, []);
+
+  useEffect(() => {
+    getCheckoutInfo();
+  }, []);
+
+  const getCheckoutInfo = async () => {
+    const result = await getInfoCheckout();
+    setCheckoutInfo(result);
+    console.log(result);
+  };
+
+  useEffect(() => {
+    setSelectedCountry(checkoutInfo.address_country || '');
+    setStreet(checkoutInfo.address_addressLine || '');
+    setFirstName(checkoutInfo.profile_firstName || '');
+    setLastName(checkoutInfo.profile_lastName || '');
+    setUserCity(checkoutInfo.address_province || '');
+    setUserDistrict(checkoutInfo.address_district || '');
+    setStreet(checkoutInfo.address_addressLine || '');
+    setPhone(checkoutInfo.profile_phoneNumber || '');
+    console.log('checkout info: -->>', checkoutInfo);
+  }, [checkoutInfo]);
+
   const country = [
     {
       key: 1,
       value: 'Việt Nam',
     },
   ];
-  const [city, setCity] = useState({});
-  const [selectedCity, setSelectedCity] = useState('');
-  const [district, setDistrict] = useState({});
-  const [selectedDistrict, setSelectedDistrict] = useState('');
+
+  useEffect(() => {
+    if (selectedCity && selectedCity.startsWith('{') && selectedCity.endsWith('}')) {
+      try {
+        const objectCity = JSON.parse(selectedCity);
+        setUserCity(objectCity?.value);
+        console.log(objectCity);
+      } catch (error) {
+        console.error('Error parsing selectedCity:', error);
+      }
+    }
+  }, [selectedCity]);
+
+  useEffect(() => {
+    if (selectedDistrict && selectedDistrict.startsWith('{') && selectedDistrict.endsWith('}')) {
+      try {
+        const objectDistrict = JSON.parse(selectedDistrict);
+        setUserDistrict(objectDistrict?.value);
+        console.log(objectDistrict);
+      } catch (error) {
+        console.error('Error parsing selectedDistrict:', error);
+      }
+    }
+  }, [selectedDistrict]);
 
   const getAllCityData = async () => {
     const result = await getAllCity();
@@ -41,7 +119,6 @@ function Checkout() {
       };
     });
     setDistrict(district);
-    console.log(district);
   };
 
   useEffect(() => {
@@ -49,12 +126,66 @@ function Checkout() {
   }, []);
 
   useEffect(() => {
-    console.log(selectedCity);
+    let objectCity;
+    if (selectedCity && selectedCity.startsWith('{') && selectedCity.endsWith('}')) {
+      objectCity = JSON.parse(selectedCity);
+    }
     setDistrict({});
     if (selectedCity) {
-      getAllDistrict(selectedCity);
+      console.log(objectCity?.key);
+      getAllDistrict(objectCity?.key);
     }
   }, [selectedCity]);
+
+  const handleUpdateInfo = async () => {
+    const data = {
+      firstName: firstName,
+      lastName: lastName,
+      phoneNumber: phone,
+      addressLine: street,
+      province: userCity,
+      district: userDistrict,
+      country: selectedCountry,
+    };
+    console.log('check info: ', data);
+    const response = await updateInfo(data);
+    if (response.status === 200) {
+      if (response.data?.redirect) {
+        console.log('Update success');
+      } else {
+        console.log('Update failed');
+      }
+    }
+  };
+
+  const handlePlaceOrder = async () => {
+    console.log('Place order', listItems);
+    const boughtItems = listItems.map((item) => {
+      return {
+        slug: item.slug,
+        size: item.size,
+        color: item.color,
+        quantity: item.quantity,
+        price: item.price,
+      };
+    });
+    const data = {
+      firstName: firstName,
+      lastName: lastName,
+      phoneNumber: phone,
+      country: selectedCountry,
+      province: userCity,
+      district: userDistrict,
+      addressLine: street,
+      boughtItems: boughtItems,
+      totalPrice: total,
+    };
+    if (method === 1) {
+      const response = await paymentVNPay(data);
+      console.log('response: ', response.data.url);
+      window.location.href = response.data.url;
+    }
+  };
 
   return (
     <>
@@ -64,15 +195,43 @@ function Checkout() {
             <div className={cx('heading')}>Billing details</div>
             <div className={cx('name-area')}>
               <div className={cx('column')}>
-                <Input name="firstName" label="First name" placeholder="First name..." isRequired required />
+                <Input
+                  name="firstName"
+                  label="First name"
+                  placeholder="First name..."
+                  value={firstName}
+                  onChange={(e) => {
+                    setFirstName(e.target.value);
+                  }}
+                  isRequired
+                  required
+                />
               </div>
               <div className={cx('column')}>
-                <Input name="lastName" label="Last name" placeholder="Last name..." isRequired required />
+                <Input
+                  name="lastName"
+                  label="Last name"
+                  placeholder="Last name..."
+                  value={lastName}
+                  onChange={(e) => {
+                    setLastName(e.target.value);
+                  }}
+                  isRequired
+                  required
+                />
               </div>
             </div>
             <div className={cx('address-area')}>
               <div>
-                <Input name="country" label="Country" selection data={country} isRequired required />
+                <Input
+                  name="country"
+                  label="Country"
+                  selectValue={selectedCountry}
+                  selection
+                  data={country}
+                  isRequired
+                  required
+                />
               </div>
               <div>
                 <Input
@@ -81,6 +240,7 @@ function Checkout() {
                   selection
                   setOption={setSelectedCity}
                   data={city}
+                  selectValue={userCity}
                   isRequired
                   required
                 />
@@ -91,26 +251,57 @@ function Checkout() {
                   label="Districts"
                   selection
                   data={district}
+                  selectValue={userDistrict}
                   setOption={setSelectedDistrict}
                   isRequired
                   required
                 />
               </div>
               <div>
-                <Input name="street" label="Street Address" placeholder="Street address..." isRequired required />
+                <Input
+                  name="street"
+                  label="Street Address"
+                  placeholder="Street address..."
+                  value={street}
+                  onChange={(e) => setStreet(e.target.value)}
+                  isRequired
+                  required
+                />
               </div>
             </div>
             <div className={cx('phone-area')}>
-              <Input name="phone" label="Phone Number" placeholder="Phone number..." isRequired required />
+              <Input
+                name="phone"
+                label="Phone Number"
+                placeholder="Phone number..."
+                value={phone}
+                onChange={(e) => {
+                  setPhone(e.target.value);
+                }}
+                isRequired
+                required
+              />
             </div>
-            <div className={cx('email-area')}>
+            {/* <div className={cx('email-area')}>
               <Input name="email" label="Email Address" placeholder="Email address..." isRequired required />
-            </div>
+            </div> */}
             <div className={cx('note-area')}>
-              <Input name="note" label="Note" placeholder="note..." textarea isRequired required />
+              <Input
+                name="note"
+                label="Note"
+                placeholder="note..."
+                onChange={(e) => {
+                  setNote(e.target.value);
+                }}
+                textarea
+                isRequired
+                required
+              />
             </div>
             <div className={cx('update-area')}>
-              <button className={cx('update-button')}>UPDATE INFORMATION</button>
+              <button className={cx('update-button')} onClick={() => handleUpdateInfo()}>
+                UPDATE INFORMATION
+              </button>
             </div>
           </div>
           <div className={cx('invoice-wrapper')}>
@@ -124,47 +315,52 @@ function Checkout() {
                   </tr>
                 </thead>
                 <tbody className={cx('tbody')}>
-                  <tr>
-                    <td className={cx('product')}>
-                      <p className={cx('product-heading')}>Test</p>
-                      <div className={cx('info-product')}>
-                        <span>10000</span>
-                        <div>
-                          <p className={cx('variation-value')}>Color: Red</p>
-                          <p className={cx('variation-value')}>Size: M</p>
-                        </div>
-                      </div>
-                    </td>
-                    <td className={cx('product-subtotal')}>$ 50000</td>
-                  </tr>
+                  {listItems &&
+                    listItems.length > 0 &&
+                    listItems.map((item) => {
+                      return (
+                        <tr>
+                          <td className={cx('product')}>
+                            <p className={cx('product-heading')}>{item.name}</p>
+                            <div className={cx('info-product')}>
+                              <span>$ {parseFloat(item.price).toFixed(2)}</span>
+                              <div>
+                                <p className={cx('variation-value')}>Color: {item.color}</p>
+                                <p className={cx('variation-value')}>Size: {item.size}</p>
+                                <p className={cx('variation-value')}>Quantity: {item.quantity}</p>
+                              </div>
+                            </div>
+                          </td>
+                          <td className={cx('product-subtotal')}>
+                            $ {parseFloat(item.price * item.quantity).toFixed(2)}
+                          </td>
+                        </tr>
+                      );
+                    })}
                 </tbody>
               </table>
               <div className={cx('total-field')}>
                 <p className={cx('total-title')}>Subtotal</p>
-                <p>$ 10000</p>
+                <p>$ {parseFloat(total).toFixed(2)}</p>
               </div>
               <div className={cx('total-field')}>
                 <p className={cx('total-title')}>Shipping</p>
-                <p>Flat rate: $ 30.00</p>
+                <p>Flat rate: $ 0.00</p>
               </div>
               <div className={cx('total-field')}>
                 <p className={cx('total-title')}>Total</p>
-                <strong>$ 123123123</strong>
+                <strong>$ {parseFloat(total).toFixed(2)}</strong>
               </div>
 
               {/* Payment type */}
               <div className={cx('payment-type')}>
                 <ul className={cx('payment-list')} style={{ display: 'flex', flexDirection: 'column' }}>
                   <li style={{ display: 'flex' }}>
-                    <input type="radio" name="payment-radio" id="bank" />
-                    <label htmlFor="bank">Direct bank transfer</label>
-                  </li>
-                  <li style={{ display: 'flex' }}>
-                    <input type="radio" name="payment-radio" id="on-delivery" />
+                    <input type="radio" name="payment-radio" id="on-delivery" checked onClick={() => setMethod(0)} />
                     <label htmlFor="on-delivery">Cash on delivery</label>
                   </li>
                   <li style={{ display: 'flex', alignItems: 'center' }}>
-                    <input type="radio" name="payment-radio" id="VNPay" />
+                    <input type="radio" name="payment-radio" id="VNPay" onClick={() => setMethod(1)} />
                     <label htmlFor="VNPay">VNPay</label>
                     <img
                       style={{ width: '50px', height: '30px', border: '1px solid black' }}
@@ -190,7 +386,9 @@ function Checkout() {
                 </div>
               </div>
               <div className={cx('place-area')}>
-                <button className={cx('place-button')}>PLACE ORDER</button>
+                <button className={cx('place-button')} onClick={() => handlePlaceOrder()}>
+                  PLACE ORDER
+                </button>
               </div>
             </div>
           </div>

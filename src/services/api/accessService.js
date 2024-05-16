@@ -5,3 +5,9 @@ export const login = async (user) => {
 
   return result;
 };
+
+export const register = async (user) => {
+  const result = await request.post('auth/register', user);
+
+  return result;
+}

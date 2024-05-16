@@ -337,6 +337,11 @@ td[class*='name'] {
     font-weight: 600;
     color: #fff;
   }
+  p[class*='name'] {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #fff;
+  }
 
   p[class*='desc'] {
     color: var(--admin-font-color);

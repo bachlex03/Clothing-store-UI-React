@@ -3,7 +3,6 @@ import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleNotch, faAnglesRight, faArrowsSpin } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useRef, useState, forwardRef, useImperativeHandle, Fragment } from 'react';
-
 import { Button, Input } from '~/components/adminComponents';
 import { ColorsHash, ColorsString } from '~/common/constants';
 import * as productService from '~/services/api/productService';
@@ -118,6 +117,7 @@ function SideModel(props, ref) {
     formData.append('category', category);
     formData.append('price', price.toString().replace('$', ''));
     formData.append('quantity', quantity);
+    formData.append('test', test);
 
     images.forEach((image, index) => {
       formData.append(`images`, image);
