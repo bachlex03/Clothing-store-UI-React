@@ -43,7 +43,7 @@ function Shop({ children }) {
   return (
     <div>
       <div className={classes}>
-        <Header animation blur />
+        <Header />
       </div>
       <div className={cx('container')}>
         <div className="left-block"></div>
