@@ -328,22 +328,22 @@
 //   text-align: center;
 // }
 
-// td[class*='name'] {
-//   text-align: left;
-//   font-weight: 500;
-// }
+td[class*='name'] {
+  text-align: left;
+  font-weight: 500;
 
-// p[class*='name'] {
-//   font-size: 1.4rem;
-//   font-weight: 600;
-//   color: #fff;
-// }
+  p[class*='name'] {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #fff;
+  }
 
-// p[class*='desc'] {
-//   color: var(--admin-font-color);
-//   margin-top: 8px;
-//   font-weight: 400;
-// }
+  p[class*='desc'] {
+    color: var(--admin-font-color);
+    margin-top: 8px;
+    font-weight: 400;
+  }
+}
 
 // td[class*='rate'] {
 //   text-align: left;

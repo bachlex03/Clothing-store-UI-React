@@ -2,9 +2,9 @@ import style from './Price.module.scss';
 import classNames from 'classnames/bind';
 const cx = classNames.bind(style);
 
-function Price({ value = 0, promotion = 0, pos__shop, old_new_price, fs_15 }) {
+function Price({ value = 0, promotion = 0, pos_shop, old_new_price, fs_15 }) {
   const classes = {
-    pos__shop,
+    pos_shop,
     old_new_price,
     fs_15,
   };
@@ -33,7 +33,7 @@ function Price({ value = 0, promotion = 0, pos__shop, old_new_price, fs_15 }) {
     <>
       <div
         className={cx('wrapper', {
-          pos__shop,
+          pos_shop,
         })}
       >
         {promotion ? (old_new_price ? renderPrice.old_new_price : renderPrice.sale) : renderPrice.current}

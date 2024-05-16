@@ -14,7 +14,7 @@ import { Price } from '~/components';
 
 const cx = classNames.bind(style);
 
-function Search() {
+function Search({ light, color }) {
   const [inputValue, setInputValue] = useState('');
   const [clearIcon, setClearIcon] = useState(false);
   const [spinner, setSpinner] = useState(false);
@@ -107,6 +107,8 @@ function Search() {
             }
           }}
           value={inputValue}
+          light={light}
+          style={{ color: color }}
         />
         {clearIcon ? icons.xmark : Fragment}
         {spinner ? icons.spinner : Fragment}

@@ -9,17 +9,11 @@ import { ColorsHash, ColorsString } from '~/common/constants';
 import * as productService from '~/services/api/productService';
 import * as accessService from '~/services/api/accessService';
 import * as categoryService from '~/services/api/categoryService';
+import { renderCategories } from '~/utils/render-category';
 
 const regexOnlyNumber = /^[0-9.]*$/;
 
-const colorsArr = [
-  ColorsHash.BROWN,
-  ColorsHash.GREY,
-  ColorsHash.YELLOW,
-  ColorsHash.WHITE,
-  ColorsHash.PINK,
-  ColorsHash.RED,
-];
+const colorsArr = [ColorsHash.BROWN, ColorsHash.GREY, ColorsHash.YELLOW, ColorsHash.PINK, ColorsHash.RED];
 
 const sizesArr = ['S', 'M', 'L', 'XL', '2XL'];
 const brandsArr = ['Gucci', 'Louis Vuitton', 'Chanel', 'Dior', 'Prada'];
@@ -32,10 +26,13 @@ const cx = classNames.bind(style);
 function SideModel(props, ref) {
   const overlayRef = useRef(null);
   const addProductContainerRef = useRef(null);
+  const [rightImg, setRightImg] = useState('https://themesdesign.in/tailwick/html-dark/assets/images/img-03.png');
+
   const [visible, setVisible] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [reset, setReset] = useState(false);
 
-  const [name, setName] = useState('');
+  const [name, setName] = useState("Default product'name");
   const [description, setDescription] = useState('');
   const [brand, setBrand] = useState('');
   const [type, setType] = useState('');
@@ -45,20 +42,25 @@ function SideModel(props, ref) {
   const [color, setColor] = useState('');
   const [status, setStatus] = useState('');
   const [price, setPrice] = useState('');
-  const [discount, setDiscount] = useState();
+  const [discount, setDiscount] = useState('');
   const [category, setCategory] = useState('');
   const [images, setImages] = useState([]);
   const [showImage, setShowImage] = useState([]);
 
   const [categoriesArr, setCategoriesArr] = useState([
-    'Outerwear',
-    'Dresses',
-    'T-Shirts',
-    'Blouses',
-    'Knitwear',
-    'Pant',
+    {
+      name: 'Demo',
+      slug: 'demo',
+      children: [
+        {
+          name: 'Demo child',
+          slug: 'demo-child',
+          children: null,
+        },
+      ],
+    },
   ]);
-  const [fetchCategory, setFetchCategory] = useState({});
+  const [fetchCategory, setFetchCategory] = useState([]);
 
   const handleSubmit = async (e) => {
     const formData = new FormData();
@@ -67,20 +69,42 @@ function SideModel(props, ref) {
       return size.size;
     });
 
-    let formCategoryId = fetchCategory.find((cate) => {
+    let categoryData = fetchCategory.find((cate) => {
       return cate.category_name === category;
     });
 
-    const test = JSON.stringify([
-      {
-        name: 'test',
-        value: 'test',
-      },
-      {
-        name: 'test2',
-        value: 'test2',
-      },
-    ]);
+    console.log('data', {
+      name,
+      description,
+      brand,
+      type,
+      gender,
+      formSizes,
+      'ColorsString[color]': ColorsString[color],
+      status,
+      categoryData,
+      category,
+      price,
+      quantity,
+    });
+
+    if (
+      !name ||
+      !description ||
+      !brand ||
+      !type ||
+      !status ||
+      !category ||
+      !price ||
+      !quantity ||
+      !formSizes.length ||
+      !ColorsString[color] ||
+      categoryData === undefined
+    ) {
+      console.log('Please fill all fields');
+
+      return;
+    }
 
     formData.append('name', name);
     formData.append('description', description);
@@ -90,26 +114,10 @@ function SideModel(props, ref) {
     formData.append('sizes', formSizes);
     formData.append('color', ColorsString[color]);
     formData.append('status', status);
-    formData.append('categoryId', formCategoryId._id);
+    formData.append('categoryId', categoryData._id);
     formData.append('category', category);
     formData.append('price', price.toString().replace('$', ''));
     formData.append('quantity', quantity);
-    formData.append('test', test);
-
-    // console.log({
-    //   name,
-    //   description,
-    //   brand,
-    //   type,
-    //   gender,
-    //   quantity,
-    //   sizes: formSizes,
-    //   category,
-    //   categoryId: formCategoryId._id,
-    //   color: ColorsString[color],
-    //   status,
-    //   price,
-    // });
 
     images.forEach((image, index) => {
       formData.append(`images`, image);
@@ -130,18 +138,31 @@ function SideModel(props, ref) {
     }
   };
 
+  useEffect(() => {
+    console.log('images', images);
+    if (images.length) {
+      setRightImg(URL.createObjectURL(images[0]));
+    } else {
+      setRightImg('https://themesdesign.in/tailwick/html-dark/assets/images/img-03.png');
+    }
+  }, [images]);
+
   // Fetching categories
   useEffect(() => {
     (async () => {
-      let result = await categoryService.getChildren();
+      setLoading(true);
+      try {
+        const data = await categoryService.getCategories();
 
-      let arr = result.map((category) => {
-        return category.category_name;
-      });
+        setLoading(false);
 
-      setCategoriesArr(arr);
+        setFetchCategory(data);
+        setCategoriesArr(renderCategories(data));
+      } catch (error) {
+        console.log('ERROR FROM API', error);
 
-      setFetchCategory(result);
+        setLoading(false);
+      }
     })();
   }, []);
 
@@ -154,6 +175,18 @@ function SideModel(props, ref) {
       addProductContainerRef.current.setAttribute('open', '');
     },
   }));
+
+  const handleShowSalePrice = (price, discount) => {
+    if (price && discount) {
+      let priceArr = price.split('$');
+
+      let newPrice = parseInt(priceArr[1]);
+
+      let discountPrice = (newPrice * discount) / 100;
+
+      return '$' + (newPrice - discountPrice).toFixed(2);
+    }
+  };
 
   return (
     <Fragment>
@@ -224,7 +257,7 @@ function SideModel(props, ref) {
                 </div>
               </div>
 
-              <div className="row mt16">
+              <div className="row mt-20px">
                 <div className="col c-4">
                   <Input
                     name="product_quantity"
@@ -255,30 +288,50 @@ function SideModel(props, ref) {
                 </div>
 
                 <div className="col c-4">
-                  <Input selectOptions={brandsArr} setValue={setBrand}>
+                  <Input selectOptions={brandsArr} setValue={setBrand} reset={reset} setReset={setReset}>
                     Brand
                   </Input>
                 </div>
-                <div className="col c-4">
-                  <Input selectOptions={categoriesArr} placeholder="Select category" setValue={setCategory}>
+
+                <div className="col c-4 mt-20px">
+                  <Input
+                    selectOptions={categoriesArr}
+                    hasChild
+                    placeholder="Select category"
+                    setValue={setCategory}
+                    reset={reset}
+                    setReset={setReset}
+                  >
                     Category
                   </Input>
                 </div>
 
-                <div className="col c-4">
-                  <Input selectOptions={typeArr} placeholder="Select type" setValue={setType}>
+                <div className="col c-4 mt-20px">
+                  <Input
+                    selectOptions={typeArr}
+                    placeholder="Select type"
+                    setValue={setType}
+                    reset={reset}
+                    setReset={setReset}
+                  >
                     Product Type
                   </Input>
                 </div>
 
-                <div className="col c-4">
-                  <Input selectOptions={genderArr} placeholder="Select type" setValue={setGender}>
+                <div className="col c-4 mt-20px">
+                  <Input
+                    selectOptions={genderArr}
+                    placeholder="Select type"
+                    setValue={setGender}
+                    reset={reset}
+                    setReset={setReset}
+                  >
                     Gender
                   </Input>
                 </div>
               </div>
 
-              <div className="row mt16">
+              <div className="row mt-20px">
                 <div className="col c-6">
                   <Input colors={colorsArr} setValue={setColor}>
                     Colors Variant
@@ -291,7 +344,8 @@ function SideModel(props, ref) {
                 </div>
               </div>
 
-              <div className="row">
+              {/* product_images */}
+              <div className="row ">
                 <div className="col c-12">
                   <Input type={'file'} image setValue={setImages}>
                     Product Images
@@ -332,25 +386,10 @@ function SideModel(props, ref) {
                       );
                     })}
                   </div>
-
-                  {/* <div className={cx('img-preview-container')}>
-                      {showImage.map((image, index) => {
-                        return (
-                          <div className={cx('image-container')} key={index}>
-                            <img
-                              key={index}
-                              src={`http://localhost:3001/images/${image.filename}`}
-                              alt=""
-                              className={cx('input-images')}
-                            />
-                          </div>
-                        );
-                      })}
-                    </div> */}
                 </div>
               </div>
 
-              <div className="row">
+              <div className="row mt-20px">
                 <div className="col c-12">
                   <Input
                     placeholder="Enter Description"
@@ -365,6 +404,7 @@ function SideModel(props, ref) {
                 </div>
               </div>
 
+              {/* product_quantity */}
               <div className="row">
                 <div className="col c-4">
                   <Input
@@ -416,21 +456,48 @@ function SideModel(props, ref) {
                 </div>
 
                 <div className="col c-4">
-                  <Input selectOptions={StatusArr} placeholder="Select status" setValue={setStatus} dropdownTop>
+                  <Input
+                    selectOptions={StatusArr}
+                    placeholder="Select status"
+                    setValue={setStatus}
+                    dropdownTop
+                    reset={reset}
+                    setReset={setReset}
+                  >
                     Status
                   </Input>
                 </div>
               </div>
 
               <div className={cx('left-block-footer', 'mt-16px')}>
-                <Button reset hover>
+                <Button
+                  reset
+                  hover
+                  onClick={() => {
+                    setName('');
+                    setDescription('');
+                    setBrand('');
+                    setType('');
+                    setGender('');
+                    setQuantity(0);
+                    setSizes([]);
+                    setColor('');
+                    setStatus('');
+                    setPrice('');
+                    setDiscount();
+                    setCategory('');
+                    setImages([]);
+
+                    setReset(!reset);
+                  }}
+                >
                   Reset
                 </Button>
                 <Button hover onClick={handleSubmit}>
                   Create Product
                 </Button>
 
-                <Button
+                {/* <Button
                   hover
                   onClick={async () => {
                     const user = await accessService.login({
@@ -444,11 +511,11 @@ function SideModel(props, ref) {
                   }}
                 >
                   Login
-                </Button>
-
+                </Button> */}
+                {/* 
                 <Button hover onClick={async () => {}}>
                   Socket
-                </Button>
+                </Button> */}
               </div>
             </div>
 
@@ -457,54 +524,72 @@ function SideModel(props, ref) {
               <p className={cx('heading-text')}>Product Card Preview</p>
 
               <div className={cx('img-block')}>
-                <img src="https://themesdesign.in/tailwick/html-dark/assets/images/img-03.png" alt="" />
+                <div className={cx('img-wrapper')}>
+                  <img src={rightImg} alt="" />
+                </div>
               </div>
 
-              <p className={cx('sell-price')}>
-                $145.99 <span className={cx('sale-price')}>299.99</span>
-              </p>
+              {discount ? (
+                <p className={cx('sell-price')}>
+                  {price ? handleShowSalePrice(price, discount) : '$100.99'}{' '}
+                  {discount ? <span className={cx('sale-price')}>{price}</span> : ''}
+                </p>
+              ) : (
+                <p className={cx('sell-price')}>{price ? price : '$200.99'}</p>
+              )}
 
-              <p className={cx('name-text')}>Fast colors Typography Men</p>
+              <p className={cx('name-text')}>{name}</p>
 
-              <p className={cx('category-text')}>Men's Fashion</p>
+              <p className={cx('category-text')}>{description ? description : "Woman's Fashion"}</p>
 
               <div className={cx('colors')}>
                 <p className={cx('variant-text')}>Colors</p>
 
+                {console.log('color', color)}
                 <div className={cx('color-container')}>
-                  <div className={cx('color-block')}>
-                    <input className={cx('select-color', 'color-1')} name="right-" type="checkbox" />
-                  </div>
-
-                  <div className={cx('color-block')}>
-                    <input className={cx('select-color', 'color-2')} name="right-" type="checkbox" />
-                  </div>
-
-                  <div className={cx('color-block')}>
-                    <input className={cx('select-color', 'color-3')} name="right-" type="checkbox" />
-                  </div>
-
-                  <div className={cx('color-block')}>
-                    <input className={cx('select-color', 'color-4')} name="right-" type="checkbox" />
-                  </div>
+                  {colorsArr.map((hashColor, index) => {
+                    return (
+                      <input
+                        key={index}
+                        data-key={index}
+                        type="checkbox"
+                        className={cx('colors-right-block', {
+                          active: color === hashColor ? true : false,
+                        })}
+                        style={{ backgroundColor: hashColor }}
+                      />
+                    );
+                  })}
                 </div>
               </div>
 
               <div className={cx('sizes')}>
                 <p className={cx('variant-text', 'mb-12px')}>Sizes</p>
 
-                <span
-                  className={cx('select-size', {
-                    active: true,
-                  })}
-                >
-                  XS
-                </span>
-                <span className={cx('select-size')}>S</span>
-                <span className={cx('select-size')}>M</span>
-                <span className={cx('select-size')}>L</span>
-                <span className={cx('select-size')}>XL</span>
-                <span className={cx('select-size')}>2XL</span>
+                {sizesArr.map((size, index) => {
+                  return (
+                    <span
+                      key={index}
+                      className={cx('select-size', {
+                        active: sizes.length
+                          ? sizes.some((activeSize) => activeSize.index === index)
+                            ? true
+                            : false
+                          : false,
+                      })}
+                    >
+                      {size}
+                    </span>
+                  );
+                })}
+
+                {/* <span
+                      className={cx('select-size', {
+                        active: sizes.some((activeSize) => activeSize.index === index) ? true : false,
+                      })}
+                    >
+                      {activeSize.size}
+                    </span> */}
               </div>
             </div>
           </div>
