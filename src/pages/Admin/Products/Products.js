@@ -17,6 +17,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Fragment, useEffect, useRef, useState } from 'react';
 import { Button, SideModel, Search } from '~/components/adminComponents';
 import * as productService from '~/services/api/productService';
+import { getCategories } from '~/services/api/categoryService';
+import { renderCategories } from '~/utils/render-category';
 
 const cx = classNames.bind(styles);
 
@@ -33,8 +35,6 @@ function Products() {
       const data = await productService.getAllProducts({
         q: 'min',
       });
-
-      console.log('data: ', data);
 
       setProducts(data);
     } catch (error) {
@@ -126,6 +126,8 @@ function Products() {
 
             <tbody className={cx('table-body')}>
               {products.map((product, index) => {
+                const status = product.product_status === 'Publish' ? true : false;
+
                 return (
                   <tr key={index}>
                     <td className="code">{product.product_code}</td>
@@ -138,7 +140,7 @@ function Products() {
                     </td>
                     <td className="stock">{product.product_stocks}</td>
                     <td className="status">
-                      <span className={cx('box', 'inactive')}>{product.product_status}</span>
+                      <span className={cx('box', { Publish: status, Draft: !status })}>{product.product_status}</span>
                     </td>
                     <td className="action">
                       <span className={cx('actions')}>

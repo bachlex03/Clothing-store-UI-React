@@ -6,6 +6,7 @@
   border-radius: 4px;
   cursor: pointer;
   font-family: Public Sans, sans-serif;
+  transition: all 0.1s linear;
 
   &:hover {
     background-color: #1c2e45;
@@ -37,4 +38,8 @@
 
 .icon-right {
   color: var(--admin-font-color);
+}
+
+.link {
+  display: block;
 }

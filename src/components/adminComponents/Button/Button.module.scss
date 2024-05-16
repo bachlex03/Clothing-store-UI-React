@@ -9,6 +9,14 @@
   text-align: center;
   width: fit-content;
   font-weight: 500;
+  transition: all 0.1s linear;
+}
+
+.container.active {
+  &:active {
+    background-color: rgba($color: rgb(57, 52, 213), $alpha: 1) !important;
+  }
+  // background-color: #3c82f6;
 }
 
 .container + .container {

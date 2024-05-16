@@ -15,6 +15,7 @@ function Input({
   name = '',
   value = '',
   setValue,
+  hasChild,
   colors,
   sizes,
   type,
@@ -26,6 +27,8 @@ function Input({
   dropdownTop,
   readOnly,
   disabled,
+  reset = false,
+  setReset,
   ...passProps
 }) {
   const [display, setDisplay] = useState(false);
@@ -37,11 +40,18 @@ function Input({
   const textRef = useRef(null);
   const inputImgRef = useRef(null);
 
+  if (reset) {
+    textRef.current.textContent = '--';
+  }
+
   const handleSelect = (e) => {
+    setReset(false);
     if (e.target.innerText === children) {
       textRef.current.textContent = children;
 
       setIsChoose(false);
+
+      setValue('');
 
       return;
     }
@@ -76,7 +86,49 @@ function Input({
     />
   );
 
-  if (selectOptions) {
+  if (hasChild && typeof selectOptions === 'object') {
+    Comp = (
+      <div className={cx('select')} onClick={() => setDisplay(!display)}>
+        <p
+          ref={textRef}
+          className={cx('', {
+            isChose: isChoose,
+          })}
+        >
+          {children}
+        </p>
+        <FontAwesomeIcon className={cx('caret-icon')} icon={faCaretDown} />
+        <ul
+          className={cx('list', 'parent', {
+            none: !display,
+            dropdownTop: dropdownTop,
+          })}
+          onMouseLeave={() => setDisplay(false)}
+        >
+          <li className={cx('item-default')} onClick={handleSelect}>
+            {children}
+          </li>
+          {selectOptions.map((option, index) => {
+            return (
+              <li key={index}>
+                <p className={cx('parent')}>{option.name}</p>
+
+                <ul>
+                  {option.children.map((child, index) => {
+                    return (
+                      <li key={index} onClick={handleSelect} className={cx('child')}>
+                        {child.name}
+                      </li>
+                    );
+                  })}
+                </ul>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    );
+  } else if (selectOptions) {
     Comp = (
       <div className={cx('select')} onClick={() => setDisplay(!display)}>
         <p
@@ -124,6 +176,8 @@ function Input({
               onClick={() => {
                 setActiveColor(index);
 
+                console.log('reset', reset);
+
                 setValue(color);
               }}
             />
@@ -153,8 +207,11 @@ function Input({
 
                   setActiveSizes(filtered);
 
+                  setValue(filtered);
                   return;
                 }
+
+                console.log('push');
 
                 let newArr = [...activeSizes];
 
