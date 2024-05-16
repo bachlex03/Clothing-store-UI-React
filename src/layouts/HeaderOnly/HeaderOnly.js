@@ -45,7 +45,7 @@ function HeaderOnly({ children }) {
       <div className={classes}>
         <Header />
       </div>
-      <div className="container">
+      <div className="container" style={{ paddingTop: '121px' }}>
         <div className="content">{children}</div>
       </div>
       <Footer />

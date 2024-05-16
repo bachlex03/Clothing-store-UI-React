@@ -1,5 +1,71 @@
 .container {
   padding: 16px;
+  th {
+    color: var(--admin-font-color);
+    font-size: 1.4rem;
+    font-weight: 600;
+    text-align: left;
+    padding: 10px 14px;
+  }
+
+  th[class*='order'] {
+    text-align: center;
+  }
+
+  th[class*='name'] {
+  }
+
+  th[class*='rate'] {
+  }
+
+  th[class*='quantity'] {
+    text-align: center;
+  }
+
+  th[class*='amount'] {
+    text-align: center;
+  }
+
+  // td
+
+  td {
+    font-size: 1.4rem;
+    color: #c8d7e9;
+    padding: 10px 14px;
+  }
+
+  td[class*='order'] {
+    text-align: center;
+  }
+
+  td[class*='name'] {
+    text-align: left;
+    font-weight: 500;
+  }
+
+  p[class*='name'] {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #fff;
+  }
+
+  p[class*='desc'] {
+    color: var(--admin-font-color);
+    margin-top: 8px;
+    font-weight: 400;
+  }
+
+  td[class*='rate'] {
+    text-align: left;
+  }
+
+  td[class*='quantity'] {
+    text-align: center;
+  }
+
+  td[class*='amount'] {
+    text-align: left;
+  }
 }
 
 .heading-text {
@@ -224,72 +290,72 @@
   border-bottom: 0.5px solid rgba($color: #ccc, $alpha: 0.2);
 }
 
-th {
-  color: var(--admin-font-color);
-  font-size: 1.4rem;
-  font-weight: 600;
-  text-align: left;
-  padding: 10px 14px;
-}
+// th {
+//   color: var(--admin-font-color);
+//   font-size: 1.4rem;
+//   font-weight: 600;
+//   text-align: left;
+//   padding: 10px 14px;
+// }
 
-th[class*='order'] {
-  text-align: center;
-}
+// th[class*='order'] {
+//   text-align: center;
+// }
 
-th[class*='name'] {
-}
+// th[class*='name'] {
+// }
 
-th[class*='rate'] {
-}
+// th[class*='rate'] {
+// }
 
-th[class*='quantity'] {
-  text-align: center;
-}
+// th[class*='quantity'] {
+//   text-align: center;
+// }
 
-th[class*='amount'] {
-  text-align: center;
-}
+// th[class*='amount'] {
+//   text-align: center;
+// }
 
-// td
+// // td
 
-td {
-  font-size: 1.4rem;
-  color: #c8d7e9;
-  padding: 10px 14px;
-}
+// td {
+//   font-size: 1.4rem;
+//   color: #c8d7e9;
+//   padding: 10px 14px;
+// }
 
-td[class*='order'] {
-  text-align: center;
-}
+// td[class*='order'] {
+//   text-align: center;
+// }
 
-td[class*='name'] {
-  text-align: left;
-  font-weight: 500;
-}
+// td[class*='name'] {
+//   text-align: left;
+//   font-weight: 500;
+// }
 
-p[class*='name'] {
-  font-size: 1.4rem;
-  font-weight: 600;
-  color: #fff;
-}
+// p[class*='name'] {
+//   font-size: 1.4rem;
+//   font-weight: 600;
+//   color: #fff;
+// }
 
-p[class*='desc'] {
-  color: var(--admin-font-color);
-  margin-top: 8px;
-  font-weight: 400;
-}
+// p[class*='desc'] {
+//   color: var(--admin-font-color);
+//   margin-top: 8px;
+//   font-weight: 400;
+// }
 
-td[class*='rate'] {
-  text-align: left;
-}
+// td[class*='rate'] {
+//   text-align: left;
+// }
 
-td[class*='quantity'] {
-  text-align: center;
-}
+// td[class*='quantity'] {
+//   text-align: center;
+// }
 
-td[class*='amount'] {
-  text-align: left;
-}
+// td[class*='amount'] {
+//   text-align: left;
+// }
 
 .summary {
   text-align: left !important;

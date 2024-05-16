@@ -1,0 +1,137 @@
+.reviews {
+  .title-review {
+    margin-bottom: 33px;
+    font-size: 45px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    span {
+      font-family: 'Cormorant Infant', sans-serif;
+      font-weight: 500;
+      font-style: normal;
+      color: #1b1a1a;
+      line-height: 1.1;
+      clear: both;
+      margin: 0;
+    }
+  }
+  .reviewlist {
+    .review-container {
+      display: flex;
+      gap: 36px;
+    }
+    .avatar {
+      img {
+        border-radius: 40px;
+        transition: all 300ms linear 0ms;
+        max-width: 100%;
+        height: auto;
+        vertical-align: top;
+        border: none;
+        width: 80px;
+      }
+    }
+    .review-content {
+      .heading-review {
+        margin-top: 8px;
+        display: flex;
+        flex-direction: row;
+        gap: 12px;
+        margin-bottom: 5px;
+        text-transform: uppercase;
+        font-size: 15px;
+        .seperator {
+          width: 1px;
+          height: 20px;
+          background-color: #282828;
+        }
+      }
+    }
+  }
+}
+.review-form-container {
+  margin-top: 60px;
+  .review-reply-title {
+    font-size: 45px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Cormorant Infant', sans-serif;
+    font-weight: 500;
+    font-style: normal;
+    line-height: 1.1;
+    clear: both;
+    margin: 0;
+  }
+  .review-note {
+    margin-bottom: 32px;
+  }
+  .rating-area {
+    margin-bottom: 33px;
+    margin-top: -12px;
+  }
+  .content-area {
+    margin-bottom: 30px;
+    textarea {
+      vertical-align: top;
+      border: none;
+      box-shadow: 0 0 0 1px #222222 inset;
+      width: 100%;
+      max-width: 100%;
+      font-size: 16px;
+      color: #282828;
+      font-family: 'Yantramanav' sans-serif;
+      border-radius: 0;
+      padding: 20px;
+    }
+  }
+  .name-email-area {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    .column {
+      width: 50%;
+    }
+  }
+  .submit-area {
+    margin-top: 32px;
+    .submit-button {
+      background-color: #222222;
+      color: #fff;
+      position: relative;
+      font-size: 15px;
+      font-family: 'Yantramanav' sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      padding: 0 40px;
+      min-height: 58px;
+      line-height: 58px;
+      transition: all 300ms linear 0ms;
+      display: inline-flex;
+      gap: 10px;
+      align-items: center;
+      cursor: pointer;
+      border: none;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      justify-content: center;
+      &::after {
+        content: '';
+        border-bottom: 1px solid;
+        position: absolute;
+        left: 40px;
+        right: 40px;
+        margin-top: 18px;
+        transform-origin: left center;
+        transform: scale(0, 1);
+        transition: transform 0.4s cubic-bezier(0.37, 0.31, 0.2, 0.85);
+      }
+      &:hover::after {
+        transform: scale(1, 1);
+      }
+    }
+  }
+}

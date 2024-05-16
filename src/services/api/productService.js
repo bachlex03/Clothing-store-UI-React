@@ -19,3 +19,9 @@ export const getImages = async (slug) => {
 
   return result.data;
 };
+
+export const getDetails = async (param) => {
+  const result = await request.get(`products/${param}`);
+
+  return result.data;
+};
