@@ -75,10 +75,22 @@ export const getAddresses = async () => {
   const result = await request.get('users/addresses');
 
   return result;
-}
+};
 
 export const updateAddress = async (address) => {
   const result = await request.put('users/addresses', address);
+
+  return result;
+};
+
+export const updatePassword = async (password) => {
+  const result = await request.patch('users/password', password);
+
+  return result;
+};
+
+export const updateCheckoutInfo = async (info) => {
+  const result = await request.put('users/checkoutInfo', info);
 
   return result;
 };

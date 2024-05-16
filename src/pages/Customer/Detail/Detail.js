@@ -42,7 +42,10 @@ function Detail() {
       onlyUpdateInfor();
     } else {
       // if user change password, update infor and password
-      // updateInforAndPassword();
+      if (validateOnlyUpdateInfor() && validatePassword()) {
+        updatePassword();
+        onlyUpdateInfor();
+      }
     }
 
     // after update infor and password, scroll to top
@@ -74,9 +77,50 @@ function Detail() {
     }
   };
 
+  const validatePassword = () => {
+    if (!password) {
+      toast.warn('Current password is required');
+      return false;
+    }
+    if (!newPassword) {
+      toast.warn('New password is required');
+      return false;
+    }
+    if (newPassword.length < 8) {
+      toast.warn('Password must contain at least 8 characters');
+      return false;
+    }
+    if (!confirmPassword) {
+      toast.warn('Confirm password is required');
+      return false;
+    }
+    if (newPassword !== confirmPassword) {
+      toast.warn('Password does not match');
+      return false;
+    }
+    return true;
+  };
+
+  const updatePassword = async () => {
+    try {
+      let passwordData = {
+        currentPassword: password,
+        newPassword,
+        confirmPassword,
+      };
+      const response = await accountService.updatePassword(passwordData);
+      if (response.status === 200) {
+        toast.success('Password updated successfully');
+      }
+    } catch (error) {
+      console.error('Error during update password:', error);
+      toast.error('Password updated failed');
+    }
+  };
+
   return (
     <div className={cx('wrapper')}>
-      <h3 className={cx('heading')}>Billing Addresses</h3>
+      <h3 className={cx('heading')}>Profile</h3>
       <form onSubmit={handleSubmit}>
         <div className="flex">
           <div className="w100 px-10px">
@@ -131,7 +175,7 @@ function Detail() {
             <Input
               label="Current password"
               placeholder="Current password..."
-              type="text"
+              type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
@@ -141,7 +185,7 @@ function Detail() {
             <Input
               label="New password"
               placeholder="New password..."
-              type="text"
+              type="password"
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
             />
@@ -151,7 +195,7 @@ function Detail() {
             <Input
               label="Confirm new password"
               placeholder="Confirm new password..."
-              type="text"
+              type="password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
             />

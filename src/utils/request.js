@@ -60,4 +60,10 @@ export const put = async (path, options = {}) => {
   return response;
 };
 
+export const patch = async (path, options = {}) => {
+  const response = await request.patch('api/v1/' + path, options);
+
+  return response;
+};
+
 export default request;

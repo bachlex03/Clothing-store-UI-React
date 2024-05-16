@@ -71,7 +71,7 @@ function Address() {
         if (response.status === 200) {
           setUserCountry(response.data.address_country);
           setUserCity(response.data.address_province);
-          setUserDistrict(response.data.address_city);
+          setUserDistrict(response.data.address_district);
           setStreet(response.data.address_addressLine);
         }
       } catch (error) {
@@ -86,15 +86,18 @@ function Address() {
     e.preventDefault();
 
     if (validateAddress()) {
-      let address = {
-        country: country || userCountry,
+      let info = {
+        firstName,
+        lastName,
+        phoneNumber: phone,
+        district: district.name || userDistrict,
         province: city.name || userCity,
-        city: district.name || userCity,
+        country: country || userCountry,
         addressLine: street,
       };
 
       try {
-        const response = await accountService.updateAddress(address);
+        const response = await accountService.updateCheckoutInfo(info);
         if (response.status === 200) {
           toast.success('Address updated successfully');
         }
@@ -137,9 +140,10 @@ function Address() {
               name="firstName"
               label="First name"
               placeholder="First name..."
-              disable
+              required
+              isRequired
               value={firstName}
-              notEditable
+              onChange={(e) => setFirstName(e.target.value)}
             />
           </div>
 
@@ -148,9 +152,10 @@ function Address() {
               name="lastName"
               label="Last name"
               placeholder="Last name..."
-              disable
+              required
+              isRequired
               value={lastName}
-              notEditable
+              onChange={(e) => setLastName(e.target.value)}
             />
           </div>
         </div>
@@ -220,7 +225,13 @@ function Address() {
         </div>
 
         <div className="w100 px-10px mt-16px">
-          <Input name="phoneNumber" label="Phone number" placeholder="(+84)" notEditable value={phone} />
+          <Input
+            name="phoneNumber"
+            label="Phone number"
+            placeholder="(+84)"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+          />
         </div>
 
         <div className="w100 px-10px mt-16px">
