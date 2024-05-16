@@ -1,32 +1,3 @@
-.wrapper {
-  width: 100%;
-  height: 100%;
-  background-color: #000;
-  color: #fff;
-  font-weight: inherit;
-}
-
-.wrapper.h100 {
-  height: 100%;
-}
-
-.wrapper.w100 {
-  width: 100%;
-}
-
-.wrapper.upperCase {
-  text-transform: uppercase;
-}
-
-.wrapper.opposite {
-  color: #000;
-  background-color: #fff;
-}
-
-.wrapper.outline {
-  border: 1px solid #000;
-}
-
-.wrapper.pointer {
-  cursor: pointer;
+.test-css {
+  color: red;
 }
