@@ -127,31 +127,23 @@ function SideModel(props, ref) {
       formData.append(`images`, image);
     });
 
-    try {
-      setLoading(true);
-
-      const result = await productService.createProduct(formData);
-
-      console.log(result);
-    } catch (error) {
-      console.log({
-        error,
-      });
-    } finally {
-      setLoading(false);
-    }
+    return await productService.createProduct(formData);
   };
 
-  const createProduct = useMutation({
+  const createProductApi = useMutation({
     mutationFn: async () => {
+      setLoading(true);
+
       return await handleSubmit();
     },
     onSuccess: (data) => {
       toast.success('Success', {
-        description: 'Create product successfully',
+        description: 'Create successfully',
       });
 
-      console.log('data', data);
+      setTimeout(() => {
+        setLoading(false);
+      }, 500);
     },
     onError: (error) => {
       if (error instanceof AxiosError) {
@@ -162,6 +154,45 @@ function SideModel(props, ref) {
           description: `${error.response?.data?.message}`,
         });
       }
+
+      setTimeout(() => {
+        setLoading(false);
+      }, 500);
+    },
+  });
+
+  const fetchingCategories = useMutation({
+    mutationFn: async () => {
+      setLoading(true);
+
+      return await categoryService.getCategories();
+    },
+    onSuccess: (data) => {
+      toast.success('Success', {
+        description: 'All categories have been fetched successfully',
+      });
+
+      setFetchCategory(data);
+
+      setCategoriesArr(renderCategories(data));
+
+      setTimeout(() => {
+        setLoading(false);
+      }, 2000);
+    },
+    onError: (error) => {
+      if (error instanceof AxiosError) {
+        console.log('error.response.data', error.response?.data);
+        console.log('error.response.status', error.response?.status);
+
+        toast.error(`Error ${error.response?.status}`, {
+          description: `${error.response?.data?.message}`,
+        });
+      }
+
+      setTimeout(() => {
+        setLoading(false);
+      }, 2000);
     },
   });
 
@@ -176,21 +207,7 @@ function SideModel(props, ref) {
 
   // Fetching categories
   useEffect(() => {
-    (async () => {
-      setLoading(true);
-      try {
-        const data = await categoryService.getCategories();
-
-        setLoading(false);
-
-        setFetchCategory(data);
-        setCategoriesArr(renderCategories(data));
-      } catch (error) {
-        console.log('ERROR FROM API', error);
-
-        setLoading(false);
-      }
-    })();
+    fetchingCategories.mutate();
   }, []);
 
   useImperativeHandle(ref, () => ({
@@ -523,7 +540,7 @@ function SideModel(props, ref) {
                 <Button
                   hover
                   onClick={() => {
-                    createProduct.mutate();
+                    createProductApi.mutate();
                   }}
                   active
                 >

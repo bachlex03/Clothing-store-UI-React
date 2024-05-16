@@ -2,15 +2,47 @@ import { Sidebar } from '~/layouts/components';
 
 import style from './Shop.module.scss';
 import classNames from 'classnames/bind';
-import { Fragment } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { Product, Text } from '~/components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown, faAngleRight } from '@fortawesome/free-solid-svg-icons';
+import { useMutation } from '@tanstack/react-query'; // Ensure correct import
+import { toast } from 'sonner';
+import { AxiosError } from 'axios';
+import * as productService from '~/services/api/productService';
+
 import images from '~/assets/images';
 
 const cx = classNames.bind(style);
 
 function Shop() {
+  const [products, setProducts] = useState([]);
+
+  const fetchingProduct = useMutation({
+    mutationFn: async () => {
+      return await productService.getAllProducts({ q: 'min' });
+    },
+    onSuccess: (data) => {
+      toast.info('Welcome to our shop!');
+
+      setProducts(data);
+    },
+    onError: (error) => {
+      if (error instanceof AxiosError) {
+        console.log('error.response.data', error.response?.data);
+        console.log('error.response.status', error.response?.status);
+
+        toast.error(`Error ${error.response?.status}`, {
+          description: `${error.response?.data?.message}`,
+        });
+      }
+    },
+  });
+
+  useEffect(() => {
+    fetchingProduct.mutate();
+  }, []);
+
   return (
     <Fragment>
       <div
@@ -63,51 +95,21 @@ function Shop() {
               </div>
             </div>
             <div className="row">
-              <div className="col l-4">
-                <div className={cx('product-component')}>
-                  <Product product={{}}>Oversized T-shirt with tie-dye print</Product>
-                </div>
-              </div>
-              <div className="col l-4">
-                <div className={cx('product-component')}>
-                  <Product product={{}}>Pale Blue Drawstring Waist Jersey Shorts</Product>
-                </div>
-              </div>
-              <div className="col l-4">
-                <div className={cx('product-component')}>
-                  <Product product={{}}>Oversized cardigan</Product>
-                </div>
-              </div>
-              <div className="col l-4">
+              {products.map((product, index) => {
+                return (
+                  <div className="col l-4">
+                    <div className={cx('product-component')}>
+                      <Product product={product} />
+                    </div>
+                  </div>
+                );
+              })}
+
+              {/* <div className="col l-4">
                 <div className={cx('product-component')}>
                   <Product product={{}}>Oversized cardigan</Product>
                 </div>
-              </div>
-              <div className="col l-4">
-                <div className={cx('product-component')}>
-                  <Product product={{}}>Oversized cardigan</Product>
-                </div>
-              </div>
-              <div className="col l-4">
-                <div className={cx('product-component')}>
-                  <Product product={{}}>Oversized cardigan</Product>
-                </div>
-              </div>
-              <div className="col l-4">
-                <div className={cx('product-component')}>
-                  <Product product={{}}>Oversized cardigan</Product>
-                </div>
-              </div>
-              <div className="col l-4">
-                <div className={cx('product-component')}>
-                  <Product product={{}}>Oversized cardigan</Product>
-                </div>
-              </div>
-              <div className="col l-4">
-                <div className={cx('product-component')}>
-                  <Product product={{}}>Oversized cardigan</Product>
-                </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

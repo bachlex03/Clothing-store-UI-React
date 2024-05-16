@@ -14,6 +14,12 @@ export const createProduct = async (product) => {
   return result;
 };
 
+export const removeProduct = async (id) => {
+  const result = await request.remove('products/' + id);
+
+  return result;
+};
+
 export const getImages = async (slug) => {
   const result = await request.get(`products/${slug}/images`);
 
