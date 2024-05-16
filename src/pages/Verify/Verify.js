@@ -119,7 +119,7 @@ function Verify() {
               type="button"
               className={cx('button-guest')}
               onClick={() => {
-                navigate('/');
+                navigate('/shop');
               }}
             >
               Continue

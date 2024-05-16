@@ -9,8 +9,8 @@ const cx = classNames.bind(style);
 
 function Login() {
   const [logregBoxToggle, setLogregBoxToggle] = useState(false);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('' || localStorage.getItem('chani-email'));
+  const [password, setPassword] = useState('' || localStorage.getItem('chani-password'));
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [emailRegister, setEmailRegister] = useState('');
@@ -20,6 +20,7 @@ function Login() {
   const [isCheckTerms, setIsCheckTerms] = useState(true);
   const [responseError, setResponseError] = useState(false);
   const [responseRegisterMsg, setResponseRegisterMsg] = useState('');
+  const [rememberMe, setRememberMe] = useState(false);
   const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
   const navigate = useNavigate();
   const location = useLocation();
@@ -86,7 +87,11 @@ function Login() {
         } else {
           let token = response.data.accessToken;
           localStorage.setItem('token', token);
-          navigate('/');
+          if (rememberMe) {
+            localStorage.setItem('chani-email', email);
+            localStorage.setItem('chani-password', password);
+          }
+          navigate('/shop');
         }
       }
     } catch (error) {
@@ -199,7 +204,8 @@ function Login() {
 
               <div className={cx('remember-forgot')}>
                 <label>
-                  <input type="checkbox"></input> Remember me
+                  <input type="checkbox" checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} />{' '}
+                  Remember me
                 </label>
                 <Link to="/recover">Forgot password?</Link>
               </div>
