@@ -77,9 +77,17 @@ function Login() {
       };
       const response = await accountService.login(user);
       if (response.status === 200) {
-        let token = response.data.accessToken;
-        localStorage.setItem('token', token);
-        navigate('/');
+        if (response.data?.redirect) {
+          const jwtMailToken = new URLSearchParams(response?.data?.redirect.split('?')[1]).get('q');
+          const verifyResponse = await accountService.sendMailToken(qs.stringify({ q: jwtMailToken }));
+          if (verifyResponse.status === 200) {
+            navigate(response?.data?.redirect);
+          }
+        } else {
+          let token = response.data.accessToken;
+          localStorage.setItem('token', token);
+          navigate('/');
+        }
       }
     } catch (error) {
       setResponseError(true);

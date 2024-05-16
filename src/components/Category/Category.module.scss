@@ -1,0 +1,53 @@
+.parent {
+  padding-bottom: 10px;
+}
+
+.heading {
+  color: #000;
+  font-weight: 500;
+  font-size: 1.6rem;
+}
+
+.list {
+  padding-top: 10px;
+  padding-left: 15px;
+  overflow: hidden;
+  max-height: 500px;
+  transition: all 0.5s ease-in-out;
+
+  &.closed {
+    max-height: 0;
+  }
+
+  li {
+    font-size: 1.4rem;
+    padding-bottom: 10px;
+    line-height: 21px;
+  }
+}
+
+.item {
+  display: block;
+  transition: all 0.3s;
+
+  &:hover {
+    color: var(--green);
+  }
+}
+
+.icon {
+  font-size: 1.4rem;
+  cursor: pointer;
+  transform: rotate(0);
+  transition: transform 0.3s ease;
+  user-select: none;
+  padding: 5px 10px;
+}
+
+.icon.opened {
+  transform: rotate(90deg); /* Corrected rotation syntax */
+}
+
+.icon.closed {
+  transform: rotate(-90deg); /* Corrected rotation syntax */
+}

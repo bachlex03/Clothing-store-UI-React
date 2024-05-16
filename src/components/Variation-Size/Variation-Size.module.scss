@@ -1,0 +1,28 @@
+.wrapper {
+  padding: 5px 0;
+  margin-top: 5px;
+  cursor: pointer;
+
+  &:hover {
+    .icon {
+      opacity: 1;
+    }
+  }
+}
+
+.name {
+  font-weight: 500;
+  user-select: none;
+}
+
+.quantity {
+  color: #888686;
+  font-size: 1.3rem;
+}
+
+.icon {
+  opacity: 0.2;
+  width: 30px;
+  font-size: 2rem;
+  transition: all 0.2s linear;
+}

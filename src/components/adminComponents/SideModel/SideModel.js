@@ -96,21 +96,6 @@ function SideModel(props, ref) {
     formData.append('quantity', quantity);
     formData.append('test', test);
 
-    // console.log({
-    //   name,
-    //   description,
-    //   brand,
-    //   type,
-    //   gender,
-    //   quantity,
-    //   sizes: formSizes,
-    //   category,
-    //   categoryId: formCategoryId._id,
-    //   color: ColorsString[color],
-    //   status,
-    //   price,
-    // });
-
     images.forEach((image, index) => {
       formData.append(`images`, image);
     });

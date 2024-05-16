@@ -1,6 +1,6 @@
 .container {
   background-color: transparent;
-  border-bottom: 1px solid rgba($color: #fff, $alpha: 0.15);
+  border-bottom: 1px solid rgba($color: #fff, $alpha: 0.05);
 }
 
 // handle animation
@@ -59,9 +59,8 @@
   align-items: center;
   justify-content: space-between;
   height: 80px;
-  background-color: rgba($color: #fff, $alpha: 0);
   padding: 0 40px;
-  transition: all 0.5s;
+  transition: all 0.5s ease;
 }
 
 .main[light] {
@@ -72,6 +71,23 @@
   background-color: #fff;
   padding: 0 40px;
   transition: all 0.5s;
+  box-shadow: 0 10px 30px -10px #ccc;
+}
+
+.main.blur {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 80px;
+  padding: 0 40px;
+  transition: all 0.5s;
+  background-color: rgba($color: #fff, $alpha: 0.1);
+}
+
+.main[light].blur {
+  box-shadow: 0 10px 20px -15px #333;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
 }
 
 nav {
@@ -93,20 +109,98 @@ nav {
   font-weight: 300;
 }
 
+// handle animation
+
+// default
+.header-link {
+  padding: 10px 10px;
+}
+
 .list-header li:hover {
   .header-link {
     transition: all 0.5s;
-    color: #64ffda;
+
+    &:hover .header-link-text::after {
+      left: 0;
+      right: initial;
+      width: 100%;
+    }
   }
+}
+
+// default
+.header-link-text {
+  position: relative;
+  transition: all 0.5s;
+
+  &::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    bottom: -6px;
+    width: 0;
+    height: 2px;
+    background-color: #fff;
+    transition: width 0.3s ease-in-out;
+  }
+}
+
+.list-header li:hover {
+  .header-link {
+    transition: all 0.5s;
+
+    &:hover .header-link-text::after {
+      left: 0;
+      right: initial;
+      width: 100%;
+    }
+  }
+}
+
+// default
+.header-link-text {
+  position: relative;
+  transition: all 0.5s;
+
+  &::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    bottom: -6px;
+    width: 0;
+    height: 2px;
+    background-color: #fff;
+    transition: width 0.3s ease-in-out;
+  }
+}
+
+// blur
+.header-link-text[blur] {
+  position: relative;
+  transition: all 0.5s;
+}
+
+.header-link-text[blur]::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  bottom: -6px;
+  width: 0;
+  height: 2px;
+  background-color: #333;
+  transition: width 0.3s ease-in-out;
 }
 
 .list-header li .header-link {
   display: block;
   letter-spacing: 1px;
-  line-height: 79px;
+  line-height: 1.6;
+  height: 80px;
   text-transform: uppercase;
   text-decoration: none;
   color: #fff;
+  display: flex;
+  align-items: center;
 }
 
 .list-header li .header-link[light] {
@@ -239,9 +333,9 @@ nav {
   top: 50px;
 }
 
-// .cart-component[display-non] {
-//   display: none;
-// }
+.cart-component[display-non] {
+  display: none;
+}
 
 .cart-component[opening] {
   animation: fade-up 0.5s linear forwards;

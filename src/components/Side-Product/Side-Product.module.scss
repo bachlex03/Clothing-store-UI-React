@@ -1,0 +1,38 @@
+.img {
+  display: block;
+  width: 90px;
+  // height: 70px;
+  border: 1px solid #e1e1e1;
+  margin-right: 15px;
+  transition: all 0.3s;
+
+  &:hover {
+    border-color: var(--primary);
+  }
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.stars {
+  display: flex;
+  margin-top: 4px;
+}
+
+.star-icon {
+  font-size: 1.3rem;
+}
+
+.star-icon + .star-icon {
+  margin-left: 4px;
+}
+
+.name {
+  font-size: 1.6rem;
+  line-height: 1.6;
+  min-height: 52px;
+  font-weight: 500;
+}
