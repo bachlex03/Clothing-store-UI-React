@@ -20,6 +20,8 @@ function DeleteModel(props, ref) {
   const [loading, setLoading] = useState(false);
   const [visible, setVisible] = useState(null);
 
+  const { fetchingProduct } = props;
+
   const deleteProductApi = useMutation({
     mutationFn: async () => {
       // setLoading(true);
@@ -28,8 +30,11 @@ function DeleteModel(props, ref) {
     },
     onSuccess: (data) => {
       toast.success('Success', {
-        description: 'All products have been fetched successfully',
+        description: 'Delete product successfully',
       });
+
+      console.log('fetchingProduct', fetchingProduct);
+      fetchingProduct.mute();
 
       // setTimeout(() => {
       //   setLoading(false);

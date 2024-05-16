@@ -229,7 +229,7 @@ function Products() {
             </div> */}
 
         <SideModel ref={addProductModelRef} />
-        <DeleteModel ref={deleteProductModelRef} />
+        <DeleteModel ref={deleteProductModelRef} fetchingProduct />
       </div>
     </Fragment>
   );

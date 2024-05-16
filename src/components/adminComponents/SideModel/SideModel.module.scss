@@ -103,11 +103,13 @@
 // Right block
 .right-block {
   width: 272px;
-  height: fit-content;
+  height: 650px;
   background-color: var(--admin-bg);
   border-radius: 8px;
   padding: 10px 16px;
   padding-bottom: 20px;
+  overflow-y: scroll;
+  scroll-behavior: smooth;
 
   .heading-text {
     padding: 10px;
