@@ -178,12 +178,12 @@ function Products() {
                       <span className={cx('box', { Published: status, Draft: !status })}>{product.product_status}</span>
                     </td>
                     <td className="action">
-                      <span className={cx('actions')}>
+                      {/* <span className={cx('actions')}>
                         <FontAwesomeIcon className={cx('edit')} icon={faEye} />
                       </span>
                       <span className={cx('actions')}>
                         <FontAwesomeIcon className={cx('edit')} icon={faEdit} />
-                      </span>
+                      </span> */}
                       <span
                         className={cx('actions')}
                         data-id={product._id}
