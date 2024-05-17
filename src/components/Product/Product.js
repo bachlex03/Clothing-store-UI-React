@@ -25,7 +25,7 @@ function Product({ product, children, ...passProps }) {
           </i>
           {product?.promotion ? <span className={cx('tag')}>-{product.promotion}% OFF</span> : ''}
 
-          <Link to={product?.product_slug ?? '#'}>
+          <Link to={`/products/${product?.product_slug ?? '#'}`}>
             <img src={product.product_imgs[0]?.secure_url ?? images.demoShopImg} className={cx('img')} alt="" />
           </Link>
         </div>
