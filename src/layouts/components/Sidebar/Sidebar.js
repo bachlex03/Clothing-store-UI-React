@@ -18,13 +18,13 @@ function Sidebar() {
     setColorsArray(objColorKeys);
   }, []);
 
-  useEffect(async () => {
-    try {
-      const data = await getCategories();
-    } catch (error) {
-      console.log(error);
-    }
-  }, []);
+  // useEffect(async () => {
+  //   try {
+  //     const data = await getCategories();
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }, []);
 
   return (
     <aside className={cx('sidebar')}>
