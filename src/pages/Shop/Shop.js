@@ -12,6 +12,7 @@ import { AxiosError } from 'axios';
 import * as productService from '~/services/api/productService';
 
 import images from '~/assets/images';
+import { Link } from 'react-router-dom';
 
 const cx = classNames.bind(style);
 
@@ -73,7 +74,9 @@ function Shop() {
                     <Text>Categories</Text>
                   </div>
                   <div className={cx('tab-item')}>
-                    <Text>Suggestions</Text>
+                    <Link to={'/login'}>
+                      <Text>Suggestions</Text>
+                    </Link>
                   </div>
                   <div className={cx('tab-item')}>
                     <Text>Sale Products</Text>
@@ -104,12 +107,6 @@ function Shop() {
                   </div>
                 );
               })}
-
-              {/* <div className="col l-4">
-                <div className={cx('product-component')}>
-                  <Product product={{}}>Oversized cardigan</Product>
-                </div>
-              </div> */}
             </div>
           </div>
         </div>

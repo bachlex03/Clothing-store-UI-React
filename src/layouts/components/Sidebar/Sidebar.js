@@ -5,6 +5,9 @@ import { sizesArr, ColorsHash, ColorsString } from '~/common/constants';
 import { useEffect, useState } from 'react';
 import { getCategories } from '~/services/api/categoryService';
 import { renderCategories } from '~/utils/render-category';
+import { useMutation } from '@tanstack/react-query'; // Ensure correct import
+import { toast } from 'sonner';
+import { AxiosError } from 'axios';
 
 const cx = classNames.bind(style);
 
@@ -18,12 +21,35 @@ function Sidebar() {
     setColorsArray(objColorKeys);
   }, []);
 
-  useEffect(async () => {
-    try {
-      const data = await getCategories();
-    } catch (error) {
-      console.log(error);
-    }
+  // useEffect(async () => {
+  //   try {
+  //     const data = await getCategories();
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }, []);
+
+  const fetchingCategory = useMutation({
+    mutationFn: async () => {
+      return await getCategories();
+    },
+    onSuccess: (data) => {
+      toast.info('HI');
+    },
+    onError: (error) => {
+      if (error instanceof AxiosError) {
+        console.log('error.response.data', error.response?.data);
+        console.log('error.response.status', error.response?.status);
+
+        toast.error(`Error ${error.response?.status}`, {
+          description: `${error.response?.data?.message}`,
+        });
+      }
+    },
+  });
+
+  useEffect(() => {
+    fetchingCategory.mutate();
   }, []);
 
   return (

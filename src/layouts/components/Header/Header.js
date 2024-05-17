@@ -154,7 +154,7 @@ function Header({ animation = false, blur = false, light = null, color, lightLog
                 handleClose(categoriesRef.current);
               }}
             >
-              <Link className={cx('header-link')} href="#" light={lightEffect}>
+              <Link className={cx('header-link')} to={'/shop'} light={lightEffect}>
                 <p className={cx('header-link-text')}>
                   Shop
                   <i className={cx('nav-icon')}>
