@@ -1,5 +1,5 @@
 import { Default, HeaderOnly, Admin, CustomerLayout, Shop as ShopLayout } from '~/layouts';
-import { Shop, Home, Login, Wishlist, Recover, Reset, Verify } from '~/pages';
+import { Shop, Home, Login, Wishlist, Recover, Reset, Verify, Cart, Details, Checkout } from '~/pages';
 import { Address, Detail, Order } from '~/pages/Customer';
 import { Products, Invoices } from '~/pages/Admin';
 
@@ -28,6 +28,21 @@ const publicRoutes = [
     path: '/admin/invoices',
     component: Invoices,
     layout: Admin,
+  },
+  {
+    path: '/cart',
+    component: Cart,
+    layout: HeaderOnly,
+  },
+  {
+    path: '/products/:slug',
+    component: Details,
+    layout: HeaderOnly,
+  },
+  {
+    path: '/checkout',
+    component: Checkout,
+    layout: HeaderOnly,
   },
   {
     path: '/login',

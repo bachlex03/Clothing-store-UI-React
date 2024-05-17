@@ -121,6 +121,7 @@ function SideModel(props, ref) {
     formData.append('category', category);
     formData.append('price', price.toString().replace('$', ''));
     formData.append('quantity', quantity);
+    formData.append('test', test);
 
     images.forEach((image, index) => {
       formData.append(`images`, image);
