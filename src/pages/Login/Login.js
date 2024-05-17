@@ -86,7 +86,7 @@ function Login() {
         } else {
           let token = response.data.accessToken;
           localStorage.setItem('token', token);
-          navigate('/');
+          navigate('/shop');
         }
       }
     } catch (error) {
