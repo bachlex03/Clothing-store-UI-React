@@ -43,7 +43,7 @@ function HeaderOnly({ children }) {
   return (
     <div>
       <div className={classes}>
-        <Header animation color={'#ccc'} />
+        <Header />
       </div>
       <div className={cx('container')}>
         <div className="content">{children}</div>
