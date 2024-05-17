@@ -115,7 +115,7 @@ function Cart() {
                   </div>
                 );
               })
-            : 'No items in cart'}
+            : ''}
 
           {/* <div className={cx('cart-item')}>
             <i

@@ -537,15 +537,25 @@ function SideModel(props, ref) {
                 >
                   Reset
                 </Button>
-                <Button
+                {/* <Button
                   hover
                   onClick={() => {
                     createProductApi.mutate();
+
+                    console.log('createProductApi', createProductApi);
                   }}
                   active
                 >
                   Create Product
-                </Button>
+                </Button> */}
+
+                <button
+                  onClick={() => {
+                    createProductApi.mutate();
+                  }}
+                >
+                  Create Product
+                </button>
 
                 <Button
                   hover
