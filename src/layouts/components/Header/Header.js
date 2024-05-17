@@ -233,7 +233,7 @@ function Header({ animation = false, blur = false, light = null, color, lightLog
                 handleClose(cartRef.current);
               }}
             >
-              <Link to="#">
+              <Link to="/cart">
                 <i
                   className={cx('icon-header', 'cart-icon', 'ti-shopping-cart')}
                   light={lightEffect}
