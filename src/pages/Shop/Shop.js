@@ -18,6 +18,25 @@ const cx = classNames.bind(style);
 
 function Shop() {
   const [products, setProducts] = useState([]);
+  const [wishList, setWishList] = useState(JSON.parse(localStorage.getItem('wishList')) || []);
+
+  const deleteWishList = (product) => {
+    const newWishList = wishList.filter((item) => item._id !== product._id);
+    setWishList(newWishList);
+    localStorage.setItem('wishList', JSON.stringify(newWishList));
+  };
+
+  const addWishList = (product) => {
+    if (!isInWishList(product)) {
+      const newWishList = [...wishList, product];
+      setWishList(newWishList);
+      localStorage.setItem('wishList', JSON.stringify(newWishList));
+    }
+  };
+
+  const isInWishList = (product) => {
+    return wishList.some((item) => item._id === product._id);
+  };
 
   const fetchingProduct = useMutation({
     mutationFn: async () => {
@@ -102,7 +121,12 @@ function Shop() {
                 return (
                   <div className="col l-4">
                     <div className={cx('product-component')}>
-                      <Product product={product} />
+                      <Product
+                        product={product}
+                        addWishList={addWishList}
+                        deleteWishList={deleteWishList}
+                        isInWishList={isInWishList}
+                      />
                     </div>
                   </div>
                 );

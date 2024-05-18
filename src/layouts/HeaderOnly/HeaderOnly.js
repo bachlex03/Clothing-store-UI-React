@@ -51,18 +51,6 @@ function HeaderOnly({ children }) {
       <Footer />
     </div>
   );
-
-  return (
-    <div>
-      <div className={classes}>
-        <Header animation color={'#ccc'} />
-      </div>
-      <div className={cx('container')}>
-        <div className="content">{children}</div>
-      </div>
-      <Footer />
-    </div>
-  );
 }
 
 export default HeaderOnly;

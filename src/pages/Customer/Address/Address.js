@@ -2,8 +2,11 @@ import style from './Address.module.scss';
 import classNames from 'classnames/bind';
 import { Input, Button } from '~/components';
 import { useEffect, useState } from 'react';
-import { toast, ToastContainer } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import * as accountService from '~/services/api/accountService';
+import { AxiosError } from 'axios';
+import { useMutation } from '@tanstack/react-query'; // Ensure correct import
+import { toast } from 'sonner';
 
 const cx = classNames.bind(style);
 
@@ -23,28 +26,36 @@ function Address() {
   const [userDistrict, setUserDistrict] = useState('');
 
   useEffect(() => {
-    const fetchAccount = async () => {
-      try {
-        const response = await accountService.getProfile();
-        if (response.status === 200) {
-          setFirstName(response.data.profile_firstName);
-          setLastName(response.data.profile_lastName);
-          setPhone(response.data.profile_phoneNumber);
-          setEmail(response?.data?.email);
-        }
-      } catch (error) {
-        console.error('Error during fetch account:', error);
-      }
-    };
-
-    fetchAccount();
+    fetchingAccount.mutate();
   }, []);
+
+  const fetchingAccount = useMutation({
+    mutationFn: async () => {
+      return await accountService.getProfile();
+    },
+    onSuccess: (data) => {
+      setFirstName(data.data.profile_firstName);
+      setLastName(data.data.profile_lastName);
+      setPhone(data.data.profile_phoneNumber);
+      setEmail(data.data.email);
+    },
+    onError: (error) => {
+      if (error instanceof AxiosError) {
+        console.log('error.response.data', error.response?.data);
+        console.log('error.response.status', error.response?.status);
+
+        toast.error(`Error ${error.response?.status}`, {
+          description: `${error.response?.data?.message}`,
+        });
+      }
+    },
+  });
 
   useEffect(() => {
     const fetchData = async () => {
       const data = await accountService.getCities();
       if (data) {
-        console.log(data.data);
+        // console.log(data.data);
         setCities(data.data);
       }
     };
@@ -56,7 +67,7 @@ function Address() {
     const fetchData = async () => {
       const data = await accountService.getDistricts(city?.id);
       if (data) {
-        console.log(data.data);
+        // console.log(data.data);
         setDistricts(data.data);
       }
     };
@@ -96,35 +107,38 @@ function Address() {
         addressLine: street,
       };
 
-      try {
-        const response = await accountService.updateCheckoutInfo(info);
-        if (response.status === 200) {
-          toast.success('Address updated successfully');
-        }
-      } catch (error) {
-        console.error('Error during update address:', error);
-        toast.error('Address updated failed');
-      }
+      updateCheckoutInfo.mutate(info);
     }
-
-    window.scrollTo(0, 0);
   };
+
+  const updateCheckoutInfo = useMutation({
+    mutationFn: async (info) => {
+      return await accountService.updateCheckoutInfo(info);
+    },
+    onSuccess: (data) => {
+      toast.success('Address updated successfully');
+    },
+    onError: (error) => {
+      console.error('Error during update address:', error);
+      toast.error('Address updated failed');
+    },
+  });
 
   const validateAddress = () => {
     if (!country && !userCountry) {
-      toast.warn('Country is required');
+      toast.warning('Country is required');
       return false;
     }
     if (!city && !userCity) {
-      toast.warn('City is required');
+      toast.warning('City is required');
       return false;
     }
     if (!district && !userDistrict) {
-      toast.warn('District is required');
+      toast.warning('District is required');
       return false;
     }
     if (!street) {
-      toast.warn('Street is required');
+      toast.warning('Street is required');
       return false;
     }
     return true;
@@ -167,9 +181,10 @@ function Address() {
           <select
             className={cx('selection')}
             aria-label="Default select example"
+            value="default"
             onChange={(e) => setCountry(e.target.value)}
           >
-            <option selected>{userCountry || '-- Choose your opinion --'}</option>
+            <option value="default">{userCountry || '-- Choose your opinion --'}</option>
             <option value="Việt Nam">Việt Nam</option>
           </select>
         </div>
@@ -181,14 +196,17 @@ function Address() {
           <select
             className={cx('selection')}
             aria-label="Default select example"
+            value="default"
             onChange={(e) => {
               const selectedCity = cities.find((city) => city.name === e.target.value);
               setCity(selectedCity);
             }}
           >
-            <option selected>{userCity || '-- Choose your opinion --'}</option>
+            <option value="default">{userCity || '-- Choose your opinion --'}</option>
             {cities.map((city) => (
-              <option value={city.name}>{city.name}</option>
+              <option key={city.id} value={city.name}>
+                {city.name}
+              </option>
             ))}
           </select>
         </div>
@@ -200,12 +218,13 @@ function Address() {
           <select
             className={cx('selection')}
             aria-label="Default select example"
+            value="default"
             onChange={(e) => {
               const selectedDistrict = districts.find((district) => district.name === e.target.value);
               setDistrict(selectedDistrict);
             }}
           >
-            <option selected>{userDistrict || '-- Choose your opinion --'}</option>
+            <option value="default">{userDistrict || '-- Choose your opinion --'}</option>
             {districts.map((district) => (
               <option value={district.name}>{district.name}</option>
             ))}
@@ -241,7 +260,7 @@ function Address() {
             placeholder="Email address..."
             type="email"
             notEditable
-            disable
+            disabled
             value={email}
           />
         </div>

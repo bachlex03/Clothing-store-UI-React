@@ -11,8 +11,8 @@ import { Link } from 'react-router-dom';
 
 const cx = classNames.bind(style);
 
-function Product({ product, children, ...passProps }) {
-  const [isWishlist, setIsWishlist] = useState(false);
+function Product({ product, addWishList, deleteWishList, isInWishList, children, ...passProps }) {
+  const [isWishlist, setIsWishlist] = useState(isInWishList(product) ?? false);
 
   console.log('product', product);
 
@@ -33,7 +33,9 @@ function Product({ product, children, ...passProps }) {
           <i
             className={cx('icon')}
             onClick={() => {
-              setIsWishlist(!isWishlist);
+              const newIsWishlist = !isWishlist;
+              setIsWishlist(newIsWishlist);
+              newIsWishlist ? addWishList(product) : deleteWishList(product);
             }}
             liked={isWishlist ? '' : false}
           >

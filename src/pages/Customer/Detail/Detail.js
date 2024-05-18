@@ -2,9 +2,12 @@ import style from './Detail.module.scss';
 import classNames from 'classnames/bind';
 import { useState, useEffect } from 'react';
 import { Input, Button } from '~/components';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import * as accountService from '~/services/api/accountService';
+import { AxiosError } from 'axios';
+import { useMutation } from '@tanstack/react-query'; // Ensure correct import
+import { toast } from 'sonner';
 
 const cx = classNames.bind(style);
 
@@ -18,105 +21,121 @@ function Detail() {
   const [confirmPassword, setConfirmPassword] = useState('');
 
   useEffect(() => {
-    const fetchAccount = async () => {
-      try {
-        const response = await accountService.getProfile();
-        if (response.status === 200) {
-          setFirstName(response.data.profile_firstName);
-          setLastName(response.data.profile_lastName);
-          setPhone(response.data.profile_phoneNumber);
-          setEmail(response.data.email);
-        }
-      } catch (error) {
-        console.error('Error during fetch account:', error);
-      }
-    };
-
-    fetchAccount();
+    fetchingAccount.mutate();
   }, []);
+
+  const fetchingAccount = useMutation({
+    mutationFn: async () => {
+      return await accountService.getProfile();
+    },
+    onSuccess: (data) => {
+      setFirstName(data.data.profile_firstName);
+      setLastName(data.data.profile_lastName);
+      setPhone(data.data.profile_phoneNumber);
+      setEmail(data.data.email);
+    },
+    onError: (error) => {
+      if (error instanceof AxiosError) {
+        console.log('error.response.data', error.response?.data);
+        console.log('error.response.status', error.response?.status);
+
+        toast.error(`Error ${error.response?.status}`, {
+          description: `${error.response?.data?.message}`,
+        });
+      }
+    },
+  });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     // if user doesn't change password, only update infor
     if (!password && !newPassword && !confirmPassword && validateOnlyUpdateInfor()) {
-      onlyUpdateInfor();
+      onlyUpdateInfor.mutate();
     } else {
       // if user change password, update infor and password
       if (validateOnlyUpdateInfor() && validatePassword()) {
-        updatePassword();
-        onlyUpdateInfor();
+        updatePassword.mutate();
       }
     }
-
-    // after update infor and password, scroll to top
-    window.scrollTo(0, 0);
   };
 
   const validateOnlyUpdateInfor = () => {
     if (!firstName || !lastName) {
-      toast.warn('First name and last name are required');
+      toast.warning('First name and last name are required');
       return false;
     }
     return true;
   };
 
-  const onlyUpdateInfor = async () => {
-    try {
+  const onlyUpdateInfor = useMutation({
+    mutationFn: async () => {
       let user = {
         firstName: firstName,
         lastName: lastName,
         phoneNumber: phone,
       };
-      const response = await accountService.updateProfile(user);
-      if (response.status === 200) {
-        toast.success('Profile updated successfully');
-      }
-    } catch (error) {
-      console.error('Error during update profile:', error);
-      toast.error('Profile updated failed');
-    }
-  };
+      return await accountService.updateProfile(user);
+    },
+    onSuccess: (data) => {
+      toast.success('Profile updated successfully');
+    },
+    onError: (error) => {
+      console.log('error.response.data', error.response?.data);
+      console.log('error.response.status', error.response?.status);
+
+      toast.error(`Error ${error.response?.status}`, {
+        description: `${error.response?.data?.message}`,
+      });
+    },
+  });
 
   const validatePassword = () => {
     if (!password) {
-      toast.warn('Current password is required');
+      toast.warning('Current password is required');
       return false;
     }
     if (!newPassword) {
-      toast.warn('New password is required');
+      toast.warning('New password is required');
       return false;
     }
     if (newPassword.length < 8) {
-      toast.warn('Password must contain at least 8 characters');
+      toast.warning('Password must contain at least 8 characters');
       return false;
     }
     if (!confirmPassword) {
-      toast.warn('Confirm password is required');
+      toast.warning('Confirm password is required');
       return false;
     }
     if (newPassword !== confirmPassword) {
-      toast.warn('Password does not match');
+      toast.warning('Password does not match');
       return false;
     }
     return true;
   };
 
-  const updatePassword = async () => {
-    try {
+  const updatePassword = useMutation({
+    mutationFn: async () => {
       let passwordData = {
         currentPassword: password,
         newPassword,
         confirmPassword,
       };
-      const response = await accountService.updatePassword(passwordData);
-      if (response.status === 200) {
-        toast.success('Password updated successfully');
-      }
-    } catch (error) {
-      console.error('Error during update password:', error);
-      toast.error('Password updated failed');
-    }
-  };
+      return await accountService.updatePassword(passwordData);
+    },
+    onSuccess: (data) => {
+      toast.success('Password updated successfully');
+      // when password updated successfully then update profile
+      onlyUpdateInfor.mutate();
+    },
+    onError: (error) => {
+      console.log('error.response.data', error.response?.data);
+      console.log('error.response.status', error.response?.status);
+
+      toast.error(`Error ${error.response?.status}`, {
+        description: `${error.response?.data?.message}`,
+      });
+    },
+  });
 
   return (
     <div className={cx('wrapper')}>
@@ -208,7 +227,6 @@ function Detail() {
           </button>
         </div>
       </form>
-      <ToastContainer position="bottom-left" />
     </div>
   );
 }
