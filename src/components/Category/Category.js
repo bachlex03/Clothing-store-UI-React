@@ -22,8 +22,9 @@ function Category({ category = {} }) {
   const children = category.children || [];
 
   const handleOpen = () => {
-    listRef.current.style.transition = 'all 0.5s ease-in-out';
-    listRef.current.style.maxHeight = !open ? listHeight + 'px' : 0;
+    console.log('listHeight', listHeight);
+    listRef.current.style.transition = 'all 0.7s ease-in-out';
+    listRef.current.style.maxHeight = !open ? listHeight + 60 + 'px' : 0;
 
     setOpen(!open);
   };
@@ -32,6 +33,8 @@ function Category({ category = {} }) {
   useEffect(() => {
     if (listRef.current.clientHeight > 10) {
       listHeight = listRef.current.clientHeight;
+
+      console.log('listHeight', listHeight);
     }
 
     listRef.current.style.transition = 'none';
@@ -50,11 +53,11 @@ function Category({ category = {} }) {
         </i>
       </div>
       <ul className={cx('list', classes)} ref={listRef}>
-        {['1', '2'].map((child, index) => {
+        {category.children.map((child, index) => {
           return (
             <li key={index}>
-              <Link to={`/categories/slug`} className={cx('item')}>
-                Children Name
+              <Link to={`/categories/${child.slug}`} className={cx('item')}>
+                {child.name}
               </Link>
             </li>
           );

@@ -11,7 +11,7 @@ import { AxiosError } from 'axios';
 
 const cx = classNames.bind(style);
 
-function Sidebar() {
+function Sidebar({ categories }) {
   const [sizesArray, setSizesArray] = useState(sizesArr);
   const [colorsArray, setColorsArray] = useState([]);
 
@@ -21,48 +21,17 @@ function Sidebar() {
     setColorsArray(objColorKeys);
   }, []);
 
-  // useEffect(async () => {
-  //   try {
-  //     const data = await getCategories();
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }, []);
-
-  const fetchingCategory = useMutation({
-    mutationFn: async () => {
-      return await getCategories();
-    },
-    onSuccess: (data) => {
-      toast.info('HI');
-    },
-    onError: (error) => {
-      if (error instanceof AxiosError) {
-        console.log('error.response.data', error.response?.data);
-        console.log('error.response.status', error.response?.status);
-
-        toast.error(`Error ${error.response?.status}`, {
-          description: `${error.response?.data?.message}`,
-        });
-      }
-    },
-  });
-
-  useEffect(() => {
-    fetchingCategory.mutate();
-  }, []);
-
   return (
     <aside className={cx('sidebar')}>
       <div className="mt-50px">
         <h3 className={cx('heading')}>Product Categories</h3>
-        {/* {categories.map((category, index) => {
-            return <Category category={category} key={index} />;
-        })} */}
-
-        <div className={cx('category-components-wrapper')}>
-          <Category name="Category" />
-        </div>
+        {categories.map((category, index) => {
+          return (
+            <div className={cx('category-components-wrapper')}>
+              <Category category={category} />
+            </div>
+          );
+        })}
 
         <span className={cx('separate')}></span>
       </div>

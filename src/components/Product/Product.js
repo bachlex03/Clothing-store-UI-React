@@ -8,6 +8,7 @@ import { faHeart as faHeartRegular } from '@fortawesome/free-regular-svg-icons';
 import { faHeart as faHeartSolid } from '@fortawesome/free-solid-svg-icons';
 import { Fragment, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { renderCategories } from '~/utils/render-category';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { add, update } from '~/redux/features/cart/cartSlice';
@@ -72,7 +73,7 @@ function Product({ product, children, ...passProps }) {
           handleAddToCart(product);
         }}
       >
-        <Price value={100} pos_shop />
+        <Price value={product?.product_price ?? 100} pos_shop />
       </div>
     </div>
   );
