@@ -1,5 +1,5 @@
 import { Default, HeaderOnly, Admin } from '~/layouts';
-import { Shop, Home, ShopLocation } from '~/pages';
+import { Shop, Home, Location, Contact } from '~/pages';
 import { Products, Invoices } from '~/pages/Admin';
 
 const publicRoutes = [
@@ -30,7 +30,12 @@ const publicRoutes = [
   },
   {
     path: '/location',
-    component: ShopLocation,
+    component: Location,
+    layout: HeaderOnly,
+  },
+  {
+    path: '/contact',
+    component: Contact,
     layout: HeaderOnly,
   },
 ];

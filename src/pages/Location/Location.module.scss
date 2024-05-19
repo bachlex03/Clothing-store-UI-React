@@ -1,4 +1,4 @@
-div.content{
+div.content {
      font-family: Yantramanav, sans-serif;
      padding-top: 100px;
      padding-bottom: 100px;
@@ -6,7 +6,7 @@ div.content{
      padding-left: 100px;
 }
 
-img.type1{
+img.type1 {
      width: inherit;
      height: inherit;
      padding-left: 0%;
@@ -14,34 +14,38 @@ img.type1{
      object-fit: cover;
 }
 
-div.background{
+div.background {
      background-color: #f3f2ed;
      margin-left: -60px;
      margin-right: -60px;
      height: 580px;
 }
 
-div.divide{
+div.divide {
      background-color: inherit;
      height: 50px;
 }
-.title{
+
+.title {
      font-size: 45px;
      margin-bottom: 20px;
      // margin-left: 26px;
 }
-.info{
+
+.info {
      font-size: 17px;
      padding-right: 80px;
      margin-bottom: 20px;
      // margin-top: 10px;
      // margin-left: 26px;
 }
-.mg-bt{
+
+.mg-bt {
      margin-bottom: 10px;
-     border-bottom: 1px solid #e1e0da; 
+     border-bottom: 1px solid #e1e0da;
 }
-.al{
+
+.al {
      text-align: end;
 }
 
@@ -55,7 +59,8 @@ div.divide{
      padding: 15px 40px;
      position: relative;
      cursor: pointer;
-     display: inline-block; /* Chuyển đổi thành kiểu hiển thị inline-block */
+     display: inline-block;
+     /* Chuyển đổi thành kiểu hiển thị inline-block */
 
      &::after {
           content: '';
@@ -71,8 +76,47 @@ div.divide{
 
      &:hover {
           &::after {
-          width: 100%;
+               width: 100%;
           }
      }
 }
 
+
+.image-container {
+     width: 100%;
+     height: 500px;
+     /* Đặt chiều cao của div */
+     overflow: hidden;
+     /* Ẩn phần ảnh ra ngoài khung */
+     position: relative;
+     /* Để sử dụng position absolute cho ảnh */
+     margin-bottom: 50px;
+}
+
+.image-container img {
+     width: 100%;
+     /* height: 100%; */
+     /* object-fit: fill; */
+     /* object-position: bottom; */
+     background-repeat: no-repeat;
+     background-position: 50% 0;
+     background-size: cover;
+     // position: absolute;
+     // left: 50%;
+     // transform: translateX(-50%);
+}
+
+.slider-main{
+     width: 100%;
+     height: 600px;
+     background-color: aqua;
+     overflow: hidden;
+     position: relative;
+     display: flex;
+}
+
+.slider-item{
+     height: 100%;
+     width: 100%;
+     flex: 1 0 100%;
+}
