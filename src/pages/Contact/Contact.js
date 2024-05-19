@@ -2,7 +2,6 @@ import style from './Contact.module.scss';
 import classNames from 'classnames/bind';
 import React, { useRef, useEffect, useState } from 'react';
 const cx = classNames.bind(style);
-
 function Contact() {
   // Sử dụng useRef để lưu trữ ref của mỗi s  ection
   const sectionRefs = useRef([]);
@@ -39,91 +38,105 @@ function Contact() {
   }, []);
 
 
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  const slides = ['Slide 1 content', 'Slide 2 content', 'Slide 3 content', 'Slide 4 content'];
-
-  const nextSlide = () => {
-    setCurrentIndex((prevIndex) => (prevIndex === slides.length - 1 ? 0 : prevIndex + 1));
-  };
-
-  useEffect(() => {
-    const intervalId = setInterval(nextSlide, 3000); // Thay đổi số 3000 để điều chỉnh thời gian chuyển đổi
-    return () => clearInterval(intervalId);
-  }, []); // Chạy chỉ một lần khi component được render
-
-
   return (
     <div className={cx('container')}>
       <div className={cx('map-container')}>
-        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3918.4843007287523!2d106.77192227078775!3d10.850721408840128!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752763f23816ab%3A0x282f711441b6916f!2zVHLGsOG7nW5nIMSQ4bqhaSBo4buNYyBTxrAgcGjhuqFtIEvhu7kgdGh14bqtdCBUaMOgbmggcGjhu5EgSOG7kyBDaMOtIE1pbmg!5e0!3m2!1svi!2s!4v1716124392878!5m2!1svi!2s" width="600" height="450" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3918.4843007287523!2d106.77192227078775!3d10.850721408840128!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752763f23816ab%3A0x282f711441b6916f!2zVHLGsOG7nW5nIMSQ4bqhaSBo4buNYyBTxrAgcGjhuqFtIEvhu7kgdGh14bqtdCBUaMOgbmggcGjhu5EgSOG7kyBDaMOtIE1pbmg!5e0!3m2!1svi!2s!4v1716124392878!5m2!1svi!2s" width="600" height="450" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" />
+        <div className={cx('contact', '', '')}>
+          <p className={cx('title')}>New York</p>
+          <p className={cx('font', 'info')}>Our new store now: 2307 Beverley Rd Brooklyn, New York</p>
+          <div className={cx('font', 'row', 'mg-bt')}>
+            <p className={cx('col l-4')}>Week Days</p>
+            <p className={cx('al', 'col l-5 l-o-3')}>09.00 - 24:00</p>
+          </div>
+          <div className={cx('font', 'row', 'mg-bt')}>
+            <p className={cx('col l-4')}>Saturday</p>
+            <p className={cx('al', 'col l-5 l-o-3')}>08:00 - 03.00</p>
+          </div>
+          <div className={cx('font', 'row', 'mg-bt')}>
+            <p className={cx('col l-4')}>Sunday</p>
+            <p className={cx('al', 'col l-5 l-o-3')}>Day off</p>
+          </div>
+          <a href="#" className={cx('button')}>GET DIRECTIONS</a>
+        </div>
+        {/* <div className={cx('info-map')}>
+          <p className={cx('title')}>New York</p>
+          <p className={cx('address')}>Our new store now: 2307 Beverley Rd Brooklyn, New York</p>
+          <p className={cx('fb-info')}>Week Days</p>
+          <p className={cx('fb-info')}>09:00-24:00</p>
+        </div> */}
       </div>
+      <div className={cx('row', 'divide')}></div>
       <div className={cx('grid wide')}>
-        <div className={cx('row', 'divide')}></div>
         {/* ITEM1 */}
         <div className={cx('background', 'row')}>
-          <div className={cx('col l-5', 'content')}>
-            <p className={cx('title')}>New York</p>
-            <p className={cx('info')}>Our new store now: 2307 Beverley Rd Brooklyn, New York</p>
-            <div className={cx('row', 'mg-bt')}>
-              <p className={cx('col l-4')}>Week Days</p>
-              <p className={cx('al', 'col l-4 l-o-4')}>09.00 - 24:00</p>
-            </div>
-            <div className={cx('row', 'mg-bt')}>
-              <p className={cx('col l-4')}>Saturday</p>
-              <p className={cx('al', 'col l-4 l-o-4')}>08:00 - 03.00</p>
-            </div>
-            <div className={cx('row', 'mg-bt')}>
-              <p className={cx('col l-4')}>Sunday</p>
-              <p className={cx('al', 'col l-4 l-o-4')}>Day off</p>
-            </div>
-            <a href="#" className={cx('button')}>GET DIRECTIONS</a>
+          <div className={cx('col l-4', '')}>
+            <p className={cx('fb-title')}>Contact Info</p>
+            <p className={cx('fb-info', 'fd-pdbt')}>Email Us:  chani@cmssuperheroes.com</p>
+            <p className={cx('fb-info')}>Call Us:  002 0198745701</p>
+            <p className={cx('fb-title', 'fd-pdbt')}>Address</p>
+            <p className={cx('fb-info', 'fd-pdbt')}>2307 Beverley Rd Brooklyn, New York</p>
+            <p className={cx('fb-info')}>11226 United States.</p>
+            <p className={cx('fb-title', 'fd-pdbt')}>Support Hours </p>
+            <p className={cx('fb-info', 'fd-pdbt')}>Mon-Fri 9:00am – 5:00pm PST</p>
+            <p className={cx('fb-info')}>*Excludes Holidays</p>
+            <p className={cx('fb-title', 'fd-pdbt')}>Social Media</p>
+            <p> icon1   icon2  icon3</p>
           </div>
-          <img className={cx('type1', 'col l-7')} src="https://demo.cmssuperheroes.com/themeforest/chani/wp-content/uploads/elementor/thumbs/banner-11-qh2ydna95c5ll3wk5e2wv7pdwzoy3p0xkrev3klnee.webp" />
+          <div className={cx('col l-8', '')}>
+            <p className={cx('fb-title2')}>How can we help?</p>
+            <p className={cx('fb-info2')}>Let us know your questions, thoughts and ideas via the form below. Our support team will get back to you as soon as possible.</p>
+            <div className={cx('fb-mg', 'row')}>
+              <div className={cx('col l-6')}>
+                <input className={cx('fb-input')} type="text" placeholder="Name" />
+              </div>
+              <div className={cx('col l-6')}>
+                <input className={cx('fb-input')} type="text" placeholder="Email" />
+              </div>
+            </div>
+            <div className={cx('fb-mg', 'row')}>
+              <div className={cx('col l-6')}>
+                <input className={cx('fb-input')} type="text" placeholder="Phone" />
+              </div>
+              <div className={cx('col l-6')}>
+                <input className={cx('fb-input')} type="text" placeholder="Order Number" />
+              </div>
+            </div>
+            <div className={cx('fb-mg', 'row')}>
+              <div className={cx('col l-12')}>
+                <input className={cx('fb-input2')} type="text" placeholder="Your Message" />
+              </div>
+            </div>
+            <a href="#" className={cx('button')}>SUBMIT</a>
+          </div>
         </div>
-        <div className={cx('row', 'divide')}></div>
-        {/* ITEM2 */}
-        <div className={cx('background', 'row')}>
-          <img className={cx('type1', 'col l-7')} src="https://demo.cmssuperheroes.com/themeforest/chani/wp-content/uploads/elementor/thumbs/banner-13-qh2ydq3rpu9gjxsgoxaskozrp5b1qsc4l5dbjehgvq.webp" />
-          <div className={cx('col l-5', 'content')}>
-            <p className={cx('title')}>US Store</p>
-            <p className={cx('info')}>Our new store now: 2307 Beverley Rd Brooklyn, New York</p>
-            <div className={cx('row', 'mg-bt')}>
-              <p className={cx('col l-4')}>Week Days</p>
-              <p className={cx('al', 'col l-4 l-o-4')}>09.00 - 24:00</p>
-            </div>
-            <div className={cx('row', 'mg-bt')}>
-              <p className={cx('col l-4')}>Saturday</p>
-              <p className={cx('al', 'col l-4 l-o-4')}>08:00 - 03.00</p>
-            </div>
-            <div className={cx('row', 'mg-bt')}>
-              <p className={cx('col l-4')}>Sunday</p>
-              <p className={cx('al', 'col l-4 l-o-4')}>Day off</p>
-            </div>
-            <a href="#" className={cx('button')}>GET DIRECTIONS</a>
+      </div>
+      <div className={cx('row', 'divide')}></div>
+      <div className={cx('row', 'divide')}></div>
+      <div className={cx('grid wide','bd-under')}>
+        {/* ITEM1 */}
+        <div className={cx('background1','fb-center', 'row' )}>
+          <div className={cx('col l-3', 'center')}>
+            <p className={cx('fb-title')}>Contact Us</p>
+            <p className={cx('fb-info', 'fd-pdbt')}>Email: chani@cmssuperheroes.com</p>
+            <p className={cx('fb-info')}>Phone: 02 01061245741</p>
           </div>
-        </div>
-        <div className={cx('row', 'divide')}></div>
-        {/* ITEM2 */}
-        <div className={cx('background', 'row')}>
-          <div className={cx('col l-5', 'content')}>
-            <p className={cx('title')}>Chicago</p>
-            <p className={cx('info')}>Our new store now: 2307 Beverley Rd Brooklyn, New York</p>
-            <div className={cx('row', 'mg-bt')}>
-              <p className={cx('col l-4')}>Week Days</p>
-              <p className={cx('al', 'col l-4 l-o-4')}>09.00 - 24:00</p>
+          <div className={cx('col l-6', 'center')}>
+            <p className={cx('fb-title3', 'bd-2s')}> Subscribe To Our Newsletter</p>
+            <div className={cx('fb-mg2', 'row')}>
+              <div className={cx('pd-r','col l-5 l-o-2')}>
+                <input className={cx('fb-input3')} type="text" placeholder="Your Email Address" />
+              </div>
+              <a href="#" className={cx('button','wh','col l-3')}>SUBCRIBE</a>
             </div>
-            <div className={cx('row', 'mg-bt')}>
-              <p className={cx('col l-4')}>Saturday</p>
-              <p className={cx('al', 'col l-4 l-o-4')}>08:00 - 03.00</p>
-            </div>
-            <div className={cx('row', 'mg-bt')}>
-              <p className={cx('col l-4')}>Sunday</p>
-              <p className={cx('al', 'col l-4 l-o-4')}>Day off</p>
-            </div>
-            <a href="#" className={cx('button')}>GET DIRECTIONS</a>
+            <p>By subscribing, you accept the Privacy Policy</p>
+            <p>icon1 icon2 icon3</p>
           </div>
-          <img className={cx('type1', 'col l-7')} src="https://demo.cmssuperheroes.com/themeforest/chani/wp-content/uploads/elementor/thumbs/instagram-6-qh2ydq3rpu9gjxsgoxaskozrp5b1qsc4l5dbjehgvq.jpg" />
+          <div className={cx('col l-3', 'center')}>
+            <p className={cx('fb-title')}>Our store</p>
+            <p className={cx('fb-info', 'fd-pdbt')}>2307 Beverley Rd Brooklyn, New York</p>
+            <p className={cx('fb-info')}>11226 United States.</p>
+          </div>
         </div>
       </div>
     </div>

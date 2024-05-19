@@ -39,19 +39,6 @@ function Location() {
   }, []);
 
 
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  const slides = ['Slide 1 content', 'Slide 2 content', 'Slide 3 content', 'Slide 4 content'];
-
-  const nextSlide = () => {
-    setCurrentIndex((prevIndex) => (prevIndex === slides.length - 1 ? 0 : prevIndex + 1));
-  };
-
-  useEffect(() => {
-    const intervalId = setInterval(nextSlide, 3000); // Thay đổi số 3000 để điều chỉnh thời gian chuyển đổi
-    return () => clearInterval(intervalId);
-  }, []); // Chạy chỉ một lần khi component được render
-
 
   return (
     <div className={cx('container')}>
@@ -60,19 +47,6 @@ function Location() {
       </div>
 
       <div className={cx('grid wide')}>
-        <div className={cx('row')}>
-          <div className={cx('col l-12')}>
-            <div className={cx('slider-main')}>
-              <div className={cx('slider-item')} style={{ transform: `translateX(-${currentIndex * 100}%)` }}>
-                {slides.map((slide, index) => (
-                  <div key={index} className={cx('slide')}>
-                    {slide}
-                  </div>
-                ))}
-              </div>
-            </div>  
-          </div>
-        </div>
         <div className={cx('row', 'divide')}></div>
         {/* ITEM1 */}
         <div className={cx('background', 'row')}>
