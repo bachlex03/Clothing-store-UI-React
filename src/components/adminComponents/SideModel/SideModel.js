@@ -90,24 +90,7 @@ function SideModel(props, ref) {
       price,
       quantity,
     });
-
-    // if (
-    //   !name ||
-    //   !description ||
-    //   !brand ||
-    //   !type ||
-    //   !status ||
-    //   !category ||
-    //   !price ||
-    //   !quantity ||
-    //   !formSizes.length ||
-    //   !ColorsString[color] ||
-    //   categoryData === undefined
-    // ) {
-    //   console.log('Please fill all fields');
-
-    //   return;
-    // }
+    console.log('formData 1', formData);
 
     formData.append('name', name);
     formData.append('description', description);
@@ -122,6 +105,8 @@ function SideModel(props, ref) {
     formData.append('price', price.toString().replace('$', ''));
     formData.append('quantity', quantity);
     formData.append('test', test);
+
+    console.log('formData 2', formData);
 
     images.forEach((image, index) => {
       formData.append(`images`, image);
@@ -514,7 +499,7 @@ function SideModel(props, ref) {
               </div>
 
               <div className={cx('left-block-footer', 'mt-16px')}>
-                <Button
+                {/* <Button
                   reset
                   hover
                   onClick={() => {
@@ -536,7 +521,7 @@ function SideModel(props, ref) {
                   }}
                 >
                   Reset
-                </Button>
+                </Button> */}
                 {/* <Button
                   hover
                   onClick={() => {
