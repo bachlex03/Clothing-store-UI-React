@@ -1,5 +1,6 @@
 import style from './Location.module.scss';
 import classNames from 'classnames/bind';
+
 import React, { useRef, useEffect, useState } from 'react';
 const cx = classNames.bind(style);
 
@@ -116,7 +117,7 @@ function Location() {
       </div>
       <div className={cx('row', 'divide')}></div>
       <div className={cx('row', 'divide')}></div>
-      <div className={cx('grid', 'bd-under')}>
+      <div className={cx('grid wide', 'bd-under')}>
         {/* ITEM1 */}
         <div className={cx('background1', 'fb-center', 'row')}>
           <div className={cx('col l-3', 'center')}>
