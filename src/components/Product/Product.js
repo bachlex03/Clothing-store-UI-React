@@ -11,22 +11,30 @@ import { Link } from 'react-router-dom';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { add, update } from '~/redux/features/cart/cartSlice';
+import { add as addToWishlist, remove as removeFromWishlist } from '~/redux/features/wishlist/wishlistSlice';
 
 const cx = classNames.bind(style);
 
 function Product({ product, children, ...passProps }) {
-  const [isWishlist, setIsWishlist] = useState(false);
-
-  // handle add to cart
   const dispatch = useDispatch();
-  const cartItems = useSelector((state) => state.cart.values);
+  const wishlistItems = useSelector((state) => state.wishlist.values);
 
-  console.log('cartItems', cartItems);
+  // check if product is in wishlist, return true if it is
+  const checkWishlist = (product) => {
+    return wishlistItems.some((item) => item._id === product._id);
+  };
 
-  const handleAddToCart = (product) => {
-    console.log('product', product);
+  // if product is in wishlist, set isWishlist to true else false
+  const [isWishlist, setIsWishlist] = useState(checkWishlist(product) ?? false);
 
-    dispatch(add(product));
+  // handle add to wishlist
+  const handleAddToWishlist = (product) => {
+    dispatch(addToWishlist(product));
+  };
+
+  // handle remove from wishlist
+  const handleRemoveFromWishlist = (product) => {
+    dispatch(removeFromWishlist(product));
   };
 
   return (
@@ -46,7 +54,9 @@ function Product({ product, children, ...passProps }) {
           <i
             className={cx('icon')}
             onClick={() => {
-              setIsWishlist(!isWishlist);
+              let newIsWishlist = !isWishlist;
+              newIsWishlist ? handleAddToWishlist(product) : handleRemoveFromWishlist(product);
+              setIsWishlist(newIsWishlist);
             }}
             liked={isWishlist ? '' : false}
           >
@@ -66,12 +76,7 @@ function Product({ product, children, ...passProps }) {
       <span className={cx('category')}>{product?.product_category?.category_name ?? 'Category'}</span>
 
       <p className={cx('name')}>{product?.product_name ?? 'Default Sunflower'}</p>
-      <div
-        className={cx('price-component')}
-        onClick={() => {
-          handleAddToCart(product);
-        }}
-      >
+      <div className={cx('price-component')}>
         <Price value={100} pos_shop />
       </div>
     </div>
