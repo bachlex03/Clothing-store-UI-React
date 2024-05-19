@@ -114,6 +114,34 @@ function Location() {
           <img className={cx('type1', 'col l-7')} src="https://demo.cmssuperheroes.com/themeforest/chani/wp-content/uploads/elementor/thumbs/instagram-6-qh2ydq3rpu9gjxsgoxaskozrp5b1qsc4l5dbjehgvq.jpg" />
         </div>
       </div>
+      <div className={cx('row', 'divide')}></div>
+      <div className={cx('row', 'divide')}></div>
+      <div className={cx('grid', 'bd-under')}>
+        {/* ITEM1 */}
+        <div className={cx('background1', 'fb-center', 'row')}>
+          <div className={cx('col l-3', 'center')}>
+            <p className={cx('fb-title')}>Contact Us</p>
+            <p className={cx('fb-info', 'fd-pdbt')}>Email: chani@cmssuperheroes.com</p>
+            <p className={cx('fb-info')}>Phone: 02 01061245741</p>
+          </div>
+          <div className={cx('col l-6', 'center')}>
+            <p className={cx('fb-title3', 'bd-2s')}> Subscribe To Our Newsletter</p>
+            <div className={cx('fb-mg2', 'row')}>
+              <div className={cx('pd-r', 'col l-5 l-o-2')}>
+                <input className={cx('fb-input3')} type="text" placeholder="Your Email Address" />
+              </div>
+              <a href="#" className={cx('button', 'wh', 'col l-3')}>SUBCRIBE</a>
+            </div>
+            <p>By subscribing, you accept the Privacy Policy</p>
+            <p>icon1 icon2 icon3</p>
+          </div>
+          <div className={cx('col l-3', 'center')}>
+            <p className={cx('fb-title')}>Our store</p>
+            <p className={cx('fb-info', 'fd-pdbt')}>2307 Beverley Rd Brooklyn, New York</p>
+            <p className={cx('fb-info')}>11226 United States.</p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

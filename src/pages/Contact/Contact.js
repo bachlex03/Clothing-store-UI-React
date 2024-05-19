@@ -113,9 +113,9 @@ function Contact() {
       </div>
       <div className={cx('row', 'divide')}></div>
       <div className={cx('row', 'divide')}></div>
-      <div className={cx('grid wide','bd-under')}>
+      <div className={cx('grid wide', 'bd-under')}>
         {/* ITEM1 */}
-        <div className={cx('background1','fb-center', 'row' )}>
+        <div className={cx('background1', 'fb-center', 'row')}>
           <div className={cx('col l-3', 'center')}>
             <p className={cx('fb-title')}>Contact Us</p>
             <p className={cx('fb-info', 'fd-pdbt')}>Email: chani@cmssuperheroes.com</p>
@@ -124,10 +124,10 @@ function Contact() {
           <div className={cx('col l-6', 'center')}>
             <p className={cx('fb-title3', 'bd-2s')}> Subscribe To Our Newsletter</p>
             <div className={cx('fb-mg2', 'row')}>
-              <div className={cx('pd-r','col l-5 l-o-2')}>
+              <div className={cx('pd-r', 'col l-5 l-o-2')}>
                 <input className={cx('fb-input3')} type="text" placeholder="Your Email Address" />
               </div>
-              <a href="#" className={cx('button','wh','col l-3')}>SUBCRIBE</a>
+              <a href="#" className={cx('button', 'wh', 'col l-3')}>SUBCRIBE</a>
             </div>
             <p>By subscribing, you accept the Privacy Policy</p>
             <p>icon1 icon2 icon3</p>
