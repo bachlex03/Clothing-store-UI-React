@@ -3,26 +3,22 @@ import classNames from 'classnames/bind';
 import { Link } from 'react-router-dom';
 const cx = classNames.bind(style);
 
-function SubCategoryItemHeader({ category = [] }) {
+function SubCategoryItemHeader({ category = {} }) {
+  console.log('category', category);
   return (
     <div className={cx('wrapper')}>
       <h4 className={cx('parent')}>
-        <Link className={cx('link')}>By Metal</Link>
+        <Link className={cx('link')}>{category.name}</Link>
       </h4>
 
       <ul className={cx('list')}>
-        <li>
-          <Link to="">Left Sidebar</Link>
-        </li>
-        <li>
-          <Link to="">No Sidebar</Link>
-        </li>
-        <li>
-          <Link to="">Filter List</Link>
-        </li>
-        <li>
-          <Link to="">Right Sidebar</Link>
-        </li>
+        {category.children.map((child, index) => {
+          return (
+            <li key={index}>
+              <Link to={`/categories/${child.slug}`}>{child.name}</Link>
+            </li>
+          );
+        })}
       </ul>
     </div>
   );

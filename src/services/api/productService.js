@@ -9,6 +9,7 @@ export const getAllProducts = async (options = {}) => {
 };
 
 export const createProduct = async (product) => {
+  console.log('createProduct', product);
   const result = await request.post('products', product);
 
   return result;

@@ -10,6 +10,8 @@ import { useMutation } from '@tanstack/react-query'; // Ensure correct import
 import { toast } from 'sonner';
 import { AxiosError } from 'axios';
 import * as productService from '~/services/api/productService';
+import { getCategories } from '~/services/api/categoryService';
+import { renderCategories } from '~/utils/render-category';
 
 import images from '~/assets/images';
 import { Link } from 'react-router-dom';
@@ -17,6 +19,7 @@ import { Link } from 'react-router-dom';
 const cx = classNames.bind(style);
 
 function Shop() {
+  const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
 
   const fetchingProduct = useMutation({
@@ -39,6 +42,30 @@ function Shop() {
       }
     },
   });
+
+  const fetchingCategory = useMutation({
+    mutationFn: async () => {
+      return await getCategories();
+    },
+    onSuccess: (data) => {
+      console.log('data', renderCategories(data));
+      setCategories(renderCategories(data));
+    },
+    onError: (error) => {
+      if (error instanceof AxiosError) {
+        console.log('error.response.data', error.response?.data);
+        console.log('error.response.status', error.response?.status);
+
+        toast.error(`Error ${error.response?.status}`, {
+          description: `${error.response?.data?.message}`,
+        });
+      }
+    },
+  });
+
+  useEffect(() => {
+    fetchingCategory.mutate();
+  }, []);
 
   useEffect(() => {
     fetchingProduct.mutate();
@@ -63,7 +90,7 @@ function Shop() {
         <div className="row">
           <div className="col l-3">
             <div className={cx('sidebar-component')}>
-              <Sidebar />
+              <Sidebar categories={categories} />
             </div>
           </div>
           <div className="col l-9">

@@ -76,39 +76,6 @@ function SideModel(props, ref) {
       return cate.category_name === category;
     });
 
-    console.log('data', {
-      name,
-      description,
-      brand,
-      type,
-      gender,
-      formSizes,
-      'ColorsString[color]': ColorsString[color],
-      status,
-      categoryData,
-      category,
-      price,
-      quantity,
-    });
-
-    // if (
-    //   !name ||
-    //   !description ||
-    //   !brand ||
-    //   !type ||
-    //   !status ||
-    //   !category ||
-    //   !price ||
-    //   !quantity ||
-    //   !formSizes.length ||
-    //   !ColorsString[color] ||
-    //   categoryData === undefined
-    // ) {
-    //   console.log('Please fill all fields');
-
-    //   return;
-    // }
-
     formData.append('name', name);
     formData.append('description', description);
     formData.append('brand', brand);
@@ -121,7 +88,6 @@ function SideModel(props, ref) {
     formData.append('category', category);
     formData.append('price', price.toString().replace('$', ''));
     formData.append('quantity', quantity);
-    formData.append('test', test);
 
     images.forEach((image, index) => {
       formData.append(`images`, image);

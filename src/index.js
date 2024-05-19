@@ -4,15 +4,22 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import GlobalStyles from '~/components/GlobalStyles';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import { Toaster, toast } from 'sonner';
+import { Toaster } from 'sonner';
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
+import { persistor, store } from '~/redux/store';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <Fragment>
     <Toaster richColors={true} expand={false} position="bottom-right" theme="light" />
-    <GlobalStyles>
-      <App />
-    </GlobalStyles>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <GlobalStyles>
+          <App />
+        </GlobalStyles>
+      </PersistGate>
+    </Provider>
   </Fragment>,
 );
 

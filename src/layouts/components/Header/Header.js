@@ -7,6 +7,7 @@ import { faHeart } from '@fortawesome/free-regular-svg-icons';
 import { useEffect, useRef, useState } from 'react';
 
 import { Search, CategoryHeader, Cart, Text } from '~/components';
+
 import images from '~/assets/images';
 const cx = classNames.bind(style);
 
