@@ -11,7 +11,7 @@
 }
 
 .react-modal-wrapper {
-  max-width: 700px;
+  max-width: 750px;
   margin: 2rem auto;
 }
 
@@ -23,6 +23,8 @@
   border-radius: 0.3rem;
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
+  max-height: 90vh;
 }
 
 .react-modal-header,
