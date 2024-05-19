@@ -1,0 +1,78 @@
+div.content{
+     font-family: Yantramanav, sans-serif;
+     padding-top: 100px;
+     padding-bottom: 100px;
+     padding-right: 100px;
+     padding-left: 100px;
+}
+
+img.type1{
+     width: inherit;
+     height: inherit;
+     padding-left: 0%;
+     padding-right: 0%;
+     object-fit: cover;
+}
+
+div.background{
+     background-color: #f3f2ed;
+     margin-left: -60px;
+     margin-right: -60px;
+     height: 580px;
+}
+
+div.divide{
+     background-color: inherit;
+     height: 50px;
+}
+.title{
+     font-size: 45px;
+     margin-bottom: 20px;
+     // margin-left: 26px;
+}
+.info{
+     font-size: 17px;
+     padding-right: 80px;
+     margin-bottom: 20px;
+     // margin-top: 10px;
+     // margin-left: 26px;
+}
+.mg-bt{
+     margin-bottom: 10px;
+     border-bottom: 1px solid #e1e0da; 
+}
+.al{
+     text-align: end;
+}
+
+.button {
+     background: none;
+     background-color: #000000;
+     border: none;
+     outline: none;
+     font-size: 15px;
+     color: #ffffff;
+     padding: 15px 40px;
+     position: relative;
+     cursor: pointer;
+     display: inline-block; /* Chuyển đổi thành kiểu hiển thị inline-block */
+
+     &::after {
+          content: '';
+          width: 0;
+          height: 1px;
+          background: #ffffff;
+          display: block;
+          position: relative;
+          left: 0%;
+          // transform: translateX(-50%);
+          transition: width 0.2s 0.1s ease-in-out;
+     }
+
+     &:hover {
+          &::after {
+          width: 100%;
+          }
+     }
+}
+
