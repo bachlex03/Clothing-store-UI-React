@@ -208,6 +208,12 @@ function Checkout() {
       district: userDistrict,
       country: selectedCountry,
     };
+    if (phone.length < 10 || phone.length > 11) {
+      toast.error('Error', {
+        description: 'Phone number must be between 10 and 11 characters',
+      });
+      throw new Error('Phone number must be between 10 and 11 characters');
+    }
     console.log('check info: ', data);
     const response = await updateInfo(data);
     if (response.status === 200) {
@@ -273,7 +279,7 @@ function Checkout() {
       console.log('response', response);
       if (response.status == 200) {
         setCartList([]);
-        await new Promise(resolve => setTimeout(resolve, 0)); // Wait for state update
+        await new Promise((resolve) => setTimeout(resolve, 0)); // Wait for state update
         navigate('/cart');
         toast.success('Success', {
           description: 'Checkout successfully!',
@@ -397,6 +403,7 @@ function Checkout() {
                 label="Phone Number"
                 placeholder="Phone number..."
                 value={phone}
+                type="number"
                 onChange={(e) => {
                   setPhone(e.target.value);
                 }}

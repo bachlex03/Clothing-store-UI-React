@@ -1,0 +1,28 @@
+.slick-slide {
+  width: 100%;
+  height: 900px;
+  animation-name: cms-slider-zoom;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-duration: 5500ms;
+  position: relative;
+}
+
+.slick-slide img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: all 300ms linear 0ms;
+}
+
+@keyframes cms-slider-zoom {
+  0% {
+    transform: scale(1.5);
+  }
+  100% {
+    transform: scale(1);
+  }
+}

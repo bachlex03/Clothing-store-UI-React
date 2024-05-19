@@ -116,7 +116,7 @@ function Header({ animation = false, blur = false, light = null, color, lightLog
             <i className={cx('icon')}>
               <FontAwesomeIcon icon={faRightToBracket} />
             </i>
-            Login
+            Logout
           </Link>
           <Link to="/customer/details">
             <i className={cx('icon')}>
