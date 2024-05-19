@@ -76,22 +76,6 @@ function SideModel(props, ref) {
       return cate.category_name === category;
     });
 
-    console.log('data', {
-      name,
-      description,
-      brand,
-      type,
-      gender,
-      formSizes,
-      'ColorsString[color]': ColorsString[color],
-      status,
-      categoryData,
-      category,
-      price,
-      quantity,
-    });
-    console.log('formData 1', formData);
-
     formData.append('name', name);
     formData.append('description', description);
     formData.append('brand', brand);
@@ -104,9 +88,6 @@ function SideModel(props, ref) {
     formData.append('category', category);
     formData.append('price', price.toString().replace('$', ''));
     formData.append('quantity', quantity);
-    formData.append('test', test);
-
-    console.log('formData 2', formData);
 
     images.forEach((image, index) => {
       formData.append(`images`, image);
@@ -499,7 +480,7 @@ function SideModel(props, ref) {
               </div>
 
               <div className={cx('left-block-footer', 'mt-16px')}>
-                {/* <Button
+                <Button
                   reset
                   hover
                   onClick={() => {
@@ -521,26 +502,16 @@ function SideModel(props, ref) {
                   }}
                 >
                   Reset
-                </Button> */}
-                {/* <Button
+                </Button>
+                <Button
                   hover
                   onClick={() => {
                     createProductApi.mutate();
-
-                    console.log('createProductApi', createProductApi);
                   }}
                   active
                 >
                   Create Product
-                </Button> */}
-
-                <button
-                  onClick={() => {
-                    createProductApi.mutate();
-                  }}
-                >
-                  Create Product
-                </button>
+                </Button>
 
                 <Button
                   hover

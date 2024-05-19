@@ -9,12 +9,25 @@ import { faHeart as faHeartSolid } from '@fortawesome/free-solid-svg-icons';
 import { Fragment, useState } from 'react';
 import { Link } from 'react-router-dom';
 
+import { useDispatch, useSelector } from 'react-redux';
+import { add, update } from '~/redux/features/cart/cartSlice';
+
 const cx = classNames.bind(style);
 
 function Product({ product, children, ...passProps }) {
   const [isWishlist, setIsWishlist] = useState(false);
 
-  console.log('product', product);
+  // handle add to cart
+  const dispatch = useDispatch();
+  const cartItems = useSelector((state) => state.cart.values);
+
+  console.log('cartItems', cartItems);
+
+  const handleAddToCart = (product) => {
+    console.log('product', product);
+
+    dispatch(add(product));
+  };
 
   return (
     <div className={cx('wrapper')}>
@@ -53,7 +66,12 @@ function Product({ product, children, ...passProps }) {
       <span className={cx('category')}>{product?.product_category?.category_name ?? 'Category'}</span>
 
       <p className={cx('name')}>{product?.product_name ?? 'Default Sunflower'}</p>
-      <div className={cx('price-component')}>
+      <div
+        className={cx('price-component')}
+        onClick={() => {
+          handleAddToCart(product);
+        }}
+      >
         <Price value={100} pos_shop />
       </div>
     </div>
