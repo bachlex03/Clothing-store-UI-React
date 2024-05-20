@@ -31,8 +31,9 @@ function Checkout() {
   const [listItems, setListItems] = useState([]);
   const [total, setTotal] = useState(0);
   const [method, setMethod] = useState(0);
-  const cartItems = useSelector((state) => state.cart.values);
   const dispatch = useDispatch();
+  const cartItems = useSelector((state) => state.cart.values);
+  const users = useSelector((state) => state.user.values);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -50,6 +51,10 @@ function Checkout() {
     });
     setListItems(boughtItems);
     setTotal(total);
+  }, []);
+
+  useEffect(() => {
+    console.log('user', users);
   }, []);
 
   useEffect(() => {
