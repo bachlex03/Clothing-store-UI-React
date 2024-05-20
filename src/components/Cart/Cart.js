@@ -10,26 +10,14 @@ import { useEffect, useRef, useState } from 'react';
 
 // import { Price, Button } from "~/components";
 
-// import { remove } from '~/redux/features/cart/cartSlice';
+import { remove } from '~/redux/features/cart/cartSlice';
 
 const cx = classNames.bind(style);
 
 function Cart() {
-  //   const dispatch = useDispatch();
+  const dispatch = useDispatch();
+  const cartItems = useSelector((state) => state.cart.values);
   const wrapperRef = useRef();
-
-  const [cartList, setCartList] = useState(JSON.parse(localStorage.getItem('cartList')) || []);
-  const [totalCart, setTotalCart] = useState(0);
-
-  useEffect(() => {
-    let total = 0;
-    localStorage.setItem('cartList', JSON.stringify(cartList));
-    cartList.map((item) => {
-      total += item.product_price * item.quantity;
-    });
-    setTotalCart(total);
-    console.log('cartList', cartList);
-  }, [cartList]);
 
   //   useEffect(() => {
   //     wrapperRef.current.addEventListener('scroll', (event) => {
@@ -48,10 +36,6 @@ function Cart() {
   //   });
 
   //   const cartItems = useSelector((state) => state.cart.values);
-  const cartItems = [];
-
-  const colors = ['Gold', 'Silver', 'Bronze'];
-  const sizes = ['16.0', '17.0', '18.0', '19.0'];
 
   let total = 0;
 
@@ -63,13 +47,16 @@ function Cart() {
       <h3 className={cx('cart-heading')}>Cart</h3>
       <div>
         <div ref={wrapperRef} className={cx('wrapper')}>
-          {cartList && cartList.length > 0
-            ? cartList.map((item) => {
+          {cartItems && cartItems.length > 0
+            ? cartItems.map((item, index) => {
+                const subtotal = item.quantity * item.price;
+
+                total += subtotal;
                 return (
                   <div className={cx('cart-item')}>
                     <i
                       onClick={(e) => {
-                        // dispatch(remove(index));
+                        dispatch(remove(index));
                       }}
                     >
                       <svg
@@ -82,18 +69,18 @@ function Cart() {
                       </svg>
                     </i>
                     <div className={cx('item-info')}>
-                      <Link to={`#`}>
-                        <img src={item.product_imgs[0].url} alt="" className={cx('item-img')} />
+                      <Link to={`/products/${item.slug}`}>
+                        <img src={item.image} alt="" className={cx('item-img')} />
                       </Link>
                       <div className="flex-1">
                         <div className={cx('flex-container')}>
                           <div>
-                            <Link to={`#`}>
-                              <h4 className={cx('item-heading')}>{item.product_name}</h4>
+                            <Link to={`/products/${item.slug}`}>
+                              <h4 className={cx('item-heading')}>{item.name}</h4>
                             </Link>
                             <div className={cx('variation-wrapper')}>
-                              <div>Color: {item.selectedColor}</div>
-                              <div className="mt-5">Size: {item.selectedSize}</div>
+                              <div>Color: {item.color}</div>
+                              <div className="mt-5">Size: {item.size}</div>
                             </div>
                           </div>
                           <div className={cx('price-wrapper')}>
@@ -101,12 +88,10 @@ function Cart() {
                               <div className={cx('quantity-price')}>
                                 <span className={cx('item-quantity')}>{item.quantity} ×</span>
                                 <p className={cx('price-component')}>
-                                  <Price value={item.product_price} />
+                                  <Price value={item.price} />
                                 </p>
                               </div>
-                              <span className={cx('sub-total')}>
-                                ${parseFloat(item.product_price * item.quantity).toFixed(2)}
-                              </span>
+                              <span className={cx('sub-total')}>${parseFloat(subtotal).toFixed(2)}</span>
                             </div>
                           </div>
                         </div>
@@ -161,7 +146,7 @@ function Cart() {
       </div>
       <div className={cx('cart-total', 'mt-12px')}>
         <span>Subtotal: </span>
-        <span className={cx('total-price')}>$ {parseFloat(totalCart).toFixed(2)}</span>
+        <span className={cx('total-price')}>$ {parseFloat(total).toFixed(2)}</span>
       </div>
       <div className={cx('btn-comp-1', 'mt-20px')}>
         <Button upperCase h100 w100 to={'/cart'}>

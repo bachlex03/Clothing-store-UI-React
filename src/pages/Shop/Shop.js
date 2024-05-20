@@ -21,6 +21,59 @@ const cx = classNames.bind(style);
 function Shop() {
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
+  const [selectedSizes, setSelectedSizes] = useState([]);
+  const [selectedColors, setSelectedColors] = useState([]);
+  const [filterProducts, setFilterProducts] = useState([]);
+
+  function bySizes(wantedSizes) {
+    return (product) => {
+      let toKeep = false;
+      product.product_sizes.forEach((productSize) => {
+        wantedSizes.forEach((wantedSize) => {
+          if (productSize.toLowerCase() === wantedSize.toLowerCase()) toKeep = true;
+        });
+      });
+      return toKeep;
+    };
+  }
+
+  function byColors(wantedColors) {
+    return (product) => {
+      let toKeep = false;
+      product.product_colors.forEach((productColor) => {
+        wantedColors.forEach((wantedColor) => {
+          if (productColor.toLowerCase() === wantedColor.toLowerCase()) toKeep = true;
+        });
+      });
+      return toKeep;
+    };
+  }
+
+  useEffect(() => {
+    console.log('selectedSizes', selectedSizes);
+    console.log('selectedColors', selectedColors);
+    console.log('products', products);
+    if (selectedSizes.length === 0 && selectedColors.length === 0) {
+      setFilterProducts(products);
+      return;
+    } else if (selectedSizes.length === 0 && selectedColors.length > 0) {
+      const filteredProducts = products.filter(byColors(selectedColors));
+      setFilterProducts(filteredProducts);
+    } else if (selectedSizes.length > 0 && selectedColors.length === 0) {
+      console.log('product chưa filter', products);
+      const filteredProducts = products.filter(bySizes(selectedSizes));
+      console.log('filteredProducts', filteredProducts);
+      setFilterProducts(filteredProducts);
+    } else if (selectedSizes.length > 0 && selectedColors.length > 0) {
+      const filteredProducts = products.filter(byColors(selectedColors));
+      const filteredProducts2 = filteredProducts.filter(bySizes(selectedSizes));
+      setFilterProducts(filteredProducts2);
+    }
+  }, [selectedSizes, selectedColors]);
+
+  useEffect(() => {
+    console.log('filterProducts', filterProducts);
+  }, [filterProducts]);
 
   const fetchingProduct = useMutation({
     mutationFn: async () => {
@@ -90,7 +143,7 @@ function Shop() {
         <div className="row">
           <div className="col l-3">
             <div className={cx('sidebar-component')}>
-              <Sidebar categories={categories} />
+              <Sidebar categories={categories} setColors={setSelectedColors} setSizes={setSelectedSizes} />
             </div>
           </div>
           <div className="col l-9">
@@ -125,15 +178,25 @@ function Shop() {
               </div>
             </div>
             <div className="row">
-              {products.map((product, index) => {
-                return (
-                  <div className="col l-4">
-                    <div className={cx('product-component')}>
-                      <Product product={product} />
-                    </div>
-                  </div>
-                );
-              })}
+              {selectedColors.length === 0 && selectedSizes.length === 0
+                ? products.map((product, index) => {
+                    return (
+                      <div className="col l-4">
+                        <div className={cx('product-component')}>
+                          <Product product={product} />
+                        </div>
+                      </div>
+                    );
+                  })
+                : filterProducts.map((product, index) => {
+                    return (
+                      <div className="col l-4">
+                        <div className={cx('product-component')}>
+                          <Product product={product} />
+                        </div>
+                      </div>
+                    );
+                  })}
             </div>
           </div>
         </div>

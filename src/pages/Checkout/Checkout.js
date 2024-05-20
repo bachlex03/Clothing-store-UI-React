@@ -33,7 +33,7 @@ function Checkout() {
   const [method, setMethod] = useState(0);
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.values);
-  const users = useSelector((state) => state.user.values);
+  const userInformation = useSelector((state) => state.user.information);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -54,7 +54,9 @@ function Checkout() {
   }, []);
 
   useEffect(() => {
-    console.log('user', users);
+    if (!userInformation) {
+      navigate('/login');
+    }
   }, []);
 
   useEffect(() => {

@@ -77,12 +77,7 @@ function Product({ product, children, ...passProps }) {
       <span className={cx('category')}>{product?.product_category?.category_name ?? 'Category'}</span>
 
       <p className={cx('name')}>{product?.product_name ?? 'Default Sunflower'}</p>
-      <div
-        className={cx('price-component')}
-        onClick={() => {
-          handleAddToCart(product);
-        }}
-      >
+      <div className={cx('price-component')}>
         <Price value={product?.product_price ?? 100} pos_shop />
       </div>
     </div>

@@ -342,7 +342,9 @@ function Details() {
                   Add to cart
                 </button>
               </div>
-              <div className={cx('categories')}>Categories: Accessories Clothing Women</div>
+              <div className={cx('categories')}>
+                Categories: {product.product_brand} | {product?.product_category?.category_name}
+              </div>
             </div>
           </div>
         </div>
