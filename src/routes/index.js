@@ -1,5 +1,18 @@
 import { Default, HeaderOnly, Admin, CustomerLayout, Shop as ShopLayout } from '~/layouts';
-import { Shop, Home, Login, Wishlist, Recover, Reset, Verify, Cart, Details, Checkout } from '~/pages';
+import {
+  Shop,
+  Home,
+  Login,
+  Wishlist,
+  Recover,
+  Reset,
+  Verify,
+  Cart,
+  Details,
+  Checkout,
+  Contact,
+  Location,
+} from '~/pages';
 import { Address, Detail, Order } from '~/pages/Customer';
 import { Products, Invoices, Employees } from '~/pages/Admin';
 
@@ -48,6 +61,14 @@ const publicRoutes = [
     path: '/admin/promotions',
     component: Invoices,
     layout: Admin,
+    path: '/location',
+    component: Location,
+    layout: HeaderOnly,
+  },
+  {
+    path: '/contact',
+    component: Contact,
+    layout: HeaderOnly,
   },
   {
     path: '/cart',
