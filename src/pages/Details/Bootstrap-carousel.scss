@@ -1,0 +1,21 @@
+.carousel-root {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: start;
+  width: 700px;
+  height: 730px;
+}
+
+.carousel {
+  width: auto;
+}
+
+.carousel .thumbs {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.carousel .thumbs-wrapper {
+  margin: 8px;
+}

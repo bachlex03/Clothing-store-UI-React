@@ -7,7 +7,7 @@
 
 * {
   box-sizing: border-box;
-  padding: 0;
+  // padding: 0;
   margin: 0;
 }
 
@@ -38,13 +38,13 @@ html {
   font-size: 62.5%;
   scroll-behavior: smooth;
   overflow: auto;
-  background-color: #333;
 }
 
 body {
   font-family: 'Poppins', sans-serif;
   font-size: 1.6rem;
   line-height: 1.5;
+  // background-color: #333;
 }
 
 // Resets
@@ -173,6 +173,10 @@ ol {
   margin-top: 20px !important;
 }
 
+.mt-50px {
+  margin-top: 50px !important;
+}
+
 .mr-8px {
   margin-right: 8px;
 }
@@ -195,6 +199,10 @@ ol {
 
 .mb-16px {
   margin-bottom: 16px;
+}
+
+.mr-8px {
+  margin-right: 8px;
 }
 
 .mr-12px {

@@ -1,0 +1,168 @@
+$heading-color: #4d5959;
+$text-color: #999999;
+$link-color: #222222;
+$background-hover-color: #91704f;
+
+.container-fl {
+  padding: 0;
+  margin: 0;
+  background-color: #ffffff;
+  width: 100%;
+}
+
+.topbar {
+  background: url('../../assets/images/bg.webp') no-repeat;
+  background-size: cover;
+  background-position: top;
+  background-color: rgba(0, 0, 0, 0.54) !important;
+  margin-bottom: 50px;
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
+.topbar .title {
+  color: #fff;
+  font-size: 20px;
+  line-height: 26px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  margin-bottom: 0px;
+  text-align: center;
+}
+
+.container-login {
+  padding: 0px 15px;
+  margin: 0;
+  width: 100%;
+}
+
+.content-login {
+  margin: 80px auto;
+  max-width: 410px;
+}
+
+.login-wrapper {
+  color: $text-color;
+  font-size: 14px;
+}
+
+.sub-title {
+  color: $heading-color;
+  line-height: 1.4;
+  font-weight: 400;
+  letter-spacing: 1px;
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+.sub-title2 {
+  margin-bottom: 20px;
+}
+
+.content-login .button {
+  height: 40px;
+  padding: 0 25px !important;
+  font-size: 14px !important;
+  margin-bottom: 20px;
+  border: 1px solid #000;
+  background-color: #fff;
+  border-radius: 0;
+}
+
+.content-login .login-wrapper .button:hover {
+  background-color: $background-hover-color;
+  border-color: $background-hover-color;
+  border: solid;
+  border-width: 0.727px;
+  color: #fff;
+  transition: 0.1s ease-in-out;
+}
+
+.p-text {
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+.link {
+  font-size: 14px;
+  color: $link-color;
+}
+
+.login-wrapper a:hover {
+  color: $background-hover-color;
+}
+
+//input
+.form-control-ovr {
+  width: 100%;
+  border: 1px solid #dddddd;
+  border-radius: 0;
+  margin-bottom: 20px;
+  &:focus {
+    border-color: #999999;
+    outline: none;
+  }
+  height: 4.5rem;
+  font-size: 14px;
+  padding-left: 14px;
+  padding-right: 14px;
+  padding-bottom: 0;
+  color: $text-color;
+}
+
+.error-messsage {
+  font-size: 12px;
+  margin-top: -10px;
+  margin-bottom: 10px;
+}
+
+.exclamation {
+  color: #eb001b;
+  font-size: 12px;
+}
+
+.login-guest-wrapper {
+  color: $heading-color;
+  text-transform: uppercase;
+  font-weight: 300;
+  letter-spacing: 2px;
+  margin: 0 0 20px;
+}
+
+.guest-login-wrapper .title {
+  color: $heading-color;
+  line-height: 1.4;
+  font-weight: 400;
+  letter-spacing: 2px;
+  margin-bottom: 20px;
+  font-size: 20px;
+}
+
+.guest-login-wrapper hr {
+  margin: 60px 0 50px;
+}
+
+.button-guest {
+  padding: 11px 15px;
+  font-size: 14px;
+  margin-bottom: 20px;
+  border: none;
+  background-color: #000;
+  border-radius: 0;
+  color: #fff;
+  transition: box-shadow 0.3s ease-in-out;
+  &:hover {
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  }
+}
+
+@media (max-width: 641px) {
+  .content-login {
+    margin: 40px auto;
+  }
+
+  .guest-login-wrapper hr {
+    margin: 30px 0 30px;
+  }
+}

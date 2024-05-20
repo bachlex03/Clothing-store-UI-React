@@ -1,0 +1,27 @@
+.sidebar {
+  width: 280px;
+}
+
+.heading {
+  letter-spacing: 1px;
+  font-size: 1.8rem;
+  line-height: 1.4;
+  font-weight: 500;
+  margin-bottom: 30px;
+  //   text-transform: uppercase;
+}
+
+.separate {
+  width: 100%;
+  height: 1px;
+  background-color: #888686;
+  display: block;
+  margin: 20px 0;
+}
+
+.side-product-component + .side-product-component {
+  margin-top: 20px;
+}
+
+.category-components-wrapper {
+}

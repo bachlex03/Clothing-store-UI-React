@@ -9,13 +9,32 @@ export const getAllProducts = async (options = {}) => {
 };
 
 export const createProduct = async (product) => {
+  console.log('createProduct', product);
   const result = await request.post('products', product);
+
+  return result;
+};
+
+export const removeProduct = async (id) => {
+  const result = await request.remove('products/' + id);
 
   return result;
 };
 
 export const getImages = async (slug) => {
   const result = await request.get(`products/${slug}/images`);
+
+  return result.data;
+};
+
+export const getDetails = async (param) => {
+  const result = await request.get(`products/${param}`);
+
+  return result.data;
+};
+
+export const search = async (param) => {
+  const result = await request.get(`products/search`, param);
 
   return result.data;
 };

@@ -10,13 +10,18 @@
   transition: all 0.5s;
   outline: none;
   background-color: transparent;
-  border-color: rgba($color: #ccc, $alpha: 0.3);
+  border-color: rgba($color: #ccc, $alpha: 1);
   caret-color: #fff;
-  color: #ccc;
+  color: #102c57;
 
   &:focus {
     border-color: #333;
     border-color: #ccc;
+  }
+
+  &::placeholder {
+    /* Edge 12-18 */
+    color: rgba($color: #333, $alpha: 0.5);
   }
 }
 

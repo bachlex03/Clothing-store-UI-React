@@ -45,7 +45,7 @@ function HeaderOnly({ children }) {
       <div className={classes}>
         <Header />
       </div>
-      <div className="container">
+      <div className={cx('container')}>
         <div className="content">{children}</div>
       </div>
       <Footer />

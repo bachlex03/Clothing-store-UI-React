@@ -9,6 +9,18 @@
   text-align: center;
   width: fit-content;
   font-weight: 500;
+  transition: all 0.1s linear;
+
+  &:hover {
+    background-color: rgba($color: #3c82f6, $alpha: 0.7);
+  }
+}
+
+.container.active {
+  &:active {
+    background-color: rgba($color: rgb(57, 52, 213), $alpha: 1) !important;
+  }
+  // background-color: #3c82f6;
 }
 
 .container + .container {
@@ -45,5 +57,13 @@
     &:hover {
       background-color: #dc2625;
     }
+  }
+}
+
+.danger {
+  background-color: #d7422d;
+
+  &:hover {
+    background-color: #c53030;
   }
 }

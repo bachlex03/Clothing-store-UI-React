@@ -5,7 +5,6 @@ import {
   faAngleRight,
   faEdit,
   faEye,
-  faMagnifyingGlass,
   faPlus,
   faTrash,
   faRotateRight,
@@ -15,40 +14,76 @@ import { io } from 'socket.io-client';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Fragment, useEffect, useRef, useState } from 'react';
-import { Button, SideModel, Search } from '~/components/adminComponents';
+import { Button, SideModel, Search, DeleteModel } from '~/components/adminComponents';
 import * as productService from '~/services/api/productService';
+import { AxiosError } from 'axios';
+import { useMutation } from '@tanstack/react-query'; // Ensure correct import
+import { toast } from 'sonner';
 
 const cx = classNames.bind(styles);
 
 function Products() {
-  const modelRef = useRef(null);
+  const addProductModelRef = useRef(null);
+  const deleteProductModelRef = useRef(null);
   const [loading, setLoading] = useState(false);
 
   const [products, setProducts] = useState([]);
 
-  const handleGetProducts = async () => {
-    setLoading(true);
+  // Call API
+  const fetchingProduct = useMutation({
+    mutationFn: async () => {
+      setLoading(true);
 
-    try {
-      const data = await productService.getAllProducts({
-        q: 'min',
+      return await productService.getAllProducts({ q: 'min' });
+    },
+    onSuccess: (data) => {
+      toast.success('Success', {
+        description: 'All products have been fetched successfully',
       });
 
-      console.log('data: ', data);
-
       setProducts(data);
-    } catch (error) {
-      console.error(error);
-    } finally {
+
       setTimeout(() => {
         setLoading(false);
       }, 500);
-    }
-  };
+    },
+    onError: (error) => {
+      if (error instanceof AxiosError) {
+        console.log('error.response.data', error.response?.data);
+        console.log('error.response.status', error.response?.status);
+
+        toast.error(`Error ${error.response?.status}`, {
+          description: `${error.response?.data?.message}`,
+        });
+      }
+
+      setTimeout(() => {
+        setLoading(false);
+      }, 500);
+    },
+  });
 
   useEffect(() => {
-    handleGetProducts();
+    fetchingProduct.mutate();
   }, []);
+
+  // const handleGetProducts = async () => {
+  //   setLoading(true);
+
+  //   try {
+  //     const data = await productService.getAllProducts({
+  //       q: 'min',
+  //     });
+
+  //     setProducts(data);
+  //   } catch (error) {
+  //     console.error(error);
+  //   } finally {
+  //     setTimeout(() => {
+  //       setLoading(false);
+  //     }, 500);
+  //   }
+  // };
 
   useEffect(() => {
     const socket = io('http://localhost:3001');
@@ -91,7 +126,7 @@ function Products() {
               <Button
                 hover
                 onClick={() => {
-                  modelRef.current.openModel();
+                  addProductModelRef.current.openModel();
                 }}
               >
                 <FontAwesomeIcon icon={faPlus} /> Add Product
@@ -102,7 +137,7 @@ function Products() {
           <div
             className={cx('refresh-container')}
             onClick={() => {
-              handleGetProducts();
+              fetchingProduct.mutate();
             }}
           >
             <i className={cx('repeat-icon mr-12px')}>
@@ -126,6 +161,8 @@ function Products() {
 
             <tbody className={cx('table-body')}>
               {products.map((product, index) => {
+                const status = product.product_status === 'Published' ? true : false;
+
                 return (
                   <tr key={index}>
                     <td className="code">{product.product_code}</td>
@@ -138,16 +175,24 @@ function Products() {
                     </td>
                     <td className="stock">{product.product_stocks}</td>
                     <td className="status">
-                      <span className={cx('box', 'inactive')}>{product.product_status}</span>
+                      <span className={cx('box', { Published: status, Draft: !status })}>{product.product_status}</span>
                     </td>
                     <td className="action">
-                      <span className={cx('actions')}>
+                      {/* <span className={cx('actions')}>
                         <FontAwesomeIcon className={cx('edit')} icon={faEye} />
                       </span>
                       <span className={cx('actions')}>
                         <FontAwesomeIcon className={cx('edit')} icon={faEdit} />
-                      </span>
-                      <span className={cx('actions')}>
+                      </span> */}
+                      <span
+                        className={cx('actions')}
+                        data-id={product._id}
+                        onClick={(e) => {
+                          const id = e.currentTarget.getAttribute('data-id');
+
+                          deleteProductModelRef.current.openModel(id, product.product_name);
+                        }}
+                      >
                         <FontAwesomeIcon className={cx('delete')} icon={faTrash} />
                       </span>
                     </td>
@@ -176,14 +221,15 @@ function Products() {
         </div>
 
         {/* <div className={cx('footer')}>
-          <div className="flex justify-between">
-            <div className={cx('footer-left')}>@tailwindcss</div>
+              <div className="flex justify-between">
+                <div className={cx('footer-left')}>@tailwindcss</div>
+    
+                <div className={cx('footer-right')}>Design & Develop by Group 1</div>
+              </div>
+            </div> */}
 
-            <div className={cx('footer-right')}>Design & Develop by Group 1</div>
-          </div>
-        </div> */}
-
-        <SideModel ref={modelRef} />
+        <SideModel ref={addProductModelRef} />
+        <DeleteModel ref={deleteProductModelRef} fetchingProduct />
       </div>
     </Fragment>
   );
