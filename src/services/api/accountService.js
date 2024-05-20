@@ -94,3 +94,9 @@ export const updateCheckoutInfo = async (info) => {
 
   return result;
 };
+
+export const getInvoices = async () => {
+  const result = await request.get('users/invoices');
+
+  return result;
+};

@@ -110,8 +110,10 @@
           td {
             padding: 12px 15px;
           }
-          .product-name {
-            text-align: left;
+          a {
+            width: 100%;
+            text-decoration: none;
+            text-align: left !important;
           }
         }
       }
