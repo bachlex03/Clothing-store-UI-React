@@ -1,26 +1,27 @@
 import style from './DetailInvoiceModal.module.scss';
 import classNames from 'classnames/bind';
 import Modal from './Modal';
+import { Link } from 'react-router-dom';
 
 const cx = classNames.bind(style);
 
-function DetailInvoiceModal({ isOpen, onClose, title }) {
+function DetailInvoiceModal({ isOpen, onClose, invoice }) {
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
-      <Modal.Header>{title}</Modal.Header>
+      <Modal.Header></Modal.Header>
       <Modal.Body>
         <div className={cx('content')}>
           <div className={cx('head')}>
             <div className={cx('info')}>
               <h2>Invoice</h2>
               <p>
-                <strong>BILLED: </strong> Edna Frank
+                <strong>BILLED: </strong> {invoice?.invoice_fullname}
               </p>
               <p>
-                <strong>DATE: </strong> March 12, 2021
+                <strong>DATE: </strong> {new Date(invoice.createdAt).toLocaleString()}
               </p>
               <p>
-                <strong>ORDER ID: </strong> #1553
+                <strong>ORDER ID: </strong> #{invoice && invoice._id && invoice._id.slice(-4)}
               </p>
             </div>
             <div className={cx('logo')}>
@@ -39,29 +40,29 @@ function DetailInvoiceModal({ isOpen, onClose, title }) {
                 </tr>
               </thead>
               <tbody>
-                <tr>
+                {/* <tr>
                   <td className={cx('product-name')}>Product 1</td>
                   <td>$ 100.00</td>
                   <td>1</td>
                   <td>$ 100.00</td>
-                </tr>
-                <tr>
-                  <td className={cx('product-name')}>Product 2</td>
-                  <td>$ 100.00</td>
-                  <td>1</td>
-                  <td>$ 100.00</td>
-                </tr>
-                <tr>
-                  <td className={cx('product-name')}>Product 3</td>
-                  <td>$ 100.00</td>
-                  <td>1</td>
-                  <td>$ 100.00</td>
-                </tr>
+                </tr> */}
+                {invoice &&
+                  invoice.invoice_products &&
+                  invoice.invoice_products.map((item) => (
+                    <tr key={item._id}>
+                      <Link to={`/products/${item.slug ?? '#'}`}>
+                        <td className={cx('product-name')}>{item.product_name}</td>
+                      </Link>
+                      <td>${item.product_price}</td>
+                      <td>{item.product_quantity}</td>
+                      <td>${item.product_price * item.product_quantity}</td>
+                    </tr>
+                  ))}
                 <tr>
                   <td></td>
                   <td></td>
-                  <td>Total</td>
-                  <td>$ 300.00</td>
+                  <td>Total:</td>
+                  <td>${invoice.invoice_total / 25000}</td>
                 </tr>
               </tbody>
             </table>

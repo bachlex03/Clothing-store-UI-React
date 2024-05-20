@@ -5,6 +5,7 @@ import { publicRoutes } from './routes';
 import { Default } from './layouts';
 import { Fragment, useState } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import CheckAuth from './auth/CheckAuth';
 
 const queryClient = new QueryClient();
 
@@ -29,9 +30,11 @@ function App() {
                 <Route
                   key={index}
                   element={
-                    <Layout>
-                      <Page />
-                    </Layout>
+                    <CheckAuth>
+                      <Layout>
+                        <Page />
+                      </Layout>
+                    </CheckAuth>
                   }
                   path={route.path}
                 />
