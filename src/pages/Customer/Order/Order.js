@@ -1,11 +1,12 @@
 import style from './Order.module.scss';
 import classNames from 'classnames/bind';
-
-import { Button } from '~/components';
+import { useState } from 'react';
+import DetailInvoiceModal from '~/components/DetailInvoiceModal';
 
 const cx = classNames.bind(style);
 
 function Order() {
+  const [openModal, setOpenModal] = useState(false);
   return (
     <div className={cx('wrapper')}>
       <h3 className={cx('heading')}>Orders</h3>
@@ -37,7 +38,7 @@ function Order() {
             <td className={cx('total')}>$ 613.00</td>
             <td className={cx('action', 'text-center')}>
               <div className={cx('btn-wrapper')}>
-                <button type="button" className={cx('button')}>
+                <button type="button" className={cx('button')} onClick={() => setOpenModal(!openModal)}>
                   View
                 </button>
               </div>
@@ -58,6 +59,11 @@ function Order() {
           </tr>
         </tbody>
       </table>
+
+      <DetailInvoiceModal
+        isOpen={openModal}
+        onClose={() => setOpenModal(false)}
+      ></DetailInvoiceModal>
     </div>
   );
 }

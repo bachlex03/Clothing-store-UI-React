@@ -4,19 +4,23 @@
   padding: 0;
   margin: 0;
   background-color: #fff;
+  padding-top: 120px !important;
 }
 
 .topbar {
+  background: url('../../assets/images/bg-3.png') no-repeat;
+  background-size: cover;
+  background-position: top;
   background-color: rgba(0, 0, 0, 0.54) !important;
   margin-bottom: 50px;
-  padding-top: 50px;
-  padding-bottom: 50px;
+  padding-top: 80px;
+  padding-bottom: 80px;
   .title {
     text-align: center;
     color: #fff;
     font-size: 20px;
     line-height: 26px;
-    font-weight: 400;
+    font-weight: 500;
     letter-spacing: 2px;
     margin-bottom: 0px;
   }
@@ -25,10 +29,38 @@
 .section-1100 {
   min-width: 1100px;
   max-width: 1100px;
-  margin: 0 auto;
+  margin: 0 auto 50px auto;
 }
-// body {
-//   font-family: 'Poppins', sans-serif !important;
-//   font-size: 1.4rem;
-//   line-height: 1.5;
-// }
+
+.header-component {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 99;
+  background-color: transparent;
+}
+
+.header-component.show {
+  position: fixed;
+  z-index: 999;
+  top: 0;
+  left: 0;
+  right: 0;
+  box-shadow: 0 10px 30px -10px var(--navy-shadow);
+  backdrop-filter: blur(10px);
+  transform: translateY(0);
+  transition: all 0.4s ease-in-out;
+}
+
+.header-component.hide {
+  position: fixed;
+  z-index: 999;
+  top: 0;
+  left: 0;
+  right: 0;
+  box-shadow: 0 10px 30px -10px var(--navy-shadow);
+  backdrop-filter: blur(10px);
+  transform: translateY(-130px);
+  transition: all 0.4s ease-in-out;
+}

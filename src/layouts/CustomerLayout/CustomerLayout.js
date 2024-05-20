@@ -1,35 +1,48 @@
 import style from './CustomerLayout.module.scss';
 import classNames from 'classnames/bind';
 import { Header, Footer, CustomerSidebar } from '../components';
+import { useEffect, useState } from 'react';
 
 const cx = classNames.bind(style);
 
-// function CustomerLayout({ children }) {
-//   return (
-//     <>
-//       <Header />
-//       <main className={cx('container-fluid px-0')}>
-//         <div className={cx('container-fluid', 'topbar')}>
-//           <h1 className={cx('title', 'text-center')}>My Account</h1>
-//         </div>
-//         <div className={cx('container')}>
-//           <div className={cx('d-flex')}>
-//             <CustomerSidebar />
-//             <div className={cx('w-100')}>{children}</div>
-//           </div>
-//         </div>
-//       </main>
-//       <footer>
-//         <Footer />
-//       </footer>
-//     </>
-//   );
-// }
-
 function CustomerLayout({ children }) {
+  const [scrollDirection, setScrollDirection] = useState('up');
+
+  useEffect(() => {
+    let lastScrollTop = 0;
+
+    const handleScroll = () => {
+      const st = window.pageYOffset;
+
+      if (st > lastScrollTop) {
+        setScrollDirection('down');
+      } else if (st < lastScrollTop) {
+        setScrollDirection('up');
+      }
+      if (st < 30) {
+        setScrollDirection('top');
+      }
+
+      lastScrollTop = st;
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  const classes = cx('header-component', {
+    show: scrollDirection === 'up',
+    hide: scrollDirection === 'down',
+    top: scrollDirection === 'top',
+  });
   return (
     <>
-      <Header />
+      <div className={classes}>
+        <Header />
+      </div>
       <main className={cx('container')}>
         <div className={cx('topbar')}>
           <h1 className={cx('title')}>My Account</h1>
