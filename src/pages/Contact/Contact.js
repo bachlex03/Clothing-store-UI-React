@@ -121,14 +121,6 @@ function Contact() {
       </div>
       <div className={cx('row', 'divide')}></div>
       <div className={cx('row', 'divide')}></div>
-      <div className={cx('row', 'divide')}></div>
-      <div className={cx('row', 'divide')}></div>
-      <div className={cx('row', 'divide')}></div>
-      <div className={cx('row', 'divide')}></div>
-      <div className={cx('row', 'divide')}></div>
-      <div className={cx('row', 'divide')}></div>
-      <div className={cx('row', 'divide')}></div>
-      <div className={cx('row', 'divide')}></div>
       <div className={cx('grid wide', 'bd-under')}>
         {/* ITEM1 */}
         <div className={cx('background1', 'fb-center', 'row')}>
