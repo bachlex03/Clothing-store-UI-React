@@ -1,8 +1,6 @@
 import { Default, HeaderOnly, Admin, CustomerLayout, Shop as ShopLayout } from '~/layouts';
-import { Shop, Home, Login, Wishlist, Recover, Reset, Verify, Cart, Details, Checkout } from '~/pages';
+import { Shop, Home, Login, Wishlist, Recover, Reset, Verify, Cart, Details, Checkout, Contact, Location } from '~/pages';
 import { Address, Detail, Order } from '~/pages/Customer';
-import { Default, HeaderOnly, Admin } from '~/layouts';
-import { Shop, Home, Location, Contact } from '~/pages';
 import { Products, Invoices } from '~/pages/Admin';
 
 const publicRoutes = [
