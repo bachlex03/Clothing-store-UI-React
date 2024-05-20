@@ -22,10 +22,10 @@ function Product({ product, children, ...passProps }) {
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.values);
 
-  console.log('cartItems', cartItems);
+  // console.log('cartItems', cartItems);
 
   const handleAddToCart = (product) => {
-    console.log('product', product);
+    // console.log('product', product);
 
     dispatch(add(product));
   };
