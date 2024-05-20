@@ -10,6 +10,15 @@ const request = axios.create({
 
 request.defaults.withCredentials = true;
 
+request.interceptors.request.use(function (config) {
+  // Lấy token mới từ local storage và cập nhật header Authorization
+  const token = localStorage.getItem('token');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
 // Add a response interceptor
 request.interceptors.response.use(
   function (response) {

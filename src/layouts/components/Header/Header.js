@@ -5,6 +5,9 @@ import { Link } from 'react-router-dom';
 import { faAngleDown, faRightToBracket, faAddressCard, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { faHeart } from '@fortawesome/free-regular-svg-icons';
 import { useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { remove as removeUser } from '~/redux/features/user/userSlice';
+import { toast } from 'sonner';
 
 import { Search, CategoryHeader, Cart, Text } from '~/components';
 import images from '~/assets/images';
@@ -21,6 +24,9 @@ function Header({ animation = false, blur = false, light = null, color, lightLog
 
   const categoriesRef = useRef();
   const cartRef = useRef();
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user.information);
+  const token = localStorage.getItem('token');
 
   useEffect(() => {
     if (!animation) {
@@ -108,17 +114,31 @@ function Header({ animation = false, blur = false, light = null, color, lightLog
 
         <div className={cx('auth-actions')}>
           <Link
-            to="/login"
+            to={user ? '/shop' : '/login'}
             onClick={() => {
               setLightEffect(null);
+              if (user) {
+                // remove token from local storage
+                localStorage.removeItem('token');
+                // remove user from redux store
+                dispatch(removeUser());
+                console.log('User logged out');
+              }
             }}
           >
             <i className={cx('icon')}>
               <FontAwesomeIcon icon={faRightToBracket} />
             </i>
-            Logout
+            {user ? 'Logout' : 'Login'}
           </Link>
-          <Link to="/customer/details">
+          <Link
+            to={user ? '/customer/details' : '/login'}
+            onClick={() => {
+              if (!user) {
+                toast.error('Please login to view your account');
+              }
+            }}
+          >
             <i className={cx('icon')}>
               <FontAwesomeIcon icon={faAddressCard} />
             </i>
@@ -220,7 +240,9 @@ function Header({ animation = false, blur = false, light = null, color, lightLog
 
             {/* Wishlist */}
             <div className={cx('wishlist')}>
-              <i className={cx('icon-header', 'ti-heart')} light={lightEffect} blur={blurEffect}></i>
+              <Link to="/wishlist">
+                <i className={cx('icon-header', 'ti-heart')} light={lightEffect} blur={blurEffect}></i>
+              </Link>
             </div>
 
             {/* Cart */}

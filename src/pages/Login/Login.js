@@ -5,6 +5,8 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import qs from 'qs';
 import * as accountService from '~/services/api/accountService';
 import { RecoverNoti } from '~/components';
+import { useDispatch } from 'react-redux';
+import { store as storeUser } from '~/redux/features/user/userSlice';
 const cx = classNames.bind(style);
 
 function Login() {
@@ -28,6 +30,11 @@ function Login() {
   const fromVerify = location.state?.fromVerify;
   const fromReset = location.state?.fromReset;
   const message = location.state?.message;
+  const dispatch = useDispatch();
+
+  const storeUserEmail = (user) => {
+    dispatch(storeUser(user));
+  };
 
   useEffect(() => {
     if (location?.state) {
@@ -85,8 +92,11 @@ function Login() {
             navigate(response?.data?.redirect);
           }
         } else {
-          let token = response.data.accessToken;
+          let token = response.data?.accessToken;
+          let emailUser = response.data?.user?.email;
           localStorage.setItem('token', token);
+          storeUserEmail(emailUser);
+          console.log('User logged in');
           if (rememberMe) {
             localStorage.setItem('chani-email', email);
             localStorage.setItem('chani-password', password);

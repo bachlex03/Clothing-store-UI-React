@@ -8,6 +8,7 @@ import * as accountService from '~/services/api/accountService';
 import { AxiosError } from 'axios';
 import { useMutation } from '@tanstack/react-query'; // Ensure correct import
 import { toast } from 'sonner';
+import { useNavigate } from 'react-router-dom';
 
 const cx = classNames.bind(style);
 
@@ -19,6 +20,7 @@ function Detail() {
   const [password, setPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchingAccount.mutate();
@@ -42,6 +44,10 @@ function Detail() {
         toast.error(`Error ${error.response?.status}`, {
           description: `${error.response?.data?.message}`,
         });
+        // if code is 401, it means user is not authenticated, navigate to login page
+        if (error.response?.status === 401) {
+          navigate('/login');
+        }
       }
     },
   });
