@@ -8,6 +8,8 @@ import { AxiosError } from 'axios';
 import { useMutation } from '@tanstack/react-query'; // Ensure correct import
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { clearCart } from '~/redux/features/cart/cartSlice';
 
 const cx = classNames.bind(style);
 
@@ -29,19 +31,21 @@ function Checkout() {
   const [listItems, setListItems] = useState([]);
   const [total, setTotal] = useState(0);
   const [method, setMethod] = useState(0);
+  const cartItems = useSelector((state) => state.cart.values);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
     let total = 0;
-    const boughtItems = cartList.map((item) => {
-      total = total + item.product_price * item.quantity;
+    const boughtItems = cartItems.map((item) => {
+      total = total + item.price * item.quantity;
       return {
-        name: item.product_name,
-        slug: item.product_slug,
-        size: item.selectedSize,
-        color: item.selectedColor,
+        name: item.name,
+        slug: item.slug,
+        size: item.size,
+        color: item.color,
         quantity: item.quantity,
-        price: item.product_price,
+        price: item.price,
       };
     });
     setListItems(boughtItems);
@@ -278,8 +282,9 @@ function Checkout() {
       const response = await paymentCash(data);
       console.log('response', response);
       if (response.status == 200) {
-        setCartList([]);
+        dispatch(clearCart());
         await new Promise((resolve) => setTimeout(resolve, 0)); // Wait for state update
+
         navigate('/cart');
         toast.success('Success', {
           description: 'Checkout successfully!',

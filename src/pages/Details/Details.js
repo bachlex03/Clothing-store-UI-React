@@ -13,6 +13,8 @@ import _ from 'lodash';
 import { AxiosError } from 'axios';
 import { useMutation } from '@tanstack/react-query'; // Ensure correct import
 import { toast } from 'sonner';
+import { useDispatch, useSelector } from 'react-redux';
+import { add, update } from '~/redux/features/cart/cartSlice';
 
 const cx = classNames.bind(style);
 
@@ -27,7 +29,67 @@ function Details() {
   const [selectedSize, setSelectedSize] = useState('');
   const [sizeAvailable, setSizeAvailable] = useState([]);
   const [quantity, setQuantity] = useState(1);
-  const [cartList, setCartList] = useState(JSON.parse(localStorage.getItem('cartList')) || []);
+
+  //handle add to cart
+  const dispatch = useDispatch();
+  const cartItems = useSelector((state) => state.cart.values);
+
+  const handleAddToCart = () => {
+    const checkQuantity = sizeAvailable.find(
+      (item) => item.sku_size === selectedSize && item.sku_color === selectedColor,
+    );
+    if (checkQuantity && checkQuantity.sku_quantity > quantity) {
+      const data = {
+        name: product.product_name,
+        price: product.product_price,
+        image: product.product_imgs[0].secure_url,
+        color: selectedColor,
+        size: selectedSize,
+        slug: product.product_slug,
+        quantity: quantity,
+      };
+
+      let existIndex = cartItems.findIndex((item) => {
+        return item.slug === data.slug && item.color === data.color && item.size === data.size;
+      });
+
+      if (existIndex !== -1) {
+        let existItem = cartItems.find((item) => {
+          return item.slug === data.slug && item.color === data.color && item.size === data.size;
+        });
+
+        const newQuantity = +existItem.quantity + quantity;
+
+        const newData = {
+          index: existIndex,
+          item: { ...data, quantity: newQuantity },
+        };
+
+        dispatch(update(newData));
+        toast.success('Success', {
+          description: 'Add to cart successfully',
+        });
+
+        return;
+      }
+
+      dispatch(add(data));
+      toast.success('Success', {
+        description: 'Add to cart successfully',
+      });
+    } else {
+      if (!checkQuantity) {
+        toast.error('Error', {
+          description: 'Size is not available',
+        });
+      }
+      if (checkQuantity && checkQuantity.sku_quantity < quantity) {
+        toast.error('Error', {
+          description: 'Quantity is not enough',
+        });
+      }
+    }
+  };
 
   useEffect(() => {
     getDetailProductMutate.mutate();
@@ -75,6 +137,7 @@ function Details() {
       const available = sizes.filter((item) => item.sku_quantity > 0);
       setSizeAvailable(available);
       setSelectedSize(sizes[0].sku_size);
+      console.log('available', available);
     }
   }, [sizesByColor, selectedColor]);
 
@@ -107,31 +170,27 @@ function Details() {
     }
   }, [quantity]);
 
-  useEffect(() => {
-    localStorage.setItem('cartList', JSON.stringify(cartList));
-  }, [cartList]);
+  // const handleAddToCart = () => {
+  //   const productExist = cartList.find(
+  //     (item) => item._id === product._id && item.selectedColor === selectedColor && item.selectedSize === selectedSize,
+  //   );
 
-  const handleAddToCart = () => {
-    const productExist = cartList.find(
-      (item) => item._id === product._id && item.selectedColor === selectedColor && item.selectedSize === selectedSize,
-    );
+  //   if (productExist) {
+  //     setCartList(
+  //       cartList.map((item) =>
+  //         item._id === product._id && item.selectedColor === selectedColor && item.selectedSize === selectedSize
+  //           ? { ...item, quantity: item.quantity + quantity }
+  //           : item,
+  //       ),
+  //     );
+  //   } else {
+  //     setCartList([...cartList, { ...product, quantity, selectedColor, selectedSize }]);
+  //   }
 
-    if (productExist) {
-      setCartList(
-        cartList.map((item) =>
-          item._id === product._id && item.selectedColor === selectedColor && item.selectedSize === selectedSize
-            ? { ...item, quantity: item.quantity + quantity }
-            : item,
-        ),
-      );
-    } else {
-      setCartList([...cartList, { ...product, quantity, selectedColor, selectedSize }]);
-    }
-
-    toast.success('Success', {
-      description: 'Add to cart successfully',
-    });
-  };
+  //   toast.success('Success', {
+  //     description: 'Add to cart successfully',
+  //   });
+  // };
 
   return (
     <div className={cx('product-detail-container')}>

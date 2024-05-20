@@ -134,6 +134,7 @@
 
 .related-products-container {
   padding: 100px 10px;
+  margin: auto;
   .related-products-content {
     display: flex;
     flex-direction: column;
@@ -212,7 +213,8 @@
   padding-left: 20px;
   padding-right: 20px;
   padding-bottom: 90px;
-  width: 100%;
+  width: 92%;
+  margin: auto;
   display: flex;
   .dresses-container {
     width: 33.33%;

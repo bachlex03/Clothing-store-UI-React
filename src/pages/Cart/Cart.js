@@ -7,12 +7,42 @@ import { vnpayIPN } from '~/services/api/paymenService';
 import { AxiosError } from 'axios';
 import { useMutation } from '@tanstack/react-query'; // Ensure correct import
 import { toast } from 'sonner';
+import { useDispatch, useSelector } from 'react-redux';
+import { update, remove, clearCart } from '~/redux/features/cart/cartSlice';
 
 const cx = classNames.bind(style);
 
 function Cart() {
-  const [cartList, setCartList] = useState(JSON.parse(localStorage.getItem('cartList')) || []);
   const [total, setTotal] = useState(0);
+
+  //handle
+  const dispatch = useDispatch();
+  const cartItems = useSelector((state) => state.cart.values);
+
+  const handleIncrease = (index, item) => {
+    let updatedObj = {
+      index,
+      item: {
+        ...item,
+        quantity: +item.quantity + 1,
+      },
+    };
+
+    dispatch(update(updatedObj));
+  };
+
+  const handleDecrease = (index, item) => {
+    let updatedObj = {
+      index,
+      item: {
+        ...item,
+        quantity: +item.quantity - 1,
+      },
+    };
+    if (item.quantity === 1) return;
+
+    dispatch(update(updatedObj));
+  };
 
   useEffect(() => {
     const params = window.location.search;
@@ -46,7 +76,7 @@ function Cart() {
     const response = await vnpayIPN(params);
     console.log(response);
     if (response.RspCode === '00') {
-      setCartList([]);
+      dispatch(clearCart());
       toast.success('Success', {
         description: 'Checkout successfully!',
       });
@@ -57,47 +87,26 @@ function Cart() {
     }
   };
 
-  const handleChangeQuantity = (value, id) => {
-    if (+value === 0) return;
-    const newCartList = cartList.map((item) => {
-      if (item._id === id) {
-        return { ...item, quantity: value };
-      }
-      return item;
-    });
-    setCartList(newCartList);
-  };
+  const handleChangeQuantity = (index, item, value) => {
+    if (+value === 0 || +value < 0) return;
+    let updatedObj = {
+      index,
+      item: {
+        ...item,
+        quantity: value,
+      },
+    };
 
-  const handleQuantity = (type, id) => {
-    const newCartList = cartList.map((item) => {
-      if (item._id === id) {
-        if (type === 1) {
-          return { ...item, quantity: +item.quantity + 1 };
-        } else {
-          if (item.quantity === 1) return item;
-          return { ...item, quantity: +item.quantity - 1 };
-        }
-      }
-      return item;
-    });
-    setCartList(newCartList);
-  };
-
-  const removeProduct = (id, color, size) => {
-    const newCartList = cartList.filter(
-      (item) => item._id !== id || item.selectedColor !== color || item.selectedSize !== size,
-    );
-    setCartList(newCartList);
+    dispatch(update(updatedObj));
   };
 
   useEffect(() => {
     let total = 0;
-    localStorage.setItem('cartList', JSON.stringify(cartList));
-    cartList.map((item) => {
-      total += item.product_price * item.quantity;
+    cartItems.map((item) => {
+      total += item.price * item.quantity;
     });
     setTotal(total);
-  }, [cartList]);
+  }, [cartItems]);
 
   return (
     <div className={cx('cart-container')}>
@@ -105,7 +114,6 @@ function Cart() {
         <table className={cx('table-container')}>
           <thead>
             <tr>
-              {/* <th className="choose"></th> */}
               <th className="thumbnail"></th>
               <th>Product</th>
               <th>Price</th>
@@ -115,35 +123,32 @@ function Cart() {
             </tr>
           </thead>
           <tbody>
-            {cartList && cartList.length > 0 ? (
-              cartList.map((item) => {
+            {cartItems && cartItems.length > 0 ? (
+              cartItems.map((item, index) => {
                 return (
                   <tr className={cx('cart-item')}>
-                    {/* <td className="choose">
-                      <input value="test" type="checkbox" />
-                    </td> */}
                     <td className={cx('product-thumbnail')}>
                       <img
                         width="110"
                         height="138"
                         loading="lazy"
-                        src={item && item.product_imgs.length > 0 ? item.product_imgs[0].url : ''}
+                        src={item && item.image ? item.image : ''}
                         alt="thumbnail"
                       />
                     </td>
                     <td className="product-name">
-                      <Link to={`/products/${item.product_slug}`} style={{ fontSize: '2rem', marginBottom: '8px' }}>
-                        {item.product_name}
+                      <Link to={`/products/${item.slug}`} style={{ fontSize: '2rem', marginBottom: '8px' }}>
+                        {item.name}
                       </Link>
-                      <div style={{ marginBottom: '8px' }}>Color: {item.selectedColor} </div>
-                      <div style={{ marginBottom: '8px' }}>Size: {item.selectedSize}</div>
+                      <div style={{ marginBottom: '8px' }}>Color: {item.color} </div>
+                      <div style={{ marginBottom: '8px' }}>Size: {item.size}</div>
                     </td>
                     <td className={cx('product-price')} data-title="Price">
                       <bdi>
                         <span className={cx('icon')}>
                           <TbCurrencyDollar />
                         </span>
-                        {parseFloat(item.product_price).toFixed(2)}
+                        {parseFloat(item.price).toFixed(2)}
                       </bdi>
                     </td>
                     <td className={cx('product-quantity')} data-title="Quantity">
@@ -154,7 +159,7 @@ function Cart() {
                           id
                           name
                           value={item.quantity}
-                          onChange={(e) => handleChangeQuantity(e.target.value, item._id)}
+                          onChange={(e) => handleChangeQuantity(index, item, e.target.value)}
                           size="4"
                           min="0"
                           max=""
@@ -165,11 +170,11 @@ function Cart() {
                         />
                         <span
                           className={cx('cms-qty-act', 'cms-qty-up')}
-                          onClick={() => handleQuantity(1, item._id)}
+                          onClick={() => handleIncrease(index, item)}
                         ></span>
                         <span
                           className={cx('cms-qty-act', 'cms-qty-down')}
-                          onClick={() => handleQuantity(-1, item._id)}
+                          onClick={() => handleDecrease(index, item)}
                         ></span>
                       </div>
                     </td>
@@ -178,13 +183,10 @@ function Cart() {
                         <span className={cx('icon')}>
                           <TbCurrencyDollar />
                         </span>
-                        {parseFloat(item.product_price * item.quantity).toFixed(2)}
+                        {parseFloat(item.price * item.quantity).toFixed(2)}
                       </bdi>
                     </td>
-                    <td
-                      className={cx('product-remove')}
-                      onClick={() => removeProduct(item._id, item.selectedColor, item.selectedSize)}
-                    >
+                    <td className={cx('product-remove')} onClick={() => dispatch(remove(index))}>
                       X
                     </td>
                   </tr>
