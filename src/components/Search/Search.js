@@ -38,8 +38,6 @@ function Search({ light, color }) {
       });
     },
     onSuccess: (data) => {
-      toast.success('Success');
-
       setProducts(data);
     },
     onError: (error) => {
@@ -89,7 +87,7 @@ function Search({ light, color }) {
     }
 
     searchProductApi.mutate(debounced);
-  }, [debounced, inputValue]);
+  }, [debounced]);
 
   const icons = {
     xmark: (
@@ -155,7 +153,7 @@ function Search({ light, color }) {
                           {product?.product_type ? product.product_type : 'Clothe'}
                         </span>{' '}
                         |{' '}
-                        <span className={cx('variations')}>
+                        <span className={cx('variations', 'variations-sec')}>
                           {product?.product_brand ? product.product_brand : 'Gucci'}
                         </span>{' '}
                         |{' '}
@@ -164,7 +162,7 @@ function Search({ light, color }) {
                         </span>
                       </span>
                       <p className={cx('price-component')}>
-                        <Price value={product?.product_price ?? 0} old_new_price fs_15 />
+                        <Price value={product?.product_price ?? 0} promotion={15} old_new_price fs_15 />
                       </p>
                     </div>
                   </div>

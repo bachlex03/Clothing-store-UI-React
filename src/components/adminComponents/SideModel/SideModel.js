@@ -134,10 +134,6 @@ function SideModel(props, ref) {
       return await categoryService.getCategories();
     },
     onSuccess: (data) => {
-      toast.success('Success', {
-        description: 'All categories have been fetched successfully',
-      });
-
       setFetchCategory(data);
 
       setCategoriesArr(renderCategories(data));

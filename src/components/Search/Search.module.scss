@@ -70,7 +70,7 @@
   display: none;
   position: absolute;
   z-index: 9999;
-  width: 400px;
+  width: 450px;
   max-height: 400px;
   overflow-y: scroll;
   overscroll-behavior: contain;
@@ -134,8 +134,15 @@
 // variation
 .variations {
   display: inline-block;
-  width: 45px;
+  width: 60px;
   text-align: center;
+}
+
+.variations-sec {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  transform: translateY(5px);
 }
 
 .link {

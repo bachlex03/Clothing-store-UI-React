@@ -57,38 +57,32 @@
         text-align: left;
       }
 
-      th[class*='code'] {
+      th[class*='account'] {
         min-width: 18%;
       }
 
-      th[class*='name'] {
-        min-width: 26%;
-        flex-grow: 1;
+      th[class*='first-name'] {
+        min-width: 15%;
       }
 
-      th[class*='category'] {
-        min-width: 11%;
+      th[class*='last-name'] {
+        min-width: 25%;
+      }
+
+      th[class*='phone'] {
+        min-width: 15%;
         text-align: center;
       }
 
-      th[class*='price'] {
+      th[class*='role'] {
         text-align: center !important;
         min-width: 11%;
-      }
-
-      th[class*='stock'] {
-        text-align: center !important;
-        min-width: 8%;
-      }
-
-      th[class*='status'] {
-        text-align: center !important;
-        min-width: 12%;
       }
 
       th[class*='action'] {
         text-align: center !important;
         min-width: 11%;
+        flex-grow: 1;
       }
     }
   }
@@ -115,47 +109,38 @@
     td[class*='code'] {
       color: #3b82f6;
       font-weight: 500;
+      font-size: 1.4rem;
       min-width: 18%;
     }
 
-    td[class*='name'] {
+    td[class*='first-name'] {
       color: #fff;
       font-weight: 600;
       font-size: 1.4rem;
-      min-width: 26%;
-      flex-grow: 1;
+      min-width: 15%;
     }
 
-    td[class*='category'] {
+    td[class*='last-name'] {
       color: #fff;
       font-weight: 600;
       font-size: 1.4rem;
-      min-width: 11%;
-      display: flex;
-      justify-content: center;
+      min-width: 25%;
     }
 
-    td[class*='price'] {
+    td[class*='phone'] {
+      text-align: center !important;
+      min-width: 15%;
+    }
+
+    td[class*='role'] {
       text-align: center !important;
       min-width: 11%;
-    }
-
-    td[class*='stock'] {
-      text-align: center !important;
-      min-width: 8%;
-    }
-
-    td[class*='status'] {
-      text-align: center !important;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 12%;
     }
 
     td[class*='action'] {
       text-align: center !important;
       min-width: 11%;
+      flex-grow: 1;
     }
 
     &:nth-child(even) {
