@@ -8,6 +8,8 @@ import { AxiosError } from 'axios';
 import { useMutation } from '@tanstack/react-query'; // Ensure correct import
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { clearCart } from '~/redux/features/cart/cartSlice';
 
 const cx = classNames.bind(style);
 
@@ -29,23 +31,32 @@ function Checkout() {
   const [listItems, setListItems] = useState([]);
   const [total, setTotal] = useState(0);
   const [method, setMethod] = useState(0);
+  const dispatch = useDispatch();
+  const cartItems = useSelector((state) => state.cart.values);
+  const userInformation = useSelector((state) => state.user.information);
   const navigate = useNavigate();
 
   useEffect(() => {
     let total = 0;
-    const boughtItems = cartList.map((item) => {
-      total = total + item.product_price * item.quantity;
+    const boughtItems = cartItems.map((item) => {
+      total = total + item.price * item.quantity;
       return {
-        name: item.product_name,
-        slug: item.product_slug,
-        size: item.selectedSize,
-        color: item.selectedColor,
+        name: item.name,
+        slug: item.slug,
+        size: item.size,
+        color: item.color,
         quantity: item.quantity,
-        price: item.product_price,
+        price: item.price,
       };
     });
     setListItems(boughtItems);
     setTotal(total);
+  }, []);
+
+  useEffect(() => {
+    if (!userInformation) {
+      navigate('/login');
+    }
   }, []);
 
   useEffect(() => {
@@ -208,6 +219,12 @@ function Checkout() {
       district: userDistrict,
       country: selectedCountry,
     };
+    if (phone.length < 10 || phone.length > 11) {
+      toast.error('Error', {
+        description: 'Phone number must be between 10 and 11 characters',
+      });
+      throw new Error('Phone number must be between 10 and 11 characters');
+    }
     console.log('check info: ', data);
     const response = await updateInfo(data);
     if (response.status === 200) {
@@ -272,8 +289,9 @@ function Checkout() {
       const response = await paymentCash(data);
       console.log('response', response);
       if (response.status == 200) {
-        setCartList([]);
-        await new Promise(resolve => setTimeout(resolve, 0)); // Wait for state update
+        dispatch(clearCart());
+        await new Promise((resolve) => setTimeout(resolve, 0)); // Wait for state update
+
         navigate('/cart');
         toast.success('Success', {
           description: 'Checkout successfully!',
@@ -397,6 +415,7 @@ function Checkout() {
                 label="Phone Number"
                 placeholder="Phone number..."
                 value={phone}
+                type="number"
                 onChange={(e) => {
                   setPhone(e.target.value);
                 }}

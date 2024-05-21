@@ -5,12 +5,14 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import qs from 'qs';
 import * as accountService from '~/services/api/accountService';
 import { RecoverNoti } from '~/components';
+import { useDispatch } from 'react-redux';
+import { store as storeUser } from '~/redux/features/user/userSlice';
 const cx = classNames.bind(style);
 
 function Login() {
   const [logregBoxToggle, setLogregBoxToggle] = useState(false);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('' || localStorage.getItem('chani-email'));
+  const [password, setPassword] = useState('' || localStorage.getItem('chani-password'));
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [emailRegister, setEmailRegister] = useState('');
@@ -20,6 +22,7 @@ function Login() {
   const [isCheckTerms, setIsCheckTerms] = useState(true);
   const [responseError, setResponseError] = useState(false);
   const [responseRegisterMsg, setResponseRegisterMsg] = useState('');
+  const [rememberMe, setRememberMe] = useState(false);
   const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
   const navigate = useNavigate();
   const location = useLocation();
@@ -27,6 +30,11 @@ function Login() {
   const fromVerify = location.state?.fromVerify;
   const fromReset = location.state?.fromReset;
   const message = location.state?.message;
+  const dispatch = useDispatch();
+
+  const storeUserEmail = (user) => {
+    dispatch(storeUser(user));
+  };
 
   useEffect(() => {
     if (location?.state) {
@@ -84,8 +92,15 @@ function Login() {
             navigate(response?.data?.redirect);
           }
         } else {
-          let token = response.data.accessToken;
+          let token = response.data?.accessToken;
+          let emailUser = response.data?.user?.email;
           localStorage.setItem('token', token);
+          storeUserEmail(emailUser);
+          console.log('User logged in');
+          if (rememberMe) {
+            localStorage.setItem('chani-email', email);
+            localStorage.setItem('chani-password', password);
+          }
           navigate('/shop');
         }
       }
@@ -199,7 +214,8 @@ function Login() {
 
               <div className={cx('remember-forgot')}>
                 <label>
-                  <input type="checkbox"></input> Remember me
+                  <input type="checkbox" checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} />{' '}
+                  Remember me
                 </label>
                 <Link to="/recover">Forgot password?</Link>
               </div>

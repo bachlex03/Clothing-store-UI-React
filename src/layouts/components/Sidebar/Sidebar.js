@@ -11,15 +11,41 @@ import { AxiosError } from 'axios';
 
 const cx = classNames.bind(style);
 
-function Sidebar({ categories }) {
+function Sidebar({ categories, setColors, setSizes }) {
   const [sizesArray, setSizesArray] = useState(sizesArr);
   const [colorsArray, setColorsArray] = useState([]);
+  const [checkedColors, setCheckedColors] = useState([]);
+  const [checkedSizes, setCheckedSizes] = useState([]);
 
   useEffect(() => {
     const objColorKeys = Object.keys(ColorsHash);
 
     setColorsArray(objColorKeys);
   }, []);
+
+  const handleColorChecked = (color) => {
+    const newCheckedColors = checkedColors.includes(color)
+      ? checkedColors.filter((checkedColor) => checkedColor !== color)
+      : [...checkedColors, color];
+
+    setCheckedColors(newCheckedColors);
+  };
+
+  const handleSizeChecked = (size) => {
+    const newCheckedSizes = checkedSizes.includes(size)
+      ? checkedSizes.filter((checkedSize) => checkedSize !== size)
+      : [...checkedSizes, size];
+
+    setCheckedSizes(newCheckedSizes);
+  };
+
+  useEffect(() => {
+    setColors(checkedColors);
+  }, [checkedColors]);
+
+  useEffect(() => {
+    setSizes(checkedSizes);
+  }, [checkedSizes]);
 
   return (
     <aside className={cx('sidebar')}>
@@ -39,7 +65,7 @@ function Sidebar({ categories }) {
       <div>
         <h3 className={cx('heading')}>Filter By Color</h3>
         {colorsArray.map((color, index) => {
-          return <ColorVariation valueStr={color} key={index} />;
+          return <ColorVariation valueStr={color} key={index} onCheck={handleColorChecked} />;
         })}
 
         <span className={cx('separate')}></span>
@@ -48,7 +74,7 @@ function Sidebar({ categories }) {
       <div>
         <h3 className={cx('heading')}>Filter By Size</h3>
         {sizesArray.map((size, index) => {
-          return <SizeVariation valueStr={size} key={index} quantity={index} />;
+          return <SizeVariation valueStr={size} key={index} quantity={index} onCheck={handleSizeChecked} />;
         })}
 
         <span className={cx('separate')}></span>

@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { faSquare, faSquareCheck } from '@fortawesome/free-regular-svg-icons';
 const cx = classNames.bind(style);
 
-function SizeVariation({ valueStr = '', quantity = 0 }) {
+function SizeVariation({ valueStr = '', quantity = 0, onCheck }) {
   const [checked, setChecked] = useState(false);
 
   return (
@@ -13,6 +13,7 @@ function SizeVariation({ valueStr = '', quantity = 0 }) {
       className={cx('wrapper', 'flex justify-between align-center')}
       onClick={() => {
         setChecked(!checked);
+        onCheck(valueStr);
       }}
     >
       <div className="flex align-center">

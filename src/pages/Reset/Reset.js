@@ -33,6 +33,7 @@ function Reset() {
         }
       } catch (error) {
         console.error('Error resetting password:', error);
+        setErrors(['Error resetting password']);
       }
     }
   };

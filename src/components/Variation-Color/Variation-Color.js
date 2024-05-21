@@ -1,13 +1,13 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import style from './Variation-Color.module.scss';
 import classNames from 'classnames/bind';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { faSquare, faSquareCheck } from '@fortawesome/free-regular-svg-icons';
 import { ColorsHash, ColorsString } from '~/common/constants';
 
 const cx = classNames.bind(style);
 
-function ColorVariation({ valueStr = 'BROWN' }) {
+function ColorVariation({ valueStr = 'BROWN', onCheck }) {
   const [checked, setChecked] = useState(false);
 
   return (
@@ -15,6 +15,7 @@ function ColorVariation({ valueStr = 'BROWN' }) {
       className={cx('wrapper', 'flex justify-between align-center')}
       onClick={() => {
         setChecked(!checked);
+        onCheck(valueStr);
       }}
     >
       <div className="flex align-center">
@@ -25,6 +26,7 @@ function ColorVariation({ valueStr = 'BROWN' }) {
         className={cx('icon')}
         onClick={() => {
           setChecked(!checked);
+          onCheck(valueStr);
         }}
         style={{ opacity: checked ? 1 : '' }}
       >

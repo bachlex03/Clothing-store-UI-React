@@ -2,9 +2,13 @@ import style from './Detail.module.scss';
 import classNames from 'classnames/bind';
 import { useState, useEffect } from 'react';
 import { Input, Button } from '~/components';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import * as accountService from '~/services/api/accountService';
+import { AxiosError } from 'axios';
+import { useMutation } from '@tanstack/react-query'; // Ensure correct import
+import { toast } from 'sonner';
+import { useNavigate } from 'react-router-dom';
 
 const cx = classNames.bind(style);
 
@@ -16,67 +20,132 @@ function Detail() {
   const [password, setPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchAccount = async () => {
-      try {
-        const response = await accountService.getProfile();
-        if (response.status === 200) {
-          setFirstName(response.data.profile_firstName);
-          setLastName(response.data.profile_lastName);
-          setPhone(response.data.profile_phoneNumber);
-          setEmail(response.data.email);
-        }
-      } catch (error) {
-        console.error('Error during fetch account:', error);
-      }
-    };
-
-    fetchAccount();
+    fetchingAccount.mutate();
   }, []);
+
+  const fetchingAccount = useMutation({
+    mutationFn: async () => {
+      return await accountService.getProfile();
+    },
+    onSuccess: (data) => {
+      setFirstName(data.data.profile_firstName);
+      setLastName(data.data.profile_lastName);
+      setPhone(data.data.profile_phoneNumber);
+      setEmail(data.data.email);
+    },
+    onError: (error) => {
+      if (error instanceof AxiosError) {
+        console.log('error.response.data', error.response?.data);
+        console.log('error.response.status', error.response?.status);
+
+        toast.error(`Error ${error.response?.status}`, {
+          description: `${error.response?.data?.message}`,
+        });
+        // if code is 401, it means user is not authenticated, navigate to login page
+        if (error.response?.status === 401) {
+          navigate('/login');
+        }
+      }
+    },
+  });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     // if user doesn't change password, only update infor
     if (!password && !newPassword && !confirmPassword && validateOnlyUpdateInfor()) {
-      onlyUpdateInfor();
+      onlyUpdateInfor.mutate();
     } else {
       // if user change password, update infor and password
-      // updateInforAndPassword();
+      if (validateOnlyUpdateInfor() && validatePassword()) {
+        updatePassword.mutate();
+      }
     }
-
-    // after update infor and password, scroll to top
-    window.scrollTo(0, 0);
   };
 
   const validateOnlyUpdateInfor = () => {
     if (!firstName || !lastName) {
-      toast.warn('First name and last name are required');
+      toast.warning('First name and last name are required');
       return false;
     }
     return true;
   };
 
-  const onlyUpdateInfor = async () => {
-    try {
+  const onlyUpdateInfor = useMutation({
+    mutationFn: async () => {
       let user = {
         firstName: firstName,
         lastName: lastName,
         phoneNumber: phone,
       };
-      const response = await accountService.updateProfile(user);
-      if (response.status === 200) {
-        toast.success('Profile updated successfully');
-      }
-    } catch (error) {
-      console.error('Error during update profile:', error);
-      toast.error('Profile updated failed');
+      return await accountService.updateProfile(user);
+    },
+    onSuccess: (data) => {
+      toast.success('Profile updated successfully');
+    },
+    onError: (error) => {
+      console.log('error.response.data', error.response?.data);
+      console.log('error.response.status', error.response?.status);
+
+      toast.error(`Error ${error.response?.status}`, {
+        description: `${error.response?.data?.message}`,
+      });
+    },
+  });
+
+  const validatePassword = () => {
+    if (!password) {
+      toast.warning('Current password is required');
+      return false;
     }
+    if (!newPassword) {
+      toast.warning('New password is required');
+      return false;
+    }
+    if (newPassword.length < 8) {
+      toast.warning('Password must contain at least 8 characters');
+      return false;
+    }
+    if (!confirmPassword) {
+      toast.warning('Confirm password is required');
+      return false;
+    }
+    if (newPassword !== confirmPassword) {
+      toast.warning('Password does not match');
+      return false;
+    }
+    return true;
   };
+
+  const updatePassword = useMutation({
+    mutationFn: async () => {
+      let passwordData = {
+        currentPassword: password,
+        newPassword,
+        confirmPassword,
+      };
+      return await accountService.updatePassword(passwordData);
+    },
+    onSuccess: (data) => {
+      toast.success('Password updated successfully');
+      // when password updated successfully then update profile
+      onlyUpdateInfor.mutate();
+    },
+    onError: (error) => {
+      console.log('error.response.data', error.response?.data);
+      console.log('error.response.status', error.response?.status);
+
+      toast.error(`Error ${error.response?.status}`, {
+        description: `${error.response?.data?.message}`,
+      });
+    },
+  });
 
   return (
     <div className={cx('wrapper')}>
-      <h3 className={cx('heading')}>Billing Addresses</h3>
+      <h3 className={cx('heading')}>Profile</h3>
       <form onSubmit={handleSubmit}>
         <div className="flex">
           <div className="w100 px-10px">
@@ -131,7 +200,7 @@ function Detail() {
             <Input
               label="Current password"
               placeholder="Current password..."
-              type="text"
+              type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
@@ -141,7 +210,7 @@ function Detail() {
             <Input
               label="New password"
               placeholder="New password..."
-              type="text"
+              type="password"
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
             />
@@ -151,7 +220,7 @@ function Detail() {
             <Input
               label="Confirm new password"
               placeholder="Confirm new password..."
-              type="text"
+              type="password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
             />
@@ -164,7 +233,6 @@ function Detail() {
           </button>
         </div>
       </form>
-      <ToastContainer position="bottom-left" />
     </div>
   );
 }
