@@ -1,5 +1,5 @@
 import classNames from 'classnames/bind';
-import styles from './Products.module.scss';
+import styles from './Employees.module.scss';
 import {
   faAngleLeft,
   faAngleRight,
@@ -14,34 +14,38 @@ import { io } from 'socket.io-client';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Fragment, useEffect, useRef, useState } from 'react';
-import { Button, SideModel, Search, DeleteModel } from '~/components/adminComponents';
+import { Button, Search } from '~/components/adminComponents';
+import SideModel from './SideModel';
 import * as productService from '~/services/api/productService';
 import { AxiosError } from 'axios';
 import { useMutation } from '@tanstack/react-query'; // Ensure correct import
 import { toast } from 'sonner';
+import DeleteModel from './DeleteModel';
+import AddModel from './AddModel';
+import * as userService from '~/services/api/userService';
 
 const cx = classNames.bind(styles);
 
-function Products() {
-  const addProductModelRef = useRef(null);
-  const deleteProductModelRef = useRef(null);
+function Employees() {
+  const decentralizeRef = useRef(null);
+  const deleteEmployeesRef = useRef(null);
+  const addEmployeesRef = useRef(null);
   const [loading, setLoading] = useState(false);
 
-  const [products, setProducts] = useState([]);
+  const [members, setMembers] = useState([]);
 
-  // Call API
-  const fetchingProduct = useMutation({
+  const getMemberApi = useMutation({
     mutationFn: async () => {
-      setLoading(true);
-
-      return await productService.getAllProducts({ q: 'min' });
+      return await userService.getMember();
     },
     onSuccess: (data) => {
-      setProducts(data);
+      toast.success('Success', {
+        description: 'Fetching successfully',
+      });
 
-      setTimeout(() => {
-        setLoading(false);
-      }, 500);
+      console.log('data', data.data);
+
+      setMembers(data.data);
     },
     onError: (error) => {
       if (error instanceof AxiosError) {
@@ -52,59 +56,11 @@ function Products() {
           description: `${error.response?.data?.message}`,
         });
       }
-
-      setTimeout(() => {
-        setLoading(false);
-      }, 500);
     },
   });
 
   useEffect(() => {
-    fetchingProduct.mutate();
-  }, []);
-
-  // const handleGetProducts = async () => {
-  //   setLoading(true);
-
-  //   try {
-  //     const data = await productService.getAllProducts({
-  //       q: 'min',
-  //     });
-
-  //     setProducts(data);
-  //   } catch (error) {
-  //     console.error(error);
-  //   } finally {
-  //     setTimeout(() => {
-  //       setLoading(false);
-  //     }, 500);
-  //   }
-  // };
-
-  useEffect(() => {
-    const socket = io('http://localhost:3001');
-
-    socket.on('disconnect', () => {
-      console.log('Disconnected from server', socket.id);
-    });
-
-    socket.on('connect', () => {
-      console.log('Connected to server', socket.id);
-    });
-
-    socket.on('payment-status', (data) => {
-      console.log('Received message from server:', data);
-    });
-
-    return () => {
-      socket.disconnect();
-    };
-  }, []);
-
-  useEffect(() => {
-    toast.success('Hi !', {
-      description: 'Welcome back sir 🥳',
-    });
+    getMemberApi.mutate();
   }, []);
 
   return (
@@ -124,22 +80,35 @@ function Products() {
               <Search />
             </div>
 
-            <div className={cx('btn-comp')}>
-              <Button
-                hover
-                onClick={() => {
-                  addProductModelRef.current.openModel();
-                }}
-              >
-                <FontAwesomeIcon icon={faPlus} /> Add Product
-              </Button>
+            <div className="flex">
+              <div className={cx('btn-comp')}>
+                <Button
+                  hover
+                  onClick={() => {
+                    addEmployeesRef.current.openModel();
+                  }}
+                >
+                  <FontAwesomeIcon icon={faPlus} /> Add Employee
+                </Button>
+              </div>
+
+              <div className={cx('btn-comp', 'ml-8px')}>
+                <Button
+                  hover
+                  onClick={() => {
+                    decentralizeRef.current.openModel();
+                  }}
+                >
+                  Decentralize
+                </Button>
+              </div>
             </div>
           </div>
 
           <div
             className={cx('refresh-container')}
             onClick={() => {
-              fetchingProduct.mutate();
+              getMemberApi.mutate();
             }}
           >
             <i className={cx('repeat-icon mr-12px')}>
@@ -151,34 +120,25 @@ function Products() {
           <table className={cx('product-table')}>
             <thead className={cx('table-head')}>
               <tr>
-                <th className="code">Product Code</th>
-                <th className="name">Product Name</th>
-                <th className="category">Category</th>
-                <th className="price">Price</th>
-                <th className="stock">Stock</th>
-                <th className="status">Status</th>
+                <th className="account">Account</th>
+                <th className="first-name">First Name</th>
+                <th className="last-name">Last Name</th>
+                <th className="phone">Phone Number</th>
+                <th className="role">Role</th>
                 <th className="action">Action</th>
               </tr>
             </thead>
 
             <tbody className={cx('table-body')}>
-              {products.map((product, index) => {
-                const status = product.product_status === 'Published' ? true : false;
-
+              {members.map((member, index) => {
                 return (
                   <tr key={index}>
-                    <td className="code">{product.product_code}</td>
-                    <td className="name">{product.product_name}</td>
-                    <td className="category">
-                      <span className={cx('box')}>{product.product_category.category_name}</span>
-                    </td>
-                    <td className="price">
-                      ${parseInt(product.product_price).toFixed(2).toString().replace('.', ',')}
-                    </td>
-                    <td className="stock">{product.product_stocks}</td>
-                    <td className="status">
-                      <span className={cx('box', { Published: status, Draft: !status })}>{product.product_status}</span>
-                    </td>
+                    <td className="code">{member?.email ?? 'Default'}</td>
+                    <td className="first-name">{member.user_profile?.profile_firstName ?? 'Default FN'}</td>
+                    <td className="last-name">{member.user_profile?.profile_lastName ?? 'Default LN'}</td>
+                    <td className="phone">{member.user_profile?.profile_phoneNumber ?? '081642****'}</td>
+                    <td className="role">{member.roles[0]?.role_name ?? 'Default role'}</td>
+
                     <td className="action">
                       <span className={cx('actions')}>
                         <FontAwesomeIcon className={cx('edit')} icon={faEye} />
@@ -188,11 +148,11 @@ function Products() {
                       </span>
                       <span
                         className={cx('actions')}
-                        data-id={product._id}
+                        data-id={member._id}
                         onClick={(e) => {
                           const id = e.currentTarget.getAttribute('data-id');
 
-                          deleteProductModelRef.current.openModel(id, product.product_name);
+                          deleteEmployeesRef.current.openModel(id, member.member_name);
                         }}
                       >
                         <FontAwesomeIcon className={cx('delete')} icon={faTrash} />
@@ -222,19 +182,12 @@ function Products() {
           </div>
         </div>
 
-        {/* <div className={cx('footer')}>
-              <div className="flex justify-between">
-                <div className={cx('footer-left')}>@tailwindcss</div>
-    
-                <div className={cx('footer-right')}>Design & Develop by Group 1</div>
-              </div>
-            </div> */}
-
-        <SideModel ref={addProductModelRef} />
-        <DeleteModel ref={deleteProductModelRef} fetchingProduct />
+        <SideModel ref={decentralizeRef} />
+        <DeleteModel ref={deleteEmployeesRef} />
+        <AddModel ref={addEmployeesRef} />
       </div>
     </Fragment>
   );
 }
 
-export default Products;
+export default Employees;

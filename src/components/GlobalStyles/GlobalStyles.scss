@@ -7,7 +7,6 @@
 
 * {
   box-sizing: border-box;
-  // padding: 0;
   margin: 0;
 }
 
@@ -23,7 +22,7 @@
   --admin-background-color: #3c82f6;
   --admin-bg: #142337;
   --admin-bg2: #0f1824;
-
+  // #1c2e45
   --sidebar-admin-width: 259px;
   --header-admin-height: 70px;
 
@@ -56,7 +55,7 @@ input,
   border: none;
   outline: none;
   display: inline-block;
-  color: #000;
+  color: inherit;
 }
 
 input::-webkit-outer-spin-button,

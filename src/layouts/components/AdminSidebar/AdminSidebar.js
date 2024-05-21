@@ -27,13 +27,13 @@ function AdminSidebar() {
         <SidebarMenu name="USUALLY">
           <MenuItem name="Products" icon={<FontAwesomeIcon icon={faShirt} />} to="/admin/products" />
           <MenuItem name="Invoices" icon={<FontAwesomeIcon icon={faFileInvoiceDollar} />} to="/admin/invoices" />
-          <MenuItem name="Customers" icon={<FontAwesomeIcon icon={faUsers} />} />
-          <MenuItem name="Employees" />
+          <MenuItem name="Customers" icon={<FontAwesomeIcon icon={faUsers} />} to="/admin/customers" />
+          <MenuItem name="Employees" to="/admin/employees" />
         </SidebarMenu>
 
         <SidebarMenu name="OTHERS">
-          <MenuItem name="Categories" icon={<FontAwesomeIcon icon={faLayerGroup} />} />
-          <MenuItem name="Promotions" icon={<FontAwesomeIcon icon={faReceipt} />} />
+          <MenuItem name="Categories" icon={<FontAwesomeIcon icon={faLayerGroup} />} to="/admin/categories" />
+          <MenuItem name="Promotions" icon={<FontAwesomeIcon icon={faReceipt} />} to="/admin/promotions" />
         </SidebarMenu>
       </div>
     </div>

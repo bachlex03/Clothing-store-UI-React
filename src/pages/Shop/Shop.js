@@ -151,10 +151,10 @@ function Shop() {
               <div className="flex justify-between align-center mb-10px mt-12px">
                 <div className={cx('tabs')}>
                   <div className={cx('tab-item')}>
-                    <Text>Categories</Text>
+                    <Text>All Products</Text>
                   </div>
                   <div className={cx('tab-item')}>
-                    <Link to={'/login'}>
+                    <Link to={'#'}>
                       <Text>Suggestions</Text>
                     </Link>
                   </div>

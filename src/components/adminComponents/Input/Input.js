@@ -37,6 +37,8 @@ function Input({
   const [activeColor, setActiveColor] = useState(-1);
   const [activeSizes, setActiveSizes] = useState([]);
 
+  console.log('selectOptions', selectOptions);
+
   const textRef = useRef(null);
   const inputImgRef = useRef(null);
 
@@ -45,7 +47,6 @@ function Input({
   }
 
   const handleSelect = (e) => {
-    setReset(false);
     if (e.target.innerText === children) {
       textRef.current.textContent = children;
 
@@ -58,7 +59,14 @@ function Input({
 
     textRef.current.textContent = e.target.innerText;
 
-    setValue(e.target.innerText);
+    if (e.currentTarget.getAttribute('data-id')) {
+      setValue({
+        name: e.target.innerText,
+        id: e.currentTarget.getAttribute('data-id'),
+      });
+    } else {
+      setValue(e.target.innerText);
+    }
 
     setDisplay(false);
 
@@ -81,7 +89,7 @@ function Input({
       value={value}
       type={type || 'text'}
       placeholder={placeholder || children}
-      disabled={disabled}
+      // disabled={disabled}
       {...props}
     />
   );
@@ -152,8 +160,8 @@ function Input({
           </li>
           {selectOptions.map((option, index) => {
             return (
-              <li key={index} onClick={handleSelect}>
-                {option}
+              <li key={index} onClick={handleSelect} data-id={option?._id ?? null}>
+                {option?.name ? option.name : option}
               </li>
             );
           })}

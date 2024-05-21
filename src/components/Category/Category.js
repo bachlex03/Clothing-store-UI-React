@@ -22,7 +22,6 @@ function Category({ category = {} }) {
   const children = category.children || [];
 
   const handleOpen = () => {
-    console.log('listHeight', listHeight);
     listRef.current.style.transition = 'all 0.7s ease-in-out';
     listRef.current.style.maxHeight = !open ? listHeight + 60 + 'px' : 0;
 
@@ -33,8 +32,6 @@ function Category({ category = {} }) {
   useEffect(() => {
     if (listRef.current.clientHeight > 10) {
       listHeight = listRef.current.clientHeight;
-
-      console.log('listHeight', listHeight);
     }
 
     listRef.current.style.transition = 'none';
