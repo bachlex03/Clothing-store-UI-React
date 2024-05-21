@@ -35,7 +35,7 @@ const cx = classNames.bind(style);
 function SideModel(props, ref) {
   const overlayRef = useRef(null);
   const decentralizeRef = useRef(null);
-  const [rightImg, setRightImg] = useState('https://themesdesign.in/tailwick/html-dark/assets/images/img-03.png');
+  const [grants, setGrants] = useState({});
 
   const [visible, setVisible] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -49,6 +49,99 @@ function SideModel(props, ref) {
       decentralizeRef.current.setAttribute('open', '');
     },
   }));
+
+  const handleUpdateRoles = () => {
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    const grants = {};
+
+    checkboxes.forEach((checkbox) => {
+      checkbox.addEventListener('change', () => {
+        const roleName = checkbox.getAttribute('data-role-name');
+        const roleId = checkbox.getAttribute('data-role-id');
+        const roleAction = checkbox.getAttribute('data-role-action');
+
+        if (!grants[roleName]) {
+          grants[roleName] = {
+            name: roleName,
+            description: roleName,
+            grants: [],
+          };
+        }
+
+        const grant = grants[roleName].grants.find((g) => g.resource === roleId);
+
+        if (!grant) {
+          grants[roleName].grants.push({
+            resource: roleId,
+            actions: [roleAction],
+          });
+        } else {
+          if (checkbox.checked) {
+            if (!grant.actions.includes(roleAction)) {
+              grant.actions.push(roleAction);
+            }
+          } else {
+            grant.actions = grant.actions.filter((action) => action !== roleAction);
+            if (grant.actions.length === 0) {
+              grants[roleName].grants = grants[roleName].grants.filter((g) => g.resource !== roleId);
+            }
+          }
+        }
+
+        if (grants[roleName].grants.length === 0) {
+          delete grants[roleName];
+        }
+
+        console.log(JSON.stringify(grants, null, 2));
+      });
+    });
+
+    console.log(JSON.stringify(grants, null, 2));
+  };
+
+  const handleCheckboxChange = (event) => {
+    const { roleName, roleId, roleAction } = event.target.dataset;
+    const checked = event.target.checked;
+
+    setGrants((prevGrants) => {
+      const newGrants = { ...prevGrants };
+
+      if (!newGrants[roleName]) {
+        newGrants[roleName] = {
+          name: roleName,
+          description: roleName,
+          grants: [],
+        };
+      }
+
+      let grant = newGrants[roleName].grants.find((g) => g.resource === roleId);
+
+      if (!grant) {
+        grant = {
+          resource: roleId,
+          actions: [],
+        };
+        newGrants[roleName].grants.push(grant);
+      }
+
+      if (checked) {
+        if (!grant.actions.includes(roleAction)) {
+          grant.actions.push(roleAction);
+        }
+      } else {
+        grant.actions = grant.actions.filter((action) => action !== roleAction);
+        if (grant.actions.length === 0) {
+          newGrants[roleName].grants = newGrants[roleName].grants.filter((g) => g.resource !== roleId);
+        }
+      }
+
+      if (newGrants[roleName].grants.length === 0) {
+        delete newGrants[roleName];
+      }
+
+      return newGrants;
+    });
+  };
 
   return (
     <Fragment>
@@ -115,6 +208,7 @@ function SideModel(props, ref) {
                     </tr>
                   </thead>
                   <tbody>
+                    {/*    Users management */}
                     <tr>
                       <th className={cx('title')} colspan="4">
                         <i className={cx('title-icon')}>
@@ -129,13 +223,31 @@ function SideModel(props, ref) {
                         <p className="ml-8px">View customers information</p>
                       </td>
                       <td className={cx('checkbox-wrapper')}>
-                        <input type="checkbox" data-role-name="STAFF" data-role-id="" data-role-action="read:any" />
+                        <input
+                          type="checkbox"
+                          data-role-name="STAFF"
+                          data-role-id="663d08f7053547ac3b8f9c52"
+                          onChange={handleCheckboxChange}
+                          data-role-action="read:any"
+                        />
                       </td>
                       <td className={cx('checkbox-wrapper')}>
-                        <input type="checkbox" data-role-name="MANAGER" data-role-id="" data-role-action="read:any" />
+                        <input
+                          type="checkbox"
+                          data-role-name="MANAGER"
+                          data-role-id="663d08f7053547ac3b8f9c52"
+                          onChange={handleCheckboxChange}
+                          data-role-action="read:any"
+                        />
                       </td>
                       <td className={cx('checkbox-wrapper')}>
-                        <input type="checkbox" data-role-name="ADMIN" data-role-id="" data-role-action="read:any" />
+                        <input
+                          type="checkbox"
+                          data-role-name="ADMIN"
+                          data-role-id="663d08f7053547ac3b8f9c52"
+                          onChange={handleCheckboxChange}
+                          data-role-action="read:any"
+                        />
                       </td>
                     </tr>
                     <tr>
@@ -143,13 +255,31 @@ function SideModel(props, ref) {
                         <p className="ml-8px">Edit customers information</p>
                       </td>
                       <td className={cx('checkbox-wrapper')}>
-                        <input type="checkbox" data-role-name="STAFF" data-role-id="" data-role-action="update:any" />
+                        <input
+                          type="checkbox"
+                          data-role-name="STAFF"
+                          data-role-id="663d08f7053547ac3b8f9c52"
+                          onChange={handleCheckboxChange}
+                          data-role-action="update:any"
+                        />
                       </td>
                       <td className={cx('checkbox-wrapper')}>
-                        <input type="checkbox" data-role-name="MANAGER" data-role-id="" data-role-action="update:any" />
+                        <input
+                          type="checkbox"
+                          data-role-name="MANAGER"
+                          data-role-id="663d08f7053547ac3b8f9c52"
+                          onChange={handleCheckboxChange}
+                          data-role-action="update:any"
+                        />
                       </td>
                       <td className={cx('checkbox-wrapper')}>
-                        <input type="checkbox" data-role-name="ADMIN" data-role-id="" data-role-action="update:any" />
+                        <input
+                          type="checkbox"
+                          data-role-name="ADMIN"
+                          data-role-id="663d08f7053547ac3b8f9c52"
+                          onChange={handleCheckboxChange}
+                          data-role-action="update:any"
+                        />
                       </td>
                     </tr>
                     <tr>
@@ -157,13 +287,31 @@ function SideModel(props, ref) {
                         <p className="ml-8px">Create users account</p>
                       </td>
                       <td className={cx('checkbox-wrapper')}>
-                        <input type="checkbox" data-role-name="STAFF" data-role-id="" data-role-action="create:any" />
+                        <input
+                          type="checkbox"
+                          data-role-name="STAFF"
+                          data-role-id="663d08f7053547ac3b8f9c52"
+                          onChange={handleCheckboxChange}
+                          data-role-action="create:any"
+                        />
                       </td>
                       <td className={cx('checkbox-wrapper')}>
-                        <input type="checkbox" data-role-name="MANAGER" data-role-id="" data-role-action="create:any" />
+                        <input
+                          type="checkbox"
+                          data-role-name="MANAGER"
+                          data-role-id="663d08f7053547ac3b8f9c52"
+                          onChange={handleCheckboxChange}
+                          data-role-action="create:any"
+                        />
                       </td>
                       <td className={cx('checkbox-wrapper')}>
-                        <input type="checkbox" data-role-name="ADMIN" data-role-id="" data-role-action="create:any" />
+                        <input
+                          type="checkbox"
+                          data-role-name="ADMIN"
+                          data-role-id="663d08f7053547ac3b8f9c52"
+                          onChange={handleCheckboxChange}
+                          data-role-action="create:any"
+                        />
                       </td>
                     </tr>
                     <tr>
@@ -171,13 +319,31 @@ function SideModel(props, ref) {
                         <p className="ml-8px">Delete users account</p>
                       </td>
                       <td className={cx('checkbox-wrapper')}>
-                        <input type="checkbox" data-role-name="STAFF" data-role-id="" data-role-action="delete:any" />
+                        <input
+                          type="checkbox"
+                          data-role-name="STAFF"
+                          data-role-id="663d08f7053547ac3b8f9c52"
+                          onChange={handleCheckboxChange}
+                          data-role-action="delete:any"
+                        />
                       </td>
                       <td className={cx('checkbox-wrapper')}>
-                        <input type="checkbox" data-role-name="MANAGER" data-role-id="" data-role-action="delete:any" />
+                        <input
+                          type="checkbox"
+                          data-role-name="MANAGER"
+                          data-role-id="663d08f7053547ac3b8f9c52"
+                          onChange={handleCheckboxChange}
+                          data-role-action="delete:any"
+                        />
                       </td>
                       <td className={cx('checkbox-wrapper')}>
-                        <input type="checkbox" data-role-name="ADMIN" data-role-id="" data-role-action="delete:any" />
+                        <input
+                          type="checkbox"
+                          data-role-name="ADMIN"
+                          data-role-id="663d08f7053547ac3b8f9c52"
+                          onChange={handleCheckboxChange}
+                          data-role-action="delete:any"
+                        />
                       </td>
                     </tr>
 
@@ -196,13 +362,31 @@ function SideModel(props, ref) {
                         <p className="ml-8px">Create a new product</p>
                       </td>
                       <td className={cx('checkbox-wrapper')}>
-                        <input type="checkbox" />
+                        <input
+                          type="checkbox"
+                          onChange={handleCheckboxChange}
+                          data-role-id="663d0924053547ac3b8f9c54"
+                          data-role-action="create:any"
+                          data-role-name="STAFF"
+                        />
                       </td>
                       <td className={cx('checkbox-wrapper')}>
-                        <input type="checkbox" />
+                        <input
+                          type="checkbox"
+                          onChange={handleCheckboxChange}
+                          data-role-id="663d0924053547ac3b8f9c54"
+                          data-role-action="create:any"
+                          data-role-name="MANAGER"
+                        />
                       </td>
                       <td className={cx('checkbox-wrapper')}>
-                        <input type="checkbox" />
+                        <input
+                          type="checkbox"
+                          onChange={handleCheckboxChange}
+                          data-role-id="663d0924053547ac3b8f9c54"
+                          data-role-action="create:any"
+                          data-role-name="ADMIN"
+                        />
                       </td>
                     </tr>
                     <tr>
@@ -210,13 +394,31 @@ function SideModel(props, ref) {
                         <p className="ml-8px">Edit a new product</p>
                       </td>
                       <td className={cx('checkbox-wrapper')}>
-                        <input type="checkbox" />
+                        <input
+                          type="checkbox"
+                          onChange={handleCheckboxChange}
+                          data-role-id="663d0924053547ac3b8f9c54"
+                          data-role-action="update:any"
+                          data-role-name="STAFF"
+                        />
                       </td>
                       <td className={cx('checkbox-wrapper')}>
-                        <input type="checkbox" />
+                        <input
+                          type="checkbox"
+                          onChange={handleCheckboxChange}
+                          data-role-id="663d0924053547ac3b8f9c54"
+                          data-role-action="update:any"
+                          data-role-name="MANAGER"
+                        />
                       </td>
                       <td className={cx('checkbox-wrapper')}>
-                        <input type="checkbox" />
+                        <input
+                          type="checkbox"
+                          onChange={handleCheckboxChange}
+                          data-role-id="663d0924053547ac3b8f9c54"
+                          data-role-action="update:any"
+                          data-role-name="ADMIN"
+                        />
                       </td>
                     </tr>
                     <tr>
@@ -224,13 +426,31 @@ function SideModel(props, ref) {
                         <p className="ml-8px">Delete a product</p>
                       </td>
                       <td className={cx('checkbox-wrapper')}>
-                        <input type="checkbox" />
+                        <input
+                          type="checkbox"
+                          onChange={handleCheckboxChange}
+                          data-role-id="663d0924053547ac3b8f9c54"
+                          data-role-action="delete:any"
+                          data-role-name="STAFF"
+                        />
                       </td>
                       <td className={cx('checkbox-wrapper')}>
-                        <input type="checkbox" />
+                        <input
+                          type="checkbox"
+                          onChange={handleCheckboxChange}
+                          data-role-id="663d0924053547ac3b8f9c54"
+                          data-role-action="delete:any"
+                          data-role-name="MANAGER"
+                        />
                       </td>
                       <td className={cx('checkbox-wrapper')}>
-                        <input type="checkbox" />
+                        <input
+                          type="checkbox"
+                          onChange={handleCheckboxChange}
+                          data-role-id="663d0924053547ac3b8f9c54"
+                          data-role-action="delete:any"
+                          data-role-name="ADMIN"
+                        />
                       </td>
                     </tr>
                     <tr>
@@ -238,15 +458,35 @@ function SideModel(props, ref) {
                         <p className="ml-8px">Change Product status</p>
                       </td>
                       <td className={cx('checkbox-wrapper')}>
-                        <input type="checkbox" />
+                        <input
+                          type="checkbox"
+                          onChange={handleCheckboxChange}
+                          data-role-id="663d0924053547ac3b8f9c54"
+                          data-role-action="update:any"
+                          data-role-name="STAFF"
+                        />
                       </td>
                       <td className={cx('checkbox-wrapper')}>
-                        <input type="checkbox" />
+                        <input
+                          type="checkbox"
+                          onChange={handleCheckboxChange}
+                          data-role-id="663d0924053547ac3b8f9c54"
+                          data-role-action="update:any"
+                          data-role-name="MANAGER"
+                        />
                       </td>
                       <td className={cx('checkbox-wrapper')}>
-                        <input type="checkbox" />
+                        <input
+                          type="checkbox"
+                          onChange={handleCheckboxChange}
+                          data-role-id="663d0924053547ac3b8f9c54"
+                          data-role-action="update:any"
+                          data-role-name="ADMIN"
+                        />
                       </td>
                     </tr>
+
+                    {/*    Roles management */}
                     <tr>
                       <th className={cx('title')} colspan="4">
                         <i className={cx('title-icon')}>
@@ -261,13 +501,31 @@ function SideModel(props, ref) {
                         <p className="ml-8px">Create a new role</p>
                       </td>
                       <td className={cx('checkbox-wrapper')}>
-                        <input type="checkbox" />
+                        <input
+                          type="checkbox"
+                          onChange={handleCheckboxChange}
+                          data-role-id="66406e98fbb4096d621bfe48"
+                          data-role-action="create:any"
+                          data-role-name="STAFF"
+                        />
                       </td>
                       <td className={cx('checkbox-wrapper')}>
-                        <input type="checkbox" />
+                        <input
+                          type="checkbox"
+                          onChange={handleCheckboxChange}
+                          data-role-id="66406e98fbb4096d621bfe48"
+                          data-role-action="create:any"
+                          data-role-name="MANAGER"
+                        />
                       </td>
                       <td className={cx('checkbox-wrapper')}>
-                        <input type="checkbox" />
+                        <input
+                          type="checkbox"
+                          onChange={handleCheckboxChange}
+                          data-role-id="66406e98fbb4096d621bfe48"
+                          data-role-action="create:any"
+                          data-role-name="ADMIN"
+                        />
                       </td>
                     </tr>
                     <tr>
@@ -275,17 +533,45 @@ function SideModel(props, ref) {
                         <p className="ml-8px">Edit user role</p>
                       </td>
                       <td className={cx('checkbox-wrapper')}>
-                        <input type="checkbox" />
+                        <input
+                          type="checkbox"
+                          onChange={handleCheckboxChange}
+                          data-role-id="66406e98fbb4096d621bfe48"
+                          data-role-action="update:any"
+                          data-role-name="STAFF"
+                        />
                       </td>
                       <td className={cx('checkbox-wrapper')}>
-                        <input type="checkbox" />
+                        <input
+                          type="checkbox"
+                          onChange={handleCheckboxChange}
+                          data-role-id="66406e98fbb4096d621bfe48"
+                          data-role-action="update:any"
+                          data-role-name="MANAGER"
+                        />
                       </td>
                       <td className={cx('checkbox-wrapper')}>
-                        <input type="checkbox" />
+                        <input
+                          type="checkbox"
+                          onChange={handleCheckboxChange}
+                          data-role-id="66406e98fbb4096d621bfe48"
+                          data-role-action="update:any"
+                          data-role-name="ADMIN"
+                        />
                       </td>
                     </tr>
                   </tbody>
                 </table>
+              </div>
+              <div
+                className={cx('btn-wrapper')}
+                onClick={() => {
+                  console.log('update');
+                  console.log('grants', grants);
+                  // handle();
+                }}
+              >
+                <Button>Update</Button>
               </div>
             </div>
           </div>
