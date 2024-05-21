@@ -70,21 +70,29 @@ function Order() {
           </tr>
         </thead>
         <tbody className={cx('tbody')}>
-          {invoices.map((invoice) => (
-            <tr key={invoice._id}>
-              <td className={cx('order')}>#{invoice && invoice._id && invoice._id.slice(-4)}</td>
-              <td className={cx('date')}>{new Date(invoice?.createdAt).toLocaleString()}</td>
-              <td className={cx('status')}>{invoice?.invoice_status}</td>
-              <td className={cx('total')}>${invoice?.invoice_total / 25000}</td>
-              <td className={cx('action', 'text-center')}>
-                <div className={cx('btn-wrapper')}>
-                  <button type="button" className={cx('button')} onClick={() => handleViewInvoice(invoice)}>
-                    View
-                  </button>
-                </div>
+          {invoices && invoices.length > 0 ? (
+            invoices.map((invoice) => (
+              <tr key={invoice._id}>
+                <td className={cx('order')}>#{invoice._id && invoice._id.slice(-4)}</td>
+                <td className={cx('date')}>{new Date(invoice.createdAt).toLocaleString()}</td>
+                <td className={cx('status')}>{invoice.invoice_status}</td>
+                <td className={cx('total')}>${invoice.invoice_total / 25000}</td>
+                <td className={cx('action', 'text-center')}>
+                  <div className={cx('btn-wrapper')}>
+                    <button type="button" className={cx('button')} onClick={() => handleViewInvoice(invoice)}>
+                      View
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan="5" style={{ textAlign: 'center' }}>
+                No invoices found
               </td>
             </tr>
-          ))}
+          )}
         </tbody>
       </table>
 
