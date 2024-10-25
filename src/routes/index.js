@@ -33,6 +33,11 @@ const publicRoutes = [
     layout: ShopLayout,
   },
   {
+    path: '/categories',
+    component: Shop,
+    layout: ShopLayout,
+  },
+  {
     path: '/admin/products',
     component: Products,
     layout: Admin,

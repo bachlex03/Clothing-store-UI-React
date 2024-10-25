@@ -63,7 +63,7 @@ function Product({ product, children, ...passProps }) {
           >
             {isWishlist ? <FontAwesomeIcon icon={faHeartSolid} /> : <FontAwesomeIcon icon={faHeartRegular} />}
           </i>
-          <Link to={product?.product_slug ?? '#'}>
+          <Link to={`/products/${product?.product_slug}` ?? '#'}>
             <p className={cx('select-text')}>
               <Text>Select options</Text>
             </p>

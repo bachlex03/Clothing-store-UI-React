@@ -202,7 +202,7 @@ function Details() {
               product.product_imgs.map((item) => {
                 return (
                   <div className={cx('product-image')}>
-                    <img src={item.url} alt={`img-${item.original_filename}`} />
+                    <img src={item.secure_url} alt={`img-${item.original_filename}`} />
                   </div>
                 );
               })
