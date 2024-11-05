@@ -13,7 +13,7 @@ function DetailInvoiceModal({ isOpen, onClose, invoice }) {
         <div className={cx('content')}>
           <div className={cx('head')}>
             <div className={cx('info')}>
-              <h2>Invoice</h2>
+              <h3 className={cx('heading')}>Invoice</h3>
               <p>
                 <strong>BILLED: </strong> {invoice?.invoice_fullname}
               </p>

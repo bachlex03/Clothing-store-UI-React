@@ -1,0 +1,248 @@
+.heading {
+  font-size: 3rem;
+  font-family: 'Butler', sans-serif;
+  font-weight: 400;
+  text-align: center;
+  padding: 2rem 0;
+  margin: 0;
+  width: 100%;
+  border-bottom: 1px solid #eee;
+}
+
+.content {
+  padding: 0 2rem;
+}
+
+.review-form {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.product-review {
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 2rem;
+  transition: all 0.3s ease;
+
+  &.incomplete {
+    background-color: #fff9c4;
+    padding: 1rem;
+    border-radius: 0.4rem;
+  }
+}
+
+.product-info {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  gap: 1.5rem;
+}
+
+.product-image {
+  width: 8rem;
+  height: 8rem;
+  object-fit: contain;
+  background-color: #f8f8f8;
+  border-radius: 4px;
+  padding: 0.5rem;
+  border: 1px solid #eee;
+}
+
+.product-details {
+  flex-grow: 1;
+  h3 {
+    font-size: 1.6rem;
+    margin-bottom: 0.8rem;
+    font-weight: 500;
+  }
+
+  p {
+    font-size: 1.4rem;
+    color: #666;
+    line-height: 1.4;
+  }
+}
+
+.rating {
+  margin-bottom: 1rem;
+}
+
+.star {
+  font-size: 2.4rem;
+  color: #e0e0e0;
+  cursor: pointer;
+
+  &.filled {
+    color: #ffc107;
+  }
+}
+
+.comment-input {
+  width: 100%;
+  height: 10rem;
+  padding: 1rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 0.4rem;
+  resize: vertical;
+  margin-bottom: 1rem;
+}
+
+.submit-button,
+.save-button,
+.edit-button {
+  display: inline-block;
+  color: #fff;
+  font-weight: 500;
+  padding: 6px 16px;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 4px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  min-width: 80px;
+  text-align: center;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.submit-button {
+  background-color: #000;
+
+  &:hover {
+    background-color: #333;
+  }
+
+  &.disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+
+    &:hover {
+      background-color: #ccc;
+    }
+  }
+}
+
+.save-button {
+  background-color: #000;
+
+  &:hover {
+    background-color: #333;
+  }
+}
+
+.edit-button {
+  color: #000;
+  background-color: transparent;
+  border: 1px solid #000;
+
+  &:hover {
+    color: #fff;
+    background-color: #000;
+  }
+}
+
+.footer {
+  text-align: center;
+  font-size: 1.4rem;
+  color: #666;
+}
+
+.saved-review {
+  margin-top: 1rem;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.user-avatar {
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  background-color: #ccc;
+  margin-right: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  svg {
+    font-size: 20px;
+    color: #666;
+  }
+}
+
+.user-name {
+  font-weight: bold;
+  margin: 0;
+}
+
+.review-date {
+  margin-left: auto;
+  font-size: 1.4rem;
+  color: #666;
+}
+
+.review-comment {
+  margin-bottom: 1rem;
+}
+
+.seller-response {
+  background-color: #f9f9f9;
+  padding: 1.5rem;
+  border-radius: 0.4rem;
+
+  h4 {
+    margin: 0 0 1rem 0;
+    font-size: 1.4rem;
+  }
+
+  p {
+    margin: 0;
+    font-size: 1.4rem;
+  }
+}
+
+.submit-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 2rem;
+  gap: 8px;
+}
+
+.warning-message {
+  color: #f44336;
+  margin-top: 1rem;
+  font-size: 1.4rem;
+  text-align: center;
+}
+
+.button-group {
+  display: flex;
+  gap: 8px;
+  margin-top: 1rem;
+  justify-content: flex-end;
+}
+
+.cancel-button {
+  display: inline-block;
+  color: #000;
+  font-weight: 500;
+  padding: 6px 16px;
+  font-size: 1.2rem;
+  background-color: transparent;
+  border: 1px solid #000;
+  border-radius: 4px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  min-width: 80px;
+  text-align: center;
+  transition: all 0.2s ease;
+  cursor: pointer;
+
+  &:hover {
+    color: #fff;
+    background-color: #000;
+  }
+}

@@ -38,3 +38,9 @@ export const search = async (param) => {
 
   return result.data;
 };
+
+export const getProductReviews = async (slug, options = {}) => {
+  const result = await request.get(`products/${slug}/reviews`, options);
+  
+  return result.data;
+};
