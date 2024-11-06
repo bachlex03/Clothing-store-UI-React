@@ -18,3 +18,4 @@ export { default as SideProduct } from './Side-Product';
 export { default as LoginNoti } from './LoginNoti';
 export { default as RecoverNoti } from './RecoverNoti';
 export { default as DetailInvoiceModal } from './DetailInvoiceModal';
+export { default as Pagination } from './Pagination'

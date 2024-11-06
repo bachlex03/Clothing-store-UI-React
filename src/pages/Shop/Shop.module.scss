@@ -57,7 +57,6 @@
 }
 
 .sorting {
-  padding: 0 10px;
   color: #909097;
   cursor: pointer;
   user-select: none;
@@ -121,4 +120,45 @@
 }
 
 .sidebar-component {
+}
+
+.shop-header {
+  padding: 15px 0;
+  margin-bottom: 30px;
+}
+
+.counter-product {
+  font-size: 1.4rem;
+  color: #666;
+}
+
+.sort-select {
+  padding: 8px 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1.4rem;
+  color: #333;
+  background-color: #fff;
+  cursor: pointer;
+  outline: none;
+  min-width: 200px;
+
+  &:hover {
+    border-color: #999;
+  }
+}
+
+.no-products {
+  text-align: center;
+  padding: 40px 0;
+
+  &-img {
+    width: 200px;
+    margin-bottom: 20px;
+  }
+
+  &-text {
+    font-size: 1.6rem;
+    color: #666;
+  }
 }

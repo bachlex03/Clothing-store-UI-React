@@ -3,7 +3,7 @@ import { Sidebar } from '~/layouts/components';
 import style from './Shop.module.scss';
 import classNames from 'classnames/bind';
 import { Fragment, useEffect, useState } from 'react';
-import { Product, Text } from '~/components';
+import { Pagination, Product, Text } from '~/components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown, faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import { useMutation } from '@tanstack/react-query'; // Ensure correct import
@@ -19,190 +19,210 @@ import { Link } from 'react-router-dom';
 const cx = classNames.bind(style);
 
 function Shop() {
-  const [categories, setCategories] = useState([]);
-  const [products, setProducts] = useState([]);
-  const [selectedSizes, setSelectedSizes] = useState([]);
-  const [selectedColors, setSelectedColors] = useState([]);
-  const [filterProducts, setFilterProducts] = useState([]);
+    const [categories, setCategories] = useState([]);
+    const [products, setProducts] = useState([]);
+    const [selectedSizes, setSelectedSizes] = useState([]);
+    const [selectedColors, setSelectedColors] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [sortOrder, setSortOrder] = useState('default');
+    const [priceRange, setPriceRange] = useState({ min: 0, max: 1000 });
+    const [filterProducts, setFilterProducts] = useState([]);
+    const productsPerPage = 12;
 
-  function bySizes(wantedSizes) {
-    return (product) => {
-      let toKeep = false;
-      product.product_sizes.forEach((productSize) => {
-        wantedSizes.forEach((wantedSize) => {
-          if (productSize.toLowerCase() === wantedSize.toLowerCase()) toKeep = true;
-        });
-      });
-      return toKeep;
-    };
-  }
-
-  function byColors(wantedColors) {
-    return (product) => {
-      let toKeep = false;
-      product.product_colors.forEach((productColor) => {
-        wantedColors.forEach((wantedColor) => {
-          if (productColor.toLowerCase() === wantedColor.toLowerCase()) toKeep = true;
-        });
-      });
-      return toKeep;
-    };
-  }
-
-  useEffect(() => {
-    console.log('selectedSizes', selectedSizes);
-    console.log('selectedColors', selectedColors);
-    console.log('products', products);
-    if (selectedSizes.length === 0 && selectedColors.length === 0) {
-      setFilterProducts(products);
-      return;
-    } else if (selectedSizes.length === 0 && selectedColors.length > 0) {
-      const filteredProducts = products.filter(byColors(selectedColors));
-      setFilterProducts(filteredProducts);
-    } else if (selectedSizes.length > 0 && selectedColors.length === 0) {
-      console.log('product chưa filter', products);
-      const filteredProducts = products.filter(bySizes(selectedSizes));
-      console.log('filteredProducts', filteredProducts);
-      setFilterProducts(filteredProducts);
-    } else if (selectedSizes.length > 0 && selectedColors.length > 0) {
-      const filteredProducts = products.filter(byColors(selectedColors));
-      const filteredProducts2 = filteredProducts.filter(bySizes(selectedSizes));
-      setFilterProducts(filteredProducts2);
+    function bySizes(wantedSizes) {
+        return (product) => {
+            let toKeep = false;
+            product.product_sizes.forEach((productSize) => {
+                wantedSizes.forEach((wantedSize) => {
+                    if (productSize.toLowerCase() === wantedSize.toLowerCase()) toKeep = true;
+                });
+            });
+            return toKeep;
+        };
     }
-  }, [selectedSizes, selectedColors]);
 
-  useEffect(() => {
-    console.log('filterProducts', filterProducts);
-  }, [filterProducts]);
+    function byColors(wantedColors) {
+        return (product) => {
+            let toKeep = false;
+            product.product_colors.forEach((productColor) => {
+                wantedColors.forEach((wantedColor) => {
+                    if (productColor.toLowerCase() === wantedColor.toLowerCase()) toKeep = true;
+                });
+            });
+            return toKeep;
+        };
+    }
 
-  const fetchingProduct = useMutation({
-    mutationFn: async () => {
-      return await productService.getAllProducts({ q: 'min' });
-    },
-    onSuccess: (data) => {
-      toast.info('Welcome to our shop!');
+    useEffect(() => {
+        if (selectedSizes.length === 0 && selectedColors.length === 0) {
+            setFilterProducts(products);
+        } else if (selectedSizes.length === 0 && selectedColors.length > 0) {
+            const filteredProducts = products.filter(byColors(selectedColors));
+            setFilterProducts(filteredProducts);
+        } else if (selectedSizes.length > 0 && selectedColors.length === 0) {
+            const filteredProducts = products.filter(bySizes(selectedSizes));
+            setFilterProducts(filteredProducts);
+        } else if (selectedSizes.length > 0 && selectedColors.length > 0) {
+            const filteredProducts = products.filter(byColors(selectedColors));
+            const filteredProducts2 = filteredProducts.filter(bySizes(selectedSizes));
+            setFilterProducts(filteredProducts2);
+        }
+    }, [selectedSizes, selectedColors, products]);
 
-      setProducts(data);
-    },
-    onError: (error) => {
-      if (error instanceof AxiosError) {
-        console.log('error.response.data', error.response?.data);
-        console.log('error.response.status', error.response?.status);
+    const handlePriceRangeChange = (min, max) => {
+        setPriceRange({ min, max });
+    };
 
-        toast.error(`Error ${error.response?.status}`, {
-          description: `${error.response?.data?.message}`,
-        });
-      }
-    },
-  });
+    // Lọc theo giá và sắp xếp
+    const getFilteredProducts = () => {
+        let filtered = [...filterProducts];
 
-  const fetchingCategory = useMutation({
-    mutationFn: async () => {
-      return await getCategories();
-    },
-    onSuccess: (data) => {
-      console.log('data', renderCategories(data));
-      setCategories(renderCategories(data));
-    },
-    onError: (error) => {
-      if (error instanceof AxiosError) {
-        console.log('error.response.data', error.response?.data);
-        console.log('error.response.status', error.response?.status);
+        // Filter by price range
+        filtered = filtered.filter(product =>
+            product.product_price >= priceRange.min &&
+            product.product_price <= priceRange.max
+        );
 
-        toast.error(`Error ${error.response?.status}`, {
-          description: `${error.response?.data?.message}`,
-        });
-      }
-    },
-  });
+        // Sort products
+        if (sortOrder === 'asc') {
+            filtered.sort((a, b) => a.product_price - b.product_price);
+        } else if (sortOrder === 'desc') {
+            filtered.sort((a, b) => b.product_price - a.product_price);
+        }
 
-  useEffect(() => {
-    fetchingCategory.mutate();
-  }, []);
+        return filtered;
+    };
 
-  useEffect(() => {
-    fetchingProduct.mutate();
-  }, []);
+    // Tính toán sản phẩm cho trang hiện tại
+    const indexOfLastProduct = currentPage * productsPerPage;
+    const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+    const currentProducts = getFilteredProducts().slice(indexOfFirstProduct, indexOfLastProduct);
+    const totalPages = Math.ceil(getFilteredProducts().length / productsPerPage);
 
-  return (
-    <Fragment>
-      <div
-        className={cx('breadcrumb')}
-        style={{ background: `url(${images.breadcrumb}) 50% / cover no-repeat`, backgroundAttachment: 'fixed' }}
-      >
-        <div className={cx('content')}>
-          <h2 className={cx('text')}>Our Shop</h2>
-          <span className={cx('context')}>
-            <p className={cx('start')}>Home</p>
-            <FontAwesomeIcon icon={faAngleRight} className={cx('breadcrumb-icon')} />
-            <p className={cx('current')}>Shop</p>
-          </span>
-        </div>
-      </div>
-      <div className="grid wide">
-        <div className="row">
-          <div className="col l-3">
-            <div className={cx('sidebar-component')}>
-              <Sidebar categories={categories} setColors={setSelectedColors} setSizes={setSelectedSizes} />
-            </div>
-          </div>
-          <div className="col l-9">
-            <div className={cx('shop-header')}>
-              <div className="flex justify-between align-center mb-10px mt-12px">
-                <div className={cx('tabs')}>
-                  <div className={cx('tab-item')}>
-                    <Text>All Products</Text>
-                  </div>
-                  <div className={cx('tab-item')}>
-                    <Link to={'#'}>
-                      <Text>Suggestions</Text>
-                    </Link>
-                  </div>
-                  <div className={cx('tab-item')}>
-                    <Text>Sale Products</Text>
-                  </div>
+    const handlePageChange = (page) => {
+        setCurrentPage(page);
+    };
+
+    const handleSortChange = (order) => {
+        setSortOrder(order);
+    };
+
+    const fetchingCategory = useMutation({
+        mutationFn: async () => {
+            return await getCategories();
+        },
+        onSuccess: (data) => {
+            setCategories(renderCategories(data));
+        },
+        onError: (error) => {
+            if (error instanceof AxiosError) {
+                toast.error(`Error ${error.response?.status}`, {
+                    description: `${error.response?.data?.message}`,
+                });
+            }
+        },
+    });
+
+    const fetchingProduct = useMutation({
+        mutationFn: async () => {
+            return await productService.getAllProducts();
+        },
+        onSuccess: (data) => {
+            setProducts(data);
+        },
+        onError: (error) => {
+            if (error instanceof AxiosError) {
+                toast.error(`Error ${error.response?.status}`, {
+                    description: `${error.response?.data?.message}`,
+                });
+            }
+        },
+    });
+
+    useEffect(() => {
+        fetchingCategory.mutate();
+        fetchingProduct.mutate();
+    }, []);
+
+    return (
+        <Fragment>
+            <div
+                className={cx('breadcrumb')}
+                style={{ background: `url(${images.breadcrumb}) 50% / cover no-repeat`, backgroundAttachment: 'fixed' }}
+            >
+                <div className={cx('content')}>
+                    <h2 className={cx('text')}>Our Shop</h2>
+                    <span className={cx('context')}>
+                        <p className={cx('start')}>Home</p>
+                        <FontAwesomeIcon icon={faAngleRight} className={cx('breadcrumb-icon')} />
+                        <p className={cx('current')}>Shop</p>
+                    </span>
                 </div>
-                <div className={cx('sorting')}>
-                  <p className={cx('counter-product')}>Showing 1 - 12 of 35</p>
-                  <div className={cx('sorting-content', 'flex align-center')}>
-                    <p className={cx('sorting-text')}>
-                      <Text>
-                        Default sorting
-                        <i className={cx('sort-icon')}>
-                          <FontAwesomeIcon icon={faChevronDown} />
-                        </i>
-                      </Text>
-                    </p>
-                  </div>
+            </div>
+
+            <div className="grid wide">
+                <div className="row">
+                    <div className="col l-3">
+                        <div className={cx('sidebar-component')}>
+                            <Sidebar
+                                categories={categories}
+                                setColors={setSelectedColors}
+                                setSizes={setSelectedSizes}
+                                onPriceRangeChange={handlePriceRangeChange}
+                            />
+                        </div>
+                    </div>
+                    <div className="col l-9">
+                        {getFilteredProducts().length > 0 ? (
+                            <>
+                                <div className={cx('shop-header')}>
+                                    <div className="flex justify-between align-center mb-10px mt-12px">
+                                        <div className={cx('counter-product')}>
+                                            Showing {indexOfFirstProduct + 1} - {Math.min(indexOfLastProduct, getFilteredProducts().length)} of {getFilteredProducts().length} products
+                                        </div>
+                                        <div className={cx('sorting')}>
+                                            <select
+                                                value={sortOrder}
+                                                onChange={(e) => handleSortChange(e.target.value)}
+                                                className={cx('sort-select')}
+                                            >
+                                                <option value="default">Default sorting</option>
+                                                <option value="asc">Price: Low to High</option>
+                                                <option value="desc">Price: High to Low</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="row">
+                                    {currentProducts.map((product) => (
+                                        <div key={product._id} className="col l-4 m-4 c-6">
+                                            <div className={cx('product-component')}>
+                                                <Product product={product} />
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+
+                                <div className={cx('pagination')}>
+                                    <Pagination
+                                        currentPage={currentPage}
+                                        totalPages={totalPages}
+                                        onPageChange={handlePageChange}
+                                    />
+                                </div>
+                            </>
+                        ) : (
+                            <div className={cx('no-products')}>
+                                <img src='/notfoundproduct.png' alt="No products found" className={cx('no-products-img')} />
+                                <p className={cx('no-products-text')}>Please check back later or browse other categories</p>
+                            </div>
+                        )}
+                    </div>
                 </div>
-              </div>
             </div>
-            <div className="row">
-              {selectedColors.length === 0 && selectedSizes.length === 0
-                ? products.map((product, index) => {
-                    return (
-                      <div className="col l-4">
-                        <div className={cx('product-component')}>
-                          <Product product={product} />
-                        </div>
-                      </div>
-                    );
-                  })
-                : filterProducts.map((product, index) => {
-                    return (
-                      <div className="col l-4">
-                        <div className={cx('product-component')}>
-                          <Product product={product} />
-                        </div>
-                      </div>
-                    );
-                  })}
-            </div>
-          </div>
-        </div>
-      </div>
-    </Fragment>
-  );
+        </Fragment>
+    );
 }
 
 export default Shop;

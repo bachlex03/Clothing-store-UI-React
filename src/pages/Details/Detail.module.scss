@@ -70,6 +70,9 @@
           font-weight: 500;
         }
         .price {
+          display: flex;
+          gap: 10px;
+          align-items: end;
           span {
             font-size: 22px;
             line-height: 1;
