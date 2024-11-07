@@ -12,103 +12,103 @@ import { AxiosError } from 'axios';
 const cx = classNames.bind(style);
 
 function Sidebar({ categories, setColors, setSizes, onPriceRangeChange }) {
-    const [sizesArray, setSizesArray] = useState(sizesArr);
-    const [colorsArray, setColorsArray] = useState([]);
-    const [checkedColors, setCheckedColors] = useState([]);
-    const [checkedSizes, setCheckedSizes] = useState([]);
+  const [sizesArray, setSizesArray] = useState(sizesArr);
+  const [colorsArray, setColorsArray] = useState([]);
+  const [checkedColors, setCheckedColors] = useState([]);
+  const [checkedSizes, setCheckedSizes] = useState([]);
 
-    useEffect(() => {
-        const objColorKeys = Object.keys(ColorsHash);
+  useEffect(() => {
+    const objColorKeys = Object.keys(ColorsHash);
 
-        setColorsArray(objColorKeys);
-    }, []);
+    setColorsArray(objColorKeys);
+  }, []);
 
-    const handleColorChecked = (color) => {
-        const newCheckedColors = checkedColors.includes(color)
-            ? checkedColors.filter((checkedColor) => checkedColor !== color)
-            : [...checkedColors, color];
+  const handleColorChecked = (color) => {
+    const newCheckedColors = checkedColors.includes(color)
+      ? checkedColors.filter((checkedColor) => checkedColor !== color)
+      : [...checkedColors, color];
 
-        setCheckedColors(newCheckedColors);
-    };
+    setCheckedColors(newCheckedColors);
+  };
 
-    const handleSizeChecked = (size) => {
-        const newCheckedSizes = checkedSizes.includes(size)
-            ? checkedSizes.filter((checkedSize) => checkedSize !== size)
-            : [...checkedSizes, size];
+  const handleSizeChecked = (size) => {
+    const newCheckedSizes = checkedSizes.includes(size)
+      ? checkedSizes.filter((checkedSize) => checkedSize !== size)
+      : [...checkedSizes, size];
 
-        setCheckedSizes(newCheckedSizes);
-    };
+    setCheckedSizes(newCheckedSizes);
+  };
 
-    useEffect(() => {
-        setColors(checkedColors);
-    }, [checkedColors]);
+  useEffect(() => {
+    setColors(checkedColors);
+  }, [checkedColors]);
 
-    useEffect(() => {
-        setSizes(checkedSizes);
-    }, [checkedSizes]);
+  useEffect(() => {
+    setSizes(checkedSizes);
+  }, [checkedSizes]);
 
-    return (
-        <aside className={cx('sidebar')}>
-            <div className="mt-50px">
-                <h3 className={cx('heading')}>Product Categories</h3>
-                {categories.map((category, index) => {
-                    return (
-                        <div className={cx('category-components-wrapper')}>
-                            <Category category={category} />
-                        </div>
-                    );
-                })}
-
-                <span className={cx('separate')}></span>
+  return (
+    <aside className={cx('sidebar')}>
+      <div className="mt-50px">
+        <h3 className={cx('heading')}>Product Categories</h3>
+        {categories.map((category, index) => {
+          return (
+            <div className={cx('category-components-wrapper')}>
+              <Category category={category} />
             </div>
+          );
+        })}
 
-            <div>
-                <h3 className={cx('heading')}>Filter By Color</h3>
-                {colorsArray.map((color, index) => {
-                    return <ColorVariation valueStr={color} key={index} onCheck={handleColorChecked} />;
-                })}
+        <span className={cx('separate')}></span>
+      </div>
 
-                <span className={cx('separate')}></span>
-            </div>
+      <div>
+        <h3 className={cx('heading')}>Filter By Color</h3>
+        {colorsArray.map((color, index) => {
+          return <ColorVariation valueStr={color} key={index} onCheck={handleColorChecked} />;
+        })}
 
-            <div>
-                <h3 className={cx('heading')}>Filter By Size</h3>
-                {sizesArray.map((size, index) => {
-                    return <SizeVariation valueStr={size} key={index} onCheck={handleSizeChecked} />;
-                })}
+        <span className={cx('separate')}></span>
+      </div>
 
-                <span className={cx('separate')}></span>
-            </div>
+      <div>
+        <h3 className={cx('heading')}>Filter By Size</h3>
+        {sizesArray.map((size, index) => {
+          return <SizeVariation valueStr={size} key={index} onCheck={handleSizeChecked} />;
+        })}
 
-            <div>
-                <h3 className={cx('heading')}>Filter By Price</h3>
-                <PriceFilter onPriceRangeChange={onPriceRangeChange} />
-                <span className={cx('separate')}></span>
-            </div>
+        <span className={cx('separate')}></span>
+      </div>
 
-            <div>
-                <h3 className={cx('heading')}>Best Selling Products</h3>
+      <div>
+        <h3 className={cx('heading')}>Filter By Price</h3>
+        <PriceFilter onPriceRangeChange={onPriceRangeChange} />
+        <span className={cx('separate')}></span>
+      </div>
 
-                <div className={cx('side-product-component')}>
-                    <SideProduct name="Product" />
-                </div>
+      <div>
+        <h3 className={cx('heading')}>Best Selling Products</h3>
 
-                <div className={cx('side-product-component')}>
-                    <SideProduct name="Product" />
-                </div>
+        <div className={cx('side-product-component')}>
+          <SideProduct name="Product" />
+        </div>
 
-                <div className={cx('side-product-component')}>
-                    <SideProduct name="Product" />
-                </div>
+        <div className={cx('side-product-component')}>
+          <SideProduct name="Product" />
+        </div>
 
-                {/* {products ? <SideProduct product={products[3]} /> : <SideProduct name="Product" price sale />} */}
+        <div className={cx('side-product-component')}>
+          <SideProduct name="Product" />
+        </div>
 
-                {/* {products ? <SideProduct product={products[2]} /> : <SideProduct name="Product" price sale />} */}
+        {/* {products ? <SideProduct product={products[3]} /> : <SideProduct name="Product" price sale />} */}
 
-                <span className={cx('separate')}></span>
-            </div>
-        </aside>
-    );
+        {/* {products ? <SideProduct product={products[2]} /> : <SideProduct name="Product" price sale />} */}
+
+        <span className={cx('separate')}></span>
+      </div>
+    </aside>
+  );
 }
 
 export default Sidebar;

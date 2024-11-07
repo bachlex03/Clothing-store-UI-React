@@ -6,24 +6,24 @@ import { faSquare, faSquareCheck } from '@fortawesome/free-regular-svg-icons';
 const cx = classNames.bind(style);
 
 function SizeVariation({ valueStr = '', quantity = 0, onCheck }) {
-    const [checked, setChecked] = useState(false);
+  const [checked, setChecked] = useState(false);
 
-    return (
-        <div
-            className={cx('wrapper', 'flex justify-between align-center')}
-            onClick={() => {
-                setChecked(!checked);
-                onCheck(valueStr);
-            }}
-        >
-            <div className="flex align-center">
-                <p className={cx('name')}>{valueStr}</p>
-            </div>
-            <i className={cx('icon')} style={{ opacity: checked ? 1 : '' }}>
-                {checked ? <FontAwesomeIcon icon={faSquareCheck} /> : <FontAwesomeIcon icon={faSquare} />}
-            </i>
-        </div>
-    );
+  return (
+    <div
+      className={cx('wrapper', 'flex justify-between align-center')}
+      onClick={() => {
+        setChecked(!checked);
+        onCheck(valueStr);
+      }}
+    >
+      <div className="flex align-center">
+        <p className={cx('name')}>{valueStr}</p>
+      </div>
+      <i className={cx('icon')} style={{ opacity: checked ? 1 : '' }}>
+        {checked ? <FontAwesomeIcon icon={faSquareCheck} /> : <FontAwesomeIcon icon={faSquare} />}
+      </i>
+    </div>
+  );
 }
 
 export default SizeVariation;

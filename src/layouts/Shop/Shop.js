@@ -7,51 +7,51 @@ import classNames from 'classnames/bind';
 const cx = classNames.bind(style);
 
 function Shop({ children }) {
-    const [scrollDirection, setScrollDirection] = useState('up');
+  const [scrollDirection, setScrollDirection] = useState('up');
 
-    useEffect(() => {
-        let lastScrollTop = 0;
+  useEffect(() => {
+    let lastScrollTop = 0;
 
-        const handleScroll = () => {
-            const st = window.pageYOffset;
+    const handleScroll = () => {
+      const st = window.pageYOffset;
 
-            if (st > lastScrollTop) {
-                setScrollDirection('down');
-            } else if (st < lastScrollTop) {
-                setScrollDirection('up');
-            }
-            if (st < 30) {
-                setScrollDirection('top');
-            }
+      if (st > lastScrollTop) {
+        setScrollDirection('down');
+      } else if (st < lastScrollTop) {
+        setScrollDirection('up');
+      }
+      if (st < 30) {
+        setScrollDirection('top');
+      }
 
-            lastScrollTop = st;
-        };
+      lastScrollTop = st;
+    };
 
-        window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll);
 
-        return () => {
-            window.removeEventListener('scroll', handleScroll);
-        };
-    }, []);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
-    const classes = cx('header-component', {
-        show: scrollDirection === 'up',
-        hide: scrollDirection === 'down',
-        top: scrollDirection === 'top',
-    });
+  const classes = cx('header-component', {
+    show: scrollDirection === 'up',
+    hide: scrollDirection === 'down',
+    top: scrollDirection === 'top',
+  });
 
-    return (
-        <div>
-            <div className={classes}>
-                <Header animation blur lightLogo={true} />
-            </div>
-            <div className={cx('container')}>
-                <div className="left-block"></div>
-                <div className="right-block">{children}</div>
-            </div>
-            <Footer />
-        </div>
-    );
+  return (
+    <div>
+      <div className={classes}>
+        <Header animation blur lightLogo={true} />
+      </div>
+      <div className={cx('container')}>
+        <div className="left-block"></div>
+        <div className="right-block">{children}</div>
+      </div>
+      <Footer />
+    </div>
+  );
 }
 
 export default Shop;
