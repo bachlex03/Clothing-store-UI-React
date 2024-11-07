@@ -120,6 +120,34 @@
 .price-component {
   color: #484f56;
   margin-top: 10px;
+  text-align: center;
+}
+
+.price-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.price-inner {
+  display: inline-flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.discounted-price {
+  :global(.price) {
+    color: #ff0000;
+    font-weight: 600;
+    font-size: 1.6rem;
+  }
+}
+
+.original-price {
+  :global(.price) {
+    color: #999;
+    text-decoration: line-through;
+    font-size: 1.4rem;
+  }
 }
 
 .wishlist-top.icon[liked] {
@@ -142,5 +170,18 @@
   color: #fff;
   top: 12px;
   left: 10px;
+  z-index: 99;
+}
+
+.discount-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: #ff0000;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 1.2rem;
+  font-weight: 500;
   z-index: 99;
 }

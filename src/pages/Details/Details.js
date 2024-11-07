@@ -47,6 +47,8 @@ function Details() {
         size: selectedSize,
         slug: product.product_slug,
         quantity: quantity,
+        final_price: product.final_price,
+        discount: product.current_discount,
       };
 
       let existIndex = cartItems.findIndex((item) => {
@@ -213,10 +215,16 @@ function Details() {
           <div className={cx('product-info')}>
             <div className={cx('title')}>{product.product_name}</div>
             <div className={cx('price')}>
-              <span>
-                <TbCurrencyDollar />
-                {parseFloat(product.product_price).toFixed(2)}
-              </span>
+              {product?.current_discount ? (
+                <>
+                  <span style={{ color: '#d7422d' }}>$ {parseFloat(product.final_price).toFixed(2)}</span>
+                  <span style={{ color: '#9e9e9e', textDecoration: 'line-through', fontSize: '18px' }}>
+                    $ {parseFloat(product.product_price).toFixed(2)}
+                  </span>
+                </>
+              ) : (
+                <span>$ {parseFloat(product.product_price).toFixed(2)}</span>
+              )}
             </div>
             <div className={cx('description')}>{product.product_description}</div>
             <div className={cx('color')}>

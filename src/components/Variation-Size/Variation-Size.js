@@ -17,12 +17,11 @@ function SizeVariation({ valueStr = '', quantity = 0, onCheck }) {
       }}
     >
       <div className="flex align-center">
-        <i className={cx('icon')} style={{ opacity: checked ? 1 : '' }}>
-          {checked ? <FontAwesomeIcon icon={faSquareCheck} /> : <FontAwesomeIcon icon={faSquare} />}
-        </i>
         <p className={cx('name')}>{valueStr}</p>
       </div>
-      <span className={cx('quantity')}>({quantity})</span>
+      <i className={cx('icon')} style={{ opacity: checked ? 1 : '' }}>
+        {checked ? <FontAwesomeIcon icon={faSquareCheck} /> : <FontAwesomeIcon icon={faSquare} />}
+      </i>
     </div>
   );
 }

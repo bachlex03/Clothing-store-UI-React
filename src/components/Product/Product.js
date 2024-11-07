@@ -45,7 +45,7 @@ function Product({ product, children, ...passProps }) {
           <i className={cx('wishlist-top', 'icon')} liked={isWishlist ? '' : false}>
             {isWishlist ? <FontAwesomeIcon icon={faHeartSolid} /> : ''}
           </i>
-          {product?.promotion ? <span className={cx('tag')}>-{product.promotion}% OFF</span> : ''}
+          {product?.current_discount ? <span className={cx('tag')}>-{product.current_discount}% OFF</span> : ''}
 
           <Link to={`/products/${product?.product_slug ?? '#'}`}>
             <img src={product.product_imgs[0]?.secure_url ?? images.demoShopImg} className={cx('img')} alt="" />
@@ -78,7 +78,11 @@ function Product({ product, children, ...passProps }) {
 
       <p className={cx('name')}>{product?.product_name ?? 'Default Sunflower'}</p>
       <div className={cx('price-component')}>
-        <Price value={product?.product_price ?? 100} pos_shop />
+        {product?.current_discount ? (
+          <Price value={product?.product_price ?? 100} promotion={product?.current_discount} pos_shop />
+        ) : (
+          <Price value={product?.product_price ?? 100} pos_shop />
+        )}
       </div>
     </div>
   );

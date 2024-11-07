@@ -49,7 +49,7 @@ function Cart() {
         <div ref={wrapperRef} className={cx('wrapper')}>
           {cartItems && cartItems.length > 0
             ? cartItems.map((item, index) => {
-                const subtotal = item.quantity * item.price;
+                const subtotal = item.quantity * item.final_price;
 
                 total += subtotal;
                 return (
@@ -88,7 +88,7 @@ function Cart() {
                               <div className={cx('quantity-price')}>
                                 <span className={cx('item-quantity')}>{item.quantity} ×</span>
                                 <p className={cx('price-component')}>
-                                  <Price value={item.price} />
+                                  <Price value={item.price} promotion={item.discount} />
                                 </p>
                               </div>
                               <span className={cx('sub-total')}>${parseFloat(subtotal).toFixed(2)}</span>

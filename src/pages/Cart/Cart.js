@@ -103,7 +103,7 @@ function Cart() {
   useEffect(() => {
     let total = 0;
     cartItems.map((item) => {
-      total += item.price * item.quantity;
+      total += item.final_price * item.quantity;
     });
     setTotal(total);
   }, [cartItems]);
@@ -144,12 +144,18 @@ function Cart() {
                       <div style={{ marginBottom: '8px' }}>Size: {item.size}</div>
                     </td>
                     <td className={cx('product-price')} data-title="Price">
-                      <bdi>
-                        <span className={cx('icon')}>
-                          <TbCurrencyDollar />
-                        </span>
-                        {parseFloat(item.price).toFixed(2)}
-                      </bdi>
+                      {item?.discount ? (
+                        <>
+                          <span style={{ color: '#d7422d', marginRight: '10px' }}>
+                            $ {parseFloat(item.final_price).toFixed(2)}
+                          </span>
+                          <span style={{ color: '#9e9e9e', textDecoration: 'line-through', fontSize: '16px' }}>
+                            $ {parseFloat(item.price).toFixed(2)}
+                          </span>
+                        </>
+                      ) : (
+                        <span>$ {parseFloat(item.price).toFixed(2)}</span>
+                      )}
                     </td>
                     <td className={cx('product-quantity')} data-title="Quantity">
                       <div className={cx('quantity')}>
@@ -179,12 +185,7 @@ function Cart() {
                       </div>
                     </td>
                     <td className={cx('product-subtotal')}>
-                      <bdi>
-                        <span className={cx('icon')}>
-                          <TbCurrencyDollar />
-                        </span>
-                        {parseFloat(item.price * item.quantity).toFixed(2)}
-                      </bdi>
+                      $ {parseFloat(item.final_price * item.quantity).toFixed(2)}
                     </td>
                     <td className={cx('product-remove')} onClick={() => dispatch(remove(index))}>
                       X
@@ -209,14 +210,7 @@ function Cart() {
             <tbody>
               <tr className={cx('cart-subtotal')}>
                 <th>Subtotal</th>
-                <td data-title="Subtotal">
-                  <bdi>
-                    <span className={cx('icon')}>
-                      <TbCurrencyDollar />
-                    </span>
-                    {parseFloat(total).toFixed(2)}
-                  </bdi>
-                </td>
+                <td data-title="Subtotal">$ {parseFloat(total).toFixed(2)}</td>
               </tr>
               <tr className={cx('shipping-totals')}>
                 <th>Shipping</th>
@@ -251,14 +245,7 @@ function Cart() {
               <tr class={cx('order-total')} style={{ marginTop: '10px' }}>
                 <th>Total</th>
                 <td data-title="Total">
-                  <strong>
-                    <bdi>
-                      <span className={cx('icon')}>
-                        <TbCurrencyDollar />
-                      </span>
-                      {parseFloat(total).toFixed(2)}
-                    </bdi>
-                  </strong>
+                  <strong>$ {parseFloat(total).toFixed(2)}</strong>
                 </td>
               </tr>
             </tbody>

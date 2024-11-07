@@ -11,7 +11,7 @@ import { AxiosError } from 'axios';
 
 const cx = classNames.bind(style);
 
-function Sidebar({ categories, setColors, setSizes }) {
+function Sidebar({ categories, setColors, setSizes, onPriceRangeChange }) {
   const [sizesArray, setSizesArray] = useState(sizesArr);
   const [colorsArray, setColorsArray] = useState([]);
   const [checkedColors, setCheckedColors] = useState([]);
@@ -74,9 +74,15 @@ function Sidebar({ categories, setColors, setSizes }) {
       <div>
         <h3 className={cx('heading')}>Filter By Size</h3>
         {sizesArray.map((size, index) => {
-          return <SizeVariation valueStr={size} key={index} quantity={index} onCheck={handleSizeChecked} />;
+          return <SizeVariation valueStr={size} key={index} onCheck={handleSizeChecked} />;
         })}
 
+        <span className={cx('separate')}></span>
+      </div>
+
+      <div>
+        <h3 className={cx('heading')}>Filter By Price</h3>
+        <PriceFilter onPriceRangeChange={onPriceRangeChange} />
         <span className={cx('separate')}></span>
       </div>
 

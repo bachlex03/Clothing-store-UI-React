@@ -15,6 +15,7 @@ import {
 } from '~/pages';
 import { Address, Detail, Order } from '~/pages/Customer';
 import { Products, Invoices, Employees } from '~/pages/Admin';
+import CategoryProducts from '~/pages/CategoryProducts';
 
 const publicRoutes = [
   {
@@ -83,6 +84,11 @@ const publicRoutes = [
   {
     path: '/products/:slug',
     component: Details,
+    layout: HeaderOnly,
+  },
+  {
+    path: '/categories/:slug',
+    component: CategoryProducts,
     layout: HeaderOnly,
   },
   {

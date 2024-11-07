@@ -5,3 +5,8 @@ export const getCategories = async () => {
 
   return result.data;
 };
+
+export const getProductsByCategory = async (slug) => {
+  const result = await request.get(`categories/${slug}/products`);
+  return result.data;
+};

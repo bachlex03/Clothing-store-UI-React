@@ -39,7 +39,7 @@ function Checkout() {
   useEffect(() => {
     let total = 0;
     const boughtItems = cartItems.map((item) => {
-      total = total + item.price * item.quantity;
+      total = total + item.final_price * item.quantity;
       return {
         name: item.name,
         slug: item.slug,
@@ -47,6 +47,8 @@ function Checkout() {
         color: item.color,
         quantity: item.quantity,
         price: item.price,
+        final_price: item.final_price,
+        discount: item.discount,
       };
     });
     setListItems(boughtItems);
@@ -267,11 +269,14 @@ function Checkout() {
     console.log('Place order', listItems);
     const boughtItems = listItems.map((item) => {
       return {
+        name: item.name,
         slug: item.slug,
         size: item.size,
         color: item.color,
         quantity: item.quantity,
         price: item.price,
+        final_price: item.final_price,
+        discount: item.discount,
       };
     });
     const data = {
@@ -462,7 +467,20 @@ function Checkout() {
                           <td className={cx('product')}>
                             <p className={cx('product-heading')}>{item.name}</p>
                             <div className={cx('info-product')}>
-                              <span>$ {parseFloat(item.price).toFixed(2)}</span>
+                              {item?.discount ? (
+                                <div>
+                                  <span style={{ color: '#d7422d', marginRight: '10px', fontSize: '1.4rem' }}>
+                                    $ {parseFloat(item.final_price).toFixed(2)}
+                                  </span>
+                                  <span
+                                    style={{ color: '#9e9e9e', textDecoration: 'line-through', fontSize: '1.2rem' }}
+                                  >
+                                    $ {parseFloat(item.price).toFixed(2)}
+                                  </span>
+                                </div>
+                              ) : (
+                                <span style={{ fontSize: '1.4rem' }}>$ {parseFloat(item.price).toFixed(2)}</span>
+                              )}
                               <div>
                                 <p className={cx('variation-value')}>Color: {item.color}</p>
                                 <p className={cx('variation-value')}>Size: {item.size}</p>
@@ -470,8 +488,8 @@ function Checkout() {
                               </div>
                             </div>
                           </td>
-                          <td className={cx('product-subtotal')}>
-                            $ {parseFloat(item.price * item.quantity).toFixed(2)}
+                          <td className={cx('product-subtotal')} style={{ fontSize: '1.6rem' }}>
+                            $ {parseFloat(item.final_price * item.quantity).toFixed(2)}
                           </td>
                         </tr>
                       );
