@@ -100,3 +100,21 @@ export const getInvoices = async () => {
 
   return result;
 };
+
+export const getInvoiceReviews = async (orderId) => {
+  const result = await request.get(`users/invoices/reviews?orderId=${orderId}`);
+
+  return result;
+};
+
+export const createProductReview = async (reviewData) => {
+  const result = await request.post('users/invoices/reviews', reviewData);
+
+  return result;
+};
+
+export const updateProductReview = async (reviewData) => {
+  const result = await request.put('users/invoices/reviews', reviewData);
+
+  return result;
+};

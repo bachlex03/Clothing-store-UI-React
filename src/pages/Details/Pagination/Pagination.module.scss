@@ -1,0 +1,85 @@
+@keyframes underlineAnimation {
+  from {
+    width: 0;
+  }
+  to {
+    width: calc(100% + 10px); // Covers content and right padding
+  }
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+}
+
+.arrow {
+  position: relative;
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #000;
+  padding: 5px 10px;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background-color: #000;
+    transition: width 0.9s ease;
+  }
+
+  &:hover::after {
+    animation: underlineAnimation 0.9s ease forwards;
+  }
+}
+
+.pages {
+  display: flex;
+  gap: 40px;
+}
+
+.page {
+  position: relative;
+  background: none;
+  border: none;
+  font-size: 16px;
+  font-weight: 200;
+  color: #000;
+  padding: 5px 10px;
+  font-family: 'Arial', sans-serif;
+  cursor: pointer;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background-color: #000;
+    transition: width 0.9s ease;
+  }
+
+  &:hover:not(.active)::after {
+    animation: underlineAnimation 0.9s ease forwards;
+  }
+
+  &.active::after {
+    width: calc(100% + 10px);
+  }
+
+  &.active {
+    font-weight: 600;
+  }
+}
+
+.dots {
+  padding: 0 5px;
+  color: #666;
+}

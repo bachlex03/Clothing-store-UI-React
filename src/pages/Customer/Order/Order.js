@@ -2,17 +2,21 @@ import style from './Order.module.scss';
 import classNames from 'classnames/bind';
 import { useState, useEffect } from 'react';
 import DetailInvoiceModal from '~/components/DetailInvoiceModal';
+import ReviewOrderModal from '~/pages/Customer/Order/ReviewOrderModal/ReviewOrderModal';
 import * as accountService from '~/services/api/accountService';
-import { useMutation } from '@tanstack/react-query'; // Ensure correct import
+import { useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
 
 const cx = classNames.bind(style);
 
 function Order() {
-  const [openModal, setOpenModal] = useState(false);
+  const [openDetailModal, setOpenDetailModal] = useState(false);
+  const [openReviewModal, setOpenReviewModal] = useState(false);
   const [invoices, setInvoices] = useState([]);
   const [invoice, setInvoice] = useState({});
+  const [selectedProducts, setSelectedProducts] = useState([]);
+  const [selectedOrderId, setSelectedOrderId] = useState(null);
   const navigate = useNavigate();
 
   const fetchingInvoice = useMutation({
@@ -42,8 +46,13 @@ function Order() {
   // set show modal and set invoice
   const handleViewInvoice = (invoice) => {
     setInvoice(invoice);
-    console.log('invoice', invoice);
-    setOpenModal(true);
+    setOpenDetailModal(true);
+  };
+
+  // Update this function to set the selected order ID
+  const handleReviewOrder = (invoice) => {
+    setSelectedOrderId(invoice._id);
+    setOpenReviewModal(true);
   };
 
   return (
@@ -77,11 +86,20 @@ function Order() {
                 <td className={cx('date')}>{new Date(invoice.createdAt).toLocaleString()}</td>
                 <td className={cx('status')}>{invoice.invoice_status}</td>
                 <td className={cx('total')}>${invoice.invoice_total / 25000}</td>
-                <td className={cx('action', 'text-center')}>
+                <td className={cx('action')}>
                   <div className={cx('btn-wrapper')}>
-                    <button type="button" className={cx('button')} onClick={() => handleViewInvoice(invoice)}>
-                      View
-                    </button>
+                    <div className={cx('btn-column')}>
+                      <button type="button" className={cx('button')} onClick={() => handleViewInvoice(invoice)}>
+                        View
+                      </button>
+                    </div>
+                    <div className={cx('btn-column')}>
+                      {/* {invoice.invoice_status === 'paid' && ( */}
+                      <button type="button" className={cx('button', 'review-button')} onClick={() => handleReviewOrder(invoice)}>
+                        Review
+                      </button>
+                      {/* )} */}
+                    </div>
                   </div>
                 </td>
               </tr>
@@ -96,7 +114,12 @@ function Order() {
         </tbody>
       </table>
 
-      <DetailInvoiceModal isOpen={openModal} onClose={() => setOpenModal(false)} invoice={invoice}></DetailInvoiceModal>
+      <DetailInvoiceModal isOpen={openDetailModal} onClose={() => setOpenDetailModal(false)} invoice={invoice} />
+      <ReviewOrderModal
+        isOpen={openReviewModal}
+        onClose={() => setOpenReviewModal(false)}
+        orderId={selectedOrderId} // Pass orderId instead of products
+      />
     </div>
   );
 }

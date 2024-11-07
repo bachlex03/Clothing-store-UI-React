@@ -43,6 +43,8 @@
 .react-modal-title {
   line-height: 1.5;
   font-size: 2rem;
+  flex: 1;
+  text-align: center;
 }
 
 .btn-close {
@@ -53,6 +55,7 @@
   font-weight: bold;
   color: rgba(0, 0, 0, 0.5);
   background: transparent;
+  flex-shrink: 0;
 }
 
 .react-modal-footer {
