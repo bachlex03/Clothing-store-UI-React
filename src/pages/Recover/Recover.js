@@ -11,6 +11,7 @@ function Recover() {
   const [email, setEmail] = useState('');
   const [emailEmpty, setEmailEmpty] = useState(false);
   const [emailInvalid, setEmailInvalid] = useState(false);
+  const [emailNotRegistered, setEmailNotRegistered] = useState(false);
   const navigate = useNavigate();
   const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
 
@@ -21,12 +22,14 @@ function Recover() {
     if (!email.trim()) {
       setEmailEmpty(true);
       setEmailInvalid(false);
+      setEmailNotRegistered(false);
       newErrors.push("Email can't be blank");
       isValid = false;
     } else {
       setEmailEmpty(false);
       if (!emailRegex.test(email)) {
         setEmailInvalid(true);
+        setEmailNotRegistered(false);
         newErrors.push('Email must be in correct format');
         isValid = false;
       } else {
@@ -52,6 +55,9 @@ function Recover() {
         }
       } catch (error) {
         console.error('Error sending email to reset password:', error);
+        if (error.response?.status === 400) {
+          setEmailNotRegistered(true);
+        }
       }
     }
   };
@@ -88,6 +94,11 @@ function Recover() {
                 <p className={cx('error-messsage')}>
                   <span className={cx('bi bi-exclamation-circle-fill', 'exclamation')}></span> Email must be in correct
                   format
+                </p>
+              )}
+              {emailNotRegistered && (
+                <p className={cx('error-messsage')}>
+                  <span className={cx('bi bi-exclamation-circle-fill', 'exclamation')}></span> This email is not registered
                 </p>
               )}
               <button type="submit" className={cx('button')}>

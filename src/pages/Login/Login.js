@@ -19,10 +19,13 @@ function Login() {
   const [passwordRegister, setPasswordRegister] = useState('');
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
+  const [loginEmailError, setLoginEmailError] = useState(false);
   const [isCheckTerms, setIsCheckTerms] = useState(true);
   const [responseError, setResponseError] = useState(false);
   const [responseRegisterMsg, setResponseRegisterMsg] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
+  const [firstNameError, setFirstNameError] = useState(false);
+  const [lastNameError, setLastNameError] = useState(false);
   const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
   const navigate = useNavigate();
   const location = useLocation();
@@ -62,7 +65,24 @@ function Login() {
   const toggleLogregBox = (e, value) => {
     e.preventDefault();
     setLogregBoxToggle(value);
+    
+    // Clear all error states
     setResponseError(false);
+    setFirstNameError(false);
+    setLastNameError(false);
+    setEmailError(false);
+    setPasswordError(false);
+    setLoginEmailError(false);
+    setResponseRegisterMsg('');
+    
+    // Reset form fields for register
+    if (!value) {
+      setFirstName('');
+      setLastName('');
+      setEmailRegister('');
+      setPasswordRegister('');
+      setIsCheckTerms(true);
+    }
 
     if (value) {
       navigate('/register');
@@ -77,6 +97,15 @@ function Login() {
 
   const handleSignIn = async (e) => {
     e.preventDefault();
+    setLoginEmailError(false);
+    setResponseError(false);
+
+    // Validate email format
+    if (!emailRegex.test(email)) {
+      setLoginEmailError(true);
+      return;
+    }
+
     // Send login request
     try {
       let user = {
@@ -115,9 +144,9 @@ function Login() {
     if (validateRegister()) {
       try {
         let user = {
-          firstName,
-          lastName,
-          email: emailRegister,
+          firstName: firstName.trim(),
+          lastName: lastName.trim(),
+          email: emailRegister.trim(),
           password: passwordRegister,
         };
         const response = await accountService.register(user);
@@ -136,27 +165,54 @@ function Login() {
     }
   };
 
+  const nameRegex = /^[a-zA-ZÀ-ỹ\s]+$/; // Allow letters and spaces only, including Vietnamese characters
+
+  const passwordRegex = /^\S{8,}$/; // At least 8 characters, no whitespace
+
+  const handlePasswordChange = (e) => {
+    const value = e.target.value;
+    setPasswordRegister(value);
+  };
+
   const validateRegister = () => {
     let isValid = true;
     setResponseError(false);
-    // Validate email, no need to validate empty because it's required
-    if (!emailRegex.test(emailRegister)) {
+
+    // Validate first name
+    const trimmedFirstName = firstName.trim();
+    if (!trimmedFirstName || !nameRegex.test(trimmedFirstName)) {
+      setFirstNameError(true);
+      isValid = false;
+    } else {
+      setFirstNameError(false);
+    }
+
+    // Validate last name
+    const trimmedLastName = lastName.trim();
+    if (!trimmedLastName || !nameRegex.test(trimmedLastName)) {
+      setLastNameError(true);
+      isValid = false;
+    } else {
+      setLastNameError(false);
+    }
+
+    // Validate email
+    if (!emailRegex.test(emailRegister.trim())) {
       setEmailError(true);
       isValid = false;
     } else {
       setEmailError(false);
     }
 
-    // Validate password, no need to validate empty because it's required
-    // password must be at least 8 characters
-    if (passwordRegister.length < 8) {
+    // Validate password
+    if (!passwordRegister || !passwordRegex.test(passwordRegister)) {
       setPasswordError(true);
       isValid = false;
     } else {
       setPasswordError(false);
     }
 
-    // Check terms and conditions checkbox is checked or not
+    // Check terms
     if (!isCheckTerms) {
       isValid = false;
     }
@@ -198,6 +254,11 @@ function Login() {
                 <input type="text" required value={email} onChange={(e) => setEmail(e.target.value)}></input>
                 <label>Email</label>
               </div>
+              {loginEmailError && (
+                <p className={cx('error-messsage')}>
+                  <span className={cx('bi bi-exclamation-circle-fill', 'exclamation')}></span> Email must be in correct format
+                </p>
+              )}
 
               <div className={cx('input-box')}>
                 <span className={cx('icon')}>
@@ -237,7 +298,7 @@ function Login() {
 
           <div className={cx('form-box', 'register')}>
             <form onSubmit={handleRegister}>
-              <h2>Sign Up</h2>
+              <h2 className={cx('title')}>Sign Up</h2>
               <div className={cx('input-box')}>
                 <span className={cx('icon')}>
                   <i className={cx('bi bi-person-fill')}></i>
@@ -247,6 +308,13 @@ function Login() {
                   First name <span style={{ color: 'red' }}>*</span>
                 </label>
               </div>
+              {firstNameError && (
+                <p className={cx('error-messsage')}>
+                  <span className={cx('bi bi-exclamation-circle-fill', 'exclamation')}></span> First name can only contain
+                  letters and spaces
+                </p>
+              )}
+
               <div className={cx('input-box')}>
                 <span className={cx('icon')}>
                   <i className={cx('bi bi-person-fill')}></i>
@@ -256,6 +324,13 @@ function Login() {
                   Last name <span style={{ color: 'red' }}>*</span>
                 </label>
               </div>
+              {lastNameError && (
+                <p className={cx('error-messsage')}>
+                  <span className={cx('bi bi-exclamation-circle-fill', 'exclamation')}></span> Last name can only contain
+                  letters and spaces
+                </p>
+              )}
+
               <div className={cx('input-box')}>
                 <span className={cx('icon')}>
                   <i className={cx('bi bi-envelope-fill')}></i>
@@ -285,7 +360,7 @@ function Login() {
                   type="password"
                   required
                   value={passwordRegister}
-                  onChange={(e) => setPasswordRegister(e.target.value)}
+                  onChange={handlePasswordChange}
                 ></input>
                 <label>
                   Password <span style={{ color: 'red' }}>*</span>
@@ -293,8 +368,8 @@ function Login() {
               </div>
               {passwordError && (
                 <p className={cx('error-messsage')}>
-                  <span className={cx('bi bi-exclamation-circle-fill', 'exclamation')}></span> Password must be at least
-                  8 characters
+                  <span className={cx('bi bi-exclamation-circle-fill', 'exclamation')}></span> Password must be at least 8
+                  characters and contain no spaces
                 </p>
               )}
               {responseError && (

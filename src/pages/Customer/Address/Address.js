@@ -27,6 +27,17 @@ function Address() {
   const [userDistrict, setUserDistrict] = useState('');
   const navigate = useNavigate();
 
+  // Thêm states cho validation
+  const [firstNameError, setFirstNameError] = useState(false);
+  const [lastNameError, setLastNameError] = useState(false);
+  const [streetError, setStreetError] = useState(false);
+  const [phoneError, setPhoneError] = useState(false);
+
+  // Thêm regex patterns
+  const nameRegex = /^[a-zA-ZÀ-ỹ\s]{2,}$/;
+  const streetRegex = /^[a-zA-Z0-9À-ỹ\s,.-/]{5,}$/;
+  const phoneRegex = /^[0-9]{8,15}$/;
+
   useEffect(() => {
     fetchingAccount.mutate();
   }, []);
@@ -98,18 +109,117 @@ function Address() {
     fetchAddresses();
   }, []);
 
+  // Handle input changes
+  const handleFirstNameChange = (e) => {
+    const value = e.target.value;
+    setFirstName(value);
+    setFirstNameError(false);
+  };
+
+  const handleLastNameChange = (e) => {
+    const value = e.target.value;
+    setLastName(value);
+    setLastNameError(false);
+  };
+
+  const handleStreetChange = (e) => {
+    const value = e.target.value;
+    setStreet(value);
+    setStreetError(false);
+  };
+
+  const handlePhoneChange = (e) => {
+    const value = e.target.value;
+    // Chỉ cho phép nhập số
+    if (value === '' || /^[0-9]{0,15}$/.test(value)) {
+      setPhone(value);
+      setPhoneError(false);
+    }
+  };
+
+  const validateAddress = () => {
+    let isValid = true;
+
+    // Reset all error states
+    setFirstNameError(false);
+    setLastNameError(false);
+    setStreetError(false);
+    setPhoneError(false);
+
+    const trimmedFirstName = firstName.trim();
+    const trimmedLastName = lastName.trim();
+    const trimmedStreet = street.trim();
+    const trimmedPhone = phone.trim();
+
+    // Validate firstName
+    if (!trimmedFirstName) {
+      setFirstNameError(true);
+      toast.warning('First name is required');
+      isValid = false;
+    } else if (!nameRegex.test(trimmedFirstName)) {
+      setFirstNameError(true);
+      toast.warning('First name must contain only letters and at least 2 characters');
+      isValid = false;
+    }
+
+    // Validate lastName
+    if (!trimmedLastName) {
+      setLastNameError(true);
+      toast.warning('Last name is required');
+      isValid = false;
+    } else if (!nameRegex.test(trimmedLastName)) {
+      setLastNameError(true);
+      toast.warning('Last name must contain only letters and at least 2 characters');
+      isValid = false;
+    }
+
+    // Validate street address
+    if (!trimmedStreet) {
+      setStreetError(true);
+      toast.warning('Street address is required');
+      isValid = false;
+    } else if (!streetRegex.test(trimmedStreet)) {
+      setStreetError(true);
+      toast.warning('Street address must be at least 5 characters and contain only letters, numbers, spaces, commas, dots, hyphens, and forward slashes');
+      isValid = false;
+    }
+
+    // Validate phone number (optional but must be valid if provided)
+    if (trimmedPhone && !phoneRegex.test(trimmedPhone)) {
+      setPhoneError(true);
+      toast.warning('Phone number must contain 8-15 digits only');
+      isValid = false;
+    }
+
+    // Validate location fields
+    if (!country && !userCountry) {
+      toast.warning('Country is required');
+      isValid = false;
+    }
+    if (!city && !userCity) {
+      toast.warning('City is required');
+      isValid = false;
+    }
+    if (!district && !userDistrict) {
+      toast.warning('District is required');
+      isValid = false;
+    }
+
+    return isValid;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (validateAddress()) {
       let info = {
-        firstName,
-        lastName,
-        phoneNumber: phone,
+        firstName: firstName.trim(),
+        lastName: lastName.trim(),
+        phoneNumber: phone.trim(),
         district: district.name || userDistrict,
         province: city.name || userCity,
         country: country || userCountry,
-        addressLine: street,
+        addressLine: street.trim(),
       };
 
       updateCheckoutInfo.mutate(info);
@@ -129,26 +239,6 @@ function Address() {
     },
   });
 
-  const validateAddress = () => {
-    if (!country && !userCountry) {
-      toast.warning('Country is required');
-      return false;
-    }
-    if (!city && !userCity) {
-      toast.warning('City is required');
-      return false;
-    }
-    if (!district && !userDistrict) {
-      toast.warning('District is required');
-      return false;
-    }
-    if (!street) {
-      toast.warning('Street is required');
-      return false;
-    }
-    return true;
-  };
-
   return (
     <div className={cx('wrapper')}>
       <h3 className={cx('heading')}>Billing Addresses</h3>
@@ -162,8 +252,14 @@ function Address() {
               required
               isRequired
               value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
+              onChange={handleFirstNameChange}
             />
+            {firstNameError && (
+              <p className={cx('error-message')}>
+                <span className={cx('bi bi-exclamation-circle-fill', 'exclamation')}></span>
+                {' First name must contain only letters and at least 2 characters'}
+              </p>
+            )}
           </div>
 
           <div className="w100 px-10px">
@@ -174,8 +270,14 @@ function Address() {
               required
               isRequired
               value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
+              onChange={handleLastNameChange}
             />
+            {lastNameError && (
+              <p className={cx('error-message')}>
+                <span className={cx('bi bi-exclamation-circle-fill', 'exclamation')}></span>
+                {' Last name must contain only letters and at least 2 characters'}
+              </p>
+            )}
           </div>
         </div>
 
@@ -207,7 +309,7 @@ function Address() {
               setCity(selectedCity);
             }}
           >
-            <option value="default">{userCity || '-- Choose your opinion --'}</option>
+            <option value="default" disabled>{city?.name || userCity || '-- Choose your opinion --'}</option>
             {cities.map((city) => (
               <option key={city.id} value={city.name}>
                 {city.name}
@@ -229,7 +331,7 @@ function Address() {
               setDistrict(selectedDistrict);
             }}
           >
-            <option value="default">{userDistrict || '-- Choose your opinion --'}</option>
+            <option value="default" disabled>{district?.name || userDistrict || '-- Choose your opinion --'}</option>
             {districts.map((district) => (
               <option value={district.name}>{district.name}</option>
             ))}
@@ -244,18 +346,30 @@ function Address() {
             isRequired
             required
             value={street}
-            onChange={(e) => setStreet(e.target.value)}
+            onChange={handleStreetChange}
           />
+          {streetError && (
+            <p className={cx('error-message')}>
+              <span className={cx('bi bi-exclamation-circle-fill', 'exclamation')}></span>
+              {' Street address must be at least 5 characters and contain only letters, numbers, spaces, commas, dots, hyphens, and forward slashes'}
+            </p>
+          )}
         </div>
 
         <div className="w100 px-10px mt-16px">
           <Input
             name="phoneNumber"
             label="Phone number"
-            placeholder="(+84)"
+            placeholder="Enter phone number..."
             value={phone}
-            onChange={(e) => setPhone(e.target.value)}
+            onChange={handlePhoneChange}
           />
+          {phoneError && (
+            <p className={cx('error-message')}>
+              <span className={cx('bi bi-exclamation-circle-fill', 'exclamation')}></span>
+              {' Phone number must contain 8-15 digits only'}
+            </p>
+          )}
         </div>
 
         <div className="w100 px-10px mt-16px">

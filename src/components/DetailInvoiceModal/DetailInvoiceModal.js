@@ -53,9 +53,9 @@ function DetailInvoiceModal({ isOpen, onClose, invoice }) {
                       <Link to={`/products/${item.slug ?? '#'}`}>
                         <td className={cx('product-name')}>{item.product_name}</td>
                       </Link>
-                      <td>${item.product_price}</td>
+                      <td>${item.product_final_price || item.product_price}</td>
                       <td>{item.product_quantity}</td>
-                      <td>${item.product_price * item.product_quantity}</td>
+                      <td>${(item.product_final_price || item.product_price) * item.product_quantity}</td>
                     </tr>
                   ))}
                 <tr>

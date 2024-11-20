@@ -117,11 +117,8 @@ function Header({ animation = false, blur = false, light = null, color, lightLog
           <Link
             to={user ? '/shop' : '/login'}
             onClick={() => {
-              setLightEffect(null);
               if (user) {
-                // remove token from local storage
                 localStorage.removeItem('token');
-                // remove user from redux store
                 dispatch(removeUser());
                 console.log('User logged out');
               }
@@ -157,7 +154,7 @@ function Header({ animation = false, blur = false, light = null, color, lightLog
         <nav>
           <ul className={cx('list-header')}>
             <li className={cx('header-item')}>
-              <Link className={cx('header-link')} href="/home" light={lightEffect}>
+              <Link className={cx('header-link')} to={'/'} light={lightEffect}>
                 <p className={cx('header-link-text')}>Home</p>
               </Link>
             </li>
