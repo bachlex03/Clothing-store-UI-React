@@ -3,7 +3,7 @@
   line-height: 42px;
   border-radius: var(--rounded-full);
   border: 1px solid #ccc;
-  padding-left: 15px;
+  padding-left: 45px;
   padding-right: 40px;
   font-family: var(--font-yantramanav);
   letter-spacing: 0.5px;
@@ -27,7 +27,7 @@
 
 .search-input[light] {
   border: 1px solid #ccc;
-  padding-left: 15px;
+  padding-left: 45px;
   padding-right: 40px;
   font-family: var(--font-yantramanav);
   letter-spacing: 0.5px;
@@ -149,4 +149,14 @@
   display: flex;
   width: 100%;
   align-items: center;
+}
+
+.search-icon {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #888686;
+  font-size: 1.4rem;
+  z-index: 1;
 }
