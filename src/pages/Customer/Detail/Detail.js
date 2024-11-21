@@ -20,11 +20,76 @@ function Detail() {
   const [password, setPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  const [newPasswordError, setNewPasswordError] = useState('');
+  const [confirmPasswordError, setConfirmPasswordError] = useState('');
+  const [firstNameError, setFirstNameError] = useState('');
+  const [lastNameError, setLastNameError] = useState('');
   const navigate = useNavigate();
+
+  // Regex patterns for validation
+  const nameRegex = /^[a-zA-ZÀ-ỹ\s]+$/; // Allow letters and spaces only, including Vietnamese characters
+  const phoneRegex = /^[0-9]+$/; // Numbers only
+  const passwordRegex = /^\S{8,}$/; // At least 8 characters, no whitespace
+
+  const handleFirstNameChange = (e) => {
+    const value = e.target.value;
+    setFirstName(value);
+    setFirstNameError('');
+  };
+
+  const handleLastNameChange = (e) => {
+    const value = e.target.value;
+    setLastName(value);
+    setLastNameError('');
+  };
+
+  const handlePhoneChange = (e) => {
+    const value = e.target.value;
+    if (value === '' || (phoneRegex.test(value) && value.length <= 15)) {
+      setPhone(value);
+    }
+  };
+
+  const handlePasswordChange = (e) => {
+    const value = e.target.value;
+    setPassword(value);
+    if (value && !passwordRegex.test(value)) {
+      setPasswordError('Password must be at least 8 characters and contain no spaces');
+    } else {
+      setPasswordError('');
+    }
+  };
+
+  const handleNewPasswordChange = (e) => {
+    const value = e.target.value;
+    setNewPassword(value);
+    if (value && !passwordRegex.test(value)) {
+      setNewPasswordError('Password must be at least 8 characters and contain no spaces');
+    } else {
+      setNewPasswordError('');
+    }
+  };
+
+  const handleConfirmPasswordChange = (e) => {
+    const value = e.target.value;
+    setConfirmPassword(value);
+    if (value !== newPassword) {
+      setConfirmPasswordError('Passwords do not match');
+    } else {
+      setConfirmPasswordError('');
+    }
+  };
 
   useEffect(() => {
     fetchingAccount.mutate();
   }, []);
+
+  useEffect(() => {
+    if (!newPassword && !confirmPassword) {
+      setConfirmPasswordError('');
+    }
+  }, [newPassword, confirmPassword]);
 
   const fetchingAccount = useMutation({
     mutationFn: async () => {
@@ -66,19 +131,42 @@ function Detail() {
   };
 
   const validateOnlyUpdateInfor = () => {
-    if (!firstName || !lastName) {
+    let isValid = true;
+    const trimmedFirstName = firstName.trim();
+    const trimmedLastName = lastName.trim();
+    const trimmedPhone = phone.trim();
+
+    if (!trimmedFirstName || !trimmedLastName) {
       toast.warning('First name and last name are required');
-      return false;
+      isValid = false;
     }
-    return true;
+
+    if (!nameRegex.test(trimmedFirstName)) {
+      setFirstNameError('First name can only contain letters and spaces');
+      toast.warning('First name can only contain letters and spaces');
+      isValid = false;
+    }
+
+    if (!nameRegex.test(trimmedLastName)) {
+      setLastNameError('Last name can only contain letters and spaces');
+      toast.warning('Last name can only contain letters and spaces');
+      isValid = false;
+    }
+
+    if (trimmedPhone && !phoneRegex.test(trimmedPhone)) {
+      toast.warning('Phone number can only contain numbers');
+      isValid = false;
+    }
+
+    return isValid;
   };
 
   const onlyUpdateInfor = useMutation({
     mutationFn: async () => {
       let user = {
-        firstName: firstName,
-        lastName: lastName,
-        phoneNumber: phone,
+        firstName: firstName.trim(),
+        lastName: lastName.trim(),
+        phoneNumber: phone.trim(),
       };
       return await accountService.updateProfile(user);
     },
@@ -104,8 +192,8 @@ function Detail() {
       toast.warning('New password is required');
       return false;
     }
-    if (newPassword.length < 8) {
-      toast.warning('Password must contain at least 8 characters');
+    if (!passwordRegex.test(newPassword)) {
+      toast.warning('Password must be at least 8 characters and contain no spaces');
       return false;
     }
     if (!confirmPassword) {
@@ -155,8 +243,14 @@ function Detail() {
               isRequired
               required
               value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
+              onChange={handleFirstNameChange}
             />
+            {firstNameError && (
+              <p className={cx('error-message')}>
+                <span className={cx('bi bi-exclamation-circle-fill', 'exclamation')}></span>
+                {firstNameError}
+              </p>
+            )}
           </div>
           <div className="w100 px-10px">
             <Input
@@ -165,8 +259,14 @@ function Detail() {
               isRequired
               required
               value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
+              onChange={handleLastNameChange}
             />
+            {lastNameError && (
+              <p className={cx('error-message')}>
+                <span className={cx('bi bi-exclamation-circle-fill', 'exclamation')}></span>
+                {lastNameError}
+              </p>
+            )}
           </div>
         </div>
 
@@ -177,7 +277,7 @@ function Detail() {
             type="text"
             note="Enter your phone number. This will be used for account recovery and verification purposes only and will not be publicly displayed."
             value={phone}
-            onChange={(e) => setPhone(e.target.value)}
+            onChange={handlePhoneChange}
           />
         </div>
 
@@ -202,8 +302,14 @@ function Detail() {
               placeholder="Current password..."
               type="password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={handlePasswordChange}
             />
+            {passwordError && (
+              <p className={cx('error-message')}>
+                <span className={cx('bi bi-exclamation-circle-fill', 'exclamation')}></span>
+                {' Password must be at least 8 characters and contain no spaces'}
+              </p>
+            )}
           </div>
 
           <div className="w100 px-10px mt-16px">
@@ -212,8 +318,14 @@ function Detail() {
               placeholder="New password..."
               type="password"
               value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
+              onChange={handleNewPasswordChange}
             />
+            {newPasswordError && (
+              <p className={cx('error-message')}>
+                <span className={cx('bi bi-exclamation-circle-fill', 'exclamation')}></span>
+                {' Password must be at least 8 characters and contain no spaces'}
+              </p>
+            )}
           </div>
 
           <div className="w100 px-10px mt-16px">
@@ -222,8 +334,14 @@ function Detail() {
               placeholder="Confirm new password..."
               type="password"
               value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
+              onChange={handleConfirmPasswordChange}
             />
+            {confirmPasswordError && (
+              <p className={cx('error-message')}>
+                <span className={cx('bi bi-exclamation-circle-fill', 'exclamation')}></span>
+                {' Passwords do not match'}
+              </p>
+            )}
           </div>
         </div>
 

@@ -14,6 +14,10 @@ import { clearCart } from '~/redux/features/cart/cartSlice';
 const cx = classNames.bind(style);
 
 function Checkout() {
+  const nameRegex = /^[a-zA-ZÀ-ỹ\s]{2,}$/; // Allow letters and spaces only, including Vietnamese characters, at least 2 characters
+  const phoneRegex = /^[0-9]{10,11}$/; // Numbers only, between 10 and 11 digits
+  const streetRegex = /^[a-zA-Z0-9À-ỹ\s,.-/]{5,}$/; // Allow letters, numbers, and special characters, at least 5 characters
+
   const [checkoutInfo, setCheckoutInfo] = useState({});
   const [city, setCity] = useState({});
   const [selectedCity, setSelectedCity] = useState('');
@@ -211,23 +215,67 @@ function Checkout() {
     },
   });
 
+  const validateCheckoutInfo = () => {
+    let isValid = true;
+    const trimmedFirstName = firstName.trim();
+    const trimmedLastName = lastName.trim();
+    const trimmedStreet = street.trim();
+    const trimmedPhone = phone.trim();
+
+    if (!trimmedFirstName || !trimmedLastName || !trimmedStreet || !selectedCountry || !userCity || !userDistrict) {
+      toast.error('Error', {
+        description: 'Please fill in all required fields',
+      });
+      isValid = false;
+      return isValid;
+    }
+
+    if (!nameRegex.test(trimmedFirstName)) {
+      toast.error('Error', {
+        description: 'First name can only contain letters and spaces, at least 2 characters',
+      });
+      isValid = false;
+    }
+
+    if (!nameRegex.test(trimmedLastName)) {
+      toast.error('Error', {
+        description: 'Last name can only contain letters and spaces, at least 2 characters',
+      });
+      isValid = false;
+    }
+
+    if (!streetRegex.test(trimmedStreet)) {
+      toast.error('Error', {
+        description: 'Please enter a valid street address, at least 5 characters',
+      });
+      isValid = false;
+    }
+
+    if (!phoneRegex.test(trimmedPhone)) {
+      toast.error('Error', {
+        description: 'Phone number can only contain numbers, between 10 and 11 digits',
+      });
+      isValid = false;
+    }
+
+    return isValid;
+  };
+
   const handleUpdateInfo = async () => {
+    if (!validateCheckoutInfo()) {
+      throw new Error('Invalid input');
+    }
+
     const data = {
-      firstName: firstName,
-      lastName: lastName,
-      phoneNumber: phone,
-      addressLine: street,
+      firstName: firstName.trim(),
+      lastName: lastName.trim(),
+      phoneNumber: phone.trim(),
+      addressLine: street.trim(),
       province: userCity,
       district: userDistrict,
       country: selectedCountry,
     };
-    if (phone.length < 10 || phone.length > 11) {
-      toast.error('Error', {
-        description: 'Phone number must be between 10 and 11 characters',
-      });
-      throw new Error('Phone number must be between 10 and 11 characters');
-    }
-    console.log('check info: ', data);
+
     const response = await updateInfo(data);
     if (response.status === 200) {
       if (response.data?.redirect) {
@@ -266,6 +314,10 @@ function Checkout() {
   }, [cartList]);
 
   const handlePlaceOrder = async () => {
+    if (!validateCheckoutInfo()) {
+      throw new Error('Invalid input');
+    }
+
     console.log('Place order', listItems);
     const boughtItems = listItems.map((item) => {
       return {
@@ -279,23 +331,25 @@ function Checkout() {
         discount: item.discount,
       };
     });
+
     const data = {
-      firstName: firstName,
-      lastName: lastName,
-      phoneNumber: phone,
+      firstName: firstName.trim(),
+      lastName: lastName.trim(),
+      phoneNumber: phone.trim(),
       country: selectedCountry,
       province: userCity,
       district: userDistrict,
-      addressLine: street,
+      addressLine: street.trim(),
       boughtItems: boughtItems,
       totalPrice: total,
     };
+
     if (method === 0) {
       const response = await paymentCash(data);
       console.log('response', response);
       if (response.status == 200) {
         dispatch(clearCart());
-        await new Promise((resolve) => setTimeout(resolve, 0)); // Wait for state update
+        await new Promise((resolve) => setTimeout(resolve, 0));
 
         navigate('/cart');
         toast.success('Success', {
