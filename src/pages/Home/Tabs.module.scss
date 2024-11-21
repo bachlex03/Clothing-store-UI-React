@@ -122,3 +122,18 @@
     }
   }
 }
+
+.no-products {
+  text-align: center;
+  padding: 40px 0;
+
+  &-img {
+    width: 200px;
+    margin-bottom: 20px;
+  }
+
+  &-text {
+    font-size: 1.6rem;
+    color: #666;
+  }
+}

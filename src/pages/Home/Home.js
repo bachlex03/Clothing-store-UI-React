@@ -236,7 +236,7 @@ function Home() {
                     </div>
                     <div className={cx('products-container')}>
                         <div className="row">
-                            {products.map((product, index) => {
+                            {products.slice(0, 8).map((product, index) => {
                                 return (
                                     <div className="col l-3">
                                         <div className={cx('product-component')}>

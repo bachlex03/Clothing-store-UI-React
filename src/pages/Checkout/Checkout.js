@@ -15,9 +15,9 @@ const cx = classNames.bind(style);
 
 function Checkout() {
     const [checkoutInfo, setCheckoutInfo] = useState({});
-    const [city, setCity] = useState({});
+    const [city, setCity] = useState([]);
     const [selectedCity, setSelectedCity] = useState('');
-    const [district, setDistrict] = useState({});
+    const [district, setDistrict] = useState([]);
     const [selectedDistrict, setSelectedDistrict] = useState('');
     const [selectedCountry, setSelectedCountry] = useState('');
     const [street, setStreet] = useState('');
@@ -198,7 +198,13 @@ function Checkout() {
             if (selectedCity && selectedCity.startsWith('{') && selectedCity.endsWith('}')) {
                 objectCity = JSON.parse(selectedCity);
             }
+            console.log(">>>>>>>CHECK", selectedCity, objectCity)
+            if (selectedCity === '-- Choose your option --') {
+                return;
+            }
             setDistrict({});
+            setUserDistrict('');
+            setUserCity('');
             return await getAllDistrict(objectCity?.key);
         },
         onSuccess: (data) => {
@@ -379,7 +385,7 @@ function Checkout() {
                                     label="Country"
                                     selectValue={selectedCountry}
                                     selection
-                                    data={country}
+                                    data={country?.filter((item) => item.key === selectedCountry?.key)}
                                     isRequired
                                     required
                                 />

@@ -28,6 +28,7 @@ function Shop() {
     const [priceRange, setPriceRange] = useState({ min: 0, max: 1000 });
     const [filterProducts, setFilterProducts] = useState([]);
     const productsPerPage = 12;
+    const [bestSellers, setBestSellers] = useState([]);
 
     function bySizes(wantedSizes) {
         return (product) => {
@@ -83,10 +84,26 @@ function Shop() {
         );
 
         // Sort products
-        if (sortOrder === 'asc') {
-            filtered.sort((a, b) => a.product_price - b.product_price);
-        } else if (sortOrder === 'desc') {
-            filtered.sort((a, b) => b.product_price - a.product_price);
+        switch (sortOrder) {
+            case 'newest':
+                filtered.sort((a, b) => b._id.localeCompare(a._id)); // Sort by _id descending
+                break;
+            case 'bestseller': {
+                filtered.sort((a, b) => {
+                    const aIndex = bestSellers.findIndex(p => p._id === a._id);
+                    const bIndex = bestSellers.findIndex(p => p._id === b._id);
+                    return aIndex - bIndex;
+                });
+                break;
+            }
+            case 'asc':
+                filtered.sort((a, b) => a.product_price - b.product_price);
+                break;
+            case 'desc':
+                filtered.sort((a, b) => b.product_price - a.product_price);
+                break;
+            default:
+                break;
         }
 
         return filtered;
@@ -140,9 +157,26 @@ function Shop() {
         },
     });
 
+    const fetchBestSellers = useMutation({
+        mutationFn: async () => {
+            return await productService.getBestSellers();
+        },
+        onSuccess: (data) => {
+            setBestSellers(data);
+        },
+        onError: (error) => {
+            if (error instanceof AxiosError) {
+                toast.error(`Error ${error.response?.status}`, {
+                    description: `${error.response?.data?.message}`,
+                });
+            }
+        },
+    });
+
     useEffect(() => {
         fetchingCategory.mutate();
         fetchingProduct.mutate();
+        fetchBestSellers.mutate();
     }, []);
 
     return (
@@ -191,6 +225,8 @@ function Shop() {
                                                 <option value="default">Default sorting</option>
                                                 <option value="asc">Price: Low to High</option>
                                                 <option value="desc">Price: High to Low</option>
+                                                <option value="newest">Newest Products</option>
+                                                <option value="bestseller">Best Selling</option>
                                             </select>
                                         </div>
                                     </div>

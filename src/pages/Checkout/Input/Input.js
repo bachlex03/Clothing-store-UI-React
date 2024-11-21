@@ -4,56 +4,56 @@ import React, { Fragment, useRef, useState } from 'react';
 
 const cx = classNames.bind(styles);
 function Input({ label, isRequired, selection, textarea, note, selectValue, notEditable, ...passProps }) {
-  const optionRefs = useRef([]);
-  const [option, setOption] = useState(true);
+    const optionRefs = useRef([]);
+    const [option, setOption] = useState(true);
 
-  let inputType;
+    let inputType;
 
-  const props = {
-    ...passProps,
-  };
+    const props = {
+        ...passProps,
+    };
 
-  const data = props.data || [];
+    const data = props.data || [];
 
-  if (isRequired) {
-    props.required = true;
-  }
+    if (isRequired) {
+        props.required = true;
+    }
 
-  const setSelectedOption = props.setOption || (() => {});
-  if (selection) {
-    inputType = (
-      <select
-        className={cx('selection')}
-        onChange={(e) => {
-          console.log(e.target.value);
-          setSelectedOption(e.target.value);
-        }}
-      >
-        <option selected>{selectValue || '-- Choose your option --'}</option>
-        {data &&
-          data.length > 0 &&
-          data.map((item) => (
-            <option key={item.key} value={JSON.stringify({ key: item.key, value: item.value })}>
-              {item.value}
-            </option>
-          ))}
-      </select>
+    const setSelectedOption = props.setOption || (() => { });
+    if (selection) {
+        inputType = (
+            <select
+                className={cx('selection')}
+                onChange={(e) => {
+                    console.log(e.target.value);
+                    setSelectedOption(e.target.value);
+                }}
+            >
+                <option selected>{selectValue || '-- Choose your option --'}</option>
+                {data &&
+                    data.length > 0 &&
+                    data.map((item) => (
+                        <option key={item.key} value={JSON.stringify({ key: item.key, value: item.value })}>
+                            {item.value}
+                        </option>
+                    ))}
+            </select>
+        );
+    } else if (textarea) {
+        inputType = <textarea className={cx('text-area')} {...props}></textarea>;
+    }
+
+    const labelClasses = cx('label', { isRequired });
+    const inputClasses = cx('input', { notEditable });
+    return (
+        <>
+            <label htmlFor={label} className={labelClasses}>
+                {label}
+            </label>
+            {inputType ? inputType : <input id={label} className={inputClasses} readOnly={notEditable} {...props} />}
+            {note ? <p className={cx('note')}>{note}</p> : Fragment}
+        </>
     );
-  } else if (textarea) {
-    inputType = <textarea className={cx('text-area')} {...props}></textarea>;
-  }
-
-  const labelClasses = cx('label', { isRequired });
-  const inputClasses = cx('input', { notEditable });
-  return (
-    <>
-      <label htmlFor={label} className={labelClasses}>
-        {label}
-      </label>
-      {inputType ? inputType : <input id={label} className={inputClasses} readOnly={notEditable} {...props} />}
-      {note ? <p className={cx('note')}>{note}</p> : Fragment}
-    </>
-  );
 }
 
 export default Input;

@@ -9,6 +9,7 @@ import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
 
 import { Product, Pagination } from '~/components';
 import * as categoryService from '~/services/api/categoryService';
+import * as productService from '~/services/api/productService';
 import images from '~/assets/images';
 import styles from './CategoryProduct.module.scss';
 
@@ -17,6 +18,7 @@ const cx = classNames.bind(styles);
 function CategoryProducts() {
     const { slug } = useParams();
     const [products, setProducts] = useState([]);
+    const [bestSellers, setBestSellers] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [sortOrder, setSortOrder] = useState('default');
     const productsPerPage = 10;
@@ -25,12 +27,21 @@ function CategoryProducts() {
     const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
 
     const sortedProducts = [...products].sort((a, b) => {
-        if (sortOrder === 'asc') {
-            return a.product_price - b.product_price;
-        } else if (sortOrder === 'desc') {
-            return b.product_price - a.product_price;
+        switch (sortOrder) {
+            case 'newest':
+                return b._id.localeCompare(a._id);
+            case 'bestseller': {
+                const aIndex = bestSellers.findIndex(p => p._id === a._id);
+                const bIndex = bestSellers.findIndex(p => p._id === b._id);
+                return aIndex - bIndex;
+            }
+            case 'asc':
+                return a.product_price - b.product_price;
+            case 'desc':
+                return b.product_price - a.product_price;
+            default:
+                return 0;
         }
-        return 0;
     });
 
     const currentProducts = sortedProducts.slice(indexOfFirstProduct, indexOfLastProduct);
@@ -57,8 +68,25 @@ function CategoryProducts() {
         },
     });
 
+    const fetchBestSellers = useMutation({
+        mutationFn: async () => {
+            return await productService.getBestSellers();
+        },
+        onSuccess: (data) => {
+            setBestSellers(data);
+        },
+        onError: (error) => {
+            if (error instanceof AxiosError) {
+                toast.error(`Error ${error.response?.status}`, {
+                    description: `${error.response?.data?.message}`,
+                });
+            }
+        },
+    });
+
     useEffect(() => {
         fetchProducts.mutate();
+        fetchBestSellers.mutate();
         console.log(products);
     }, [slug]);
 
@@ -104,6 +132,8 @@ function CategoryProducts() {
                                         className={cx('sort-select')}
                                     >
                                         <option value="default">Default sorting</option>
+                                        <option value="newest">Newest Products</option>
+                                        <option value="bestseller">Best Selling</option>
                                         <option value="asc">Price: Low to High</option>
                                         <option value="desc">Price: High to Low</option>
                                     </select>
