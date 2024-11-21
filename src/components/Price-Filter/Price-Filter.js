@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 const cx = classNames.bind(style);
 
 function PriceFilter({ onPriceRangeChange }) {
-  const [priceRange, setPriceRange] = useState([20, 150]);
+  const [priceRange, setPriceRange] = useState([20, 300]);
   const [progress, setProgress] = useState({ left: '0%', right: '100%' });
   const [isDragging, setIsDragging] = useState(false);
 
@@ -22,8 +22,8 @@ function PriceFilter({ onPriceRangeChange }) {
 
     setPriceRange(newRange);
 
-    const leftPercent = ((newRange[0] - 20) / (150 - 20)) * 100;
-    const rightPercent = ((newRange[1] - 20) / (150 - 20)) * 100;
+    const leftPercent = ((newRange[0] - 20) / (300 - 20)) * 100;
+    const rightPercent = ((newRange[1] - 20) / (300 - 20)) * 100;
     setProgress({ left: `${leftPercent}%`, right: `${rightPercent}%` });
   };
 
@@ -61,7 +61,7 @@ function PriceFilter({ onPriceRangeChange }) {
           type="range"
           id="min-price"
           min="20"
-          max="150"
+          max="300"
           value={priceRange[0]}
           onChange={handleChange}
           onMouseDown={handleMouseDown}
@@ -70,7 +70,7 @@ function PriceFilter({ onPriceRangeChange }) {
           type="range"
           id="max-price"
           min="20"
-          max="150"
+          max="300"
           value={priceRange[1]}
           onChange={handleChange}
           onMouseDown={handleMouseDown}

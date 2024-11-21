@@ -127,7 +127,9 @@ function Shop() {
       return await productService.getAllProducts();
     },
     onSuccess: (data) => {
-      setProducts(data);
+      // Lọc bỏ sản phẩm Draft
+      const activeProducts = data.filter((product) => product.product_status !== 'Draft');
+      setProducts(activeProducts);
     },
     onError: (error) => {
       if (error instanceof AxiosError) {

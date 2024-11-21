@@ -9,17 +9,44 @@ import { useMutation } from '@tanstack/react-query'; // Ensure correct import
 import { toast } from 'sonner';
 import { useDispatch, useSelector } from 'react-redux';
 import { update, remove, clearCart } from '~/redux/features/cart/cartSlice';
+import { getDetailProduct } from '~/services/api/productService';
 
 const cx = classNames.bind(style);
 
 function Cart() {
   const [total, setTotal] = useState(0);
+  const [originalTotal, setOriginalTotal] = useState(0);
+  const [skuData, setSkuData] = useState([]);
 
   //handle
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.values);
 
   const handleIncrease = (index, item) => {
+    const productSkus = skuData[index];
+    if (!productSkus) {
+      toast.error('Error', {
+        description: 'Product data not found',
+      });
+      return;
+    }
+
+    const sku = productSkus.find((s) => s.sku_color === item.color && s.sku_size === item.size);
+
+    if (!sku) {
+      toast.error('Error', {
+        description: 'Product variant not found',
+      });
+      return;
+    }
+
+    if (item.quantity >= sku.sku_quantity) {
+      toast.error('Error', {
+        description: 'Maximum quantity reached',
+      });
+      return;
+    }
+
     let updatedObj = {
       index,
       item: {
@@ -88,12 +115,49 @@ function Cart() {
   };
 
   const handleChangeQuantity = (index, item, value) => {
-    if (+value === 0 || +value < 0) return;
+    if (!value || +value === 0) {
+      let updatedObj = {
+        index,
+        item: {
+          ...item,
+          quantity: 1,
+        },
+      };
+      dispatch(update(updatedObj));
+      return;
+    }
+
+    if (+value < 0) return;
+
+    const productSkus = skuData[index];
+    if (!productSkus) {
+      toast.error('Error', {
+        description: 'Product data not found',
+      });
+      return;
+    }
+
+    const sku = productSkus.find((s) => s.sku_color === item.color && s.sku_size === item.size);
+
+    if (!sku) {
+      toast.error('Error', {
+        description: 'Product variant not found',
+      });
+      return;
+    }
+
+    if (+value > sku.sku_quantity) {
+      toast.error('Error', {
+        description: 'Quantity exceeds available stock',
+      });
+      return;
+    }
+
     let updatedObj = {
       index,
       item: {
         ...item,
-        quantity: value,
+        quantity: +value,
       },
     };
 
@@ -102,10 +166,29 @@ function Cart() {
 
   useEffect(() => {
     let total = 0;
+    let originalTotal = 0;
     cartItems.map((item) => {
       total += item.final_price * item.quantity;
+      originalTotal += item.price * item.quantity;
     });
     setTotal(total);
+    setOriginalTotal(originalTotal);
+  }, [cartItems]);
+
+  useEffect(() => {
+    const fetchSkuData = async () => {
+      try {
+        const skuPromises = cartItems.map((item) => getDetailProduct(item.slug));
+        const products = await Promise.all(skuPromises);
+        setSkuData(products.map((product) => product.skus));
+      } catch (error) {
+        console.error('Error fetching SKU data:', error);
+      }
+    };
+
+    if (cartItems.length > 0) {
+      fetchSkuData();
+    }
   }, [cartItems]);
 
   return (
@@ -185,7 +268,9 @@ function Cart() {
                       </div>
                     </td>
                     <td className={cx('product-subtotal')}>
-                      $ {parseFloat(item.final_price * item.quantity).toFixed(2)}
+                      <span className={cx('subtotal-value')}>
+                        $ {parseFloat(item.final_price * item.quantity).toFixed(2)}
+                      </span>
                     </td>
                     <td className={cx('product-remove')} onClick={() => dispatch(remove(index))}>
                       X
@@ -212,34 +297,17 @@ function Cart() {
                 <th>Subtotal</th>
                 <td data-title="Subtotal">$ {parseFloat(total).toFixed(2)}</td>
               </tr>
-              <tr className={cx('shipping-totals')}>
-                <th>Shipping</th>
-                <td data-title="Shipping" className={cx('shipping')}>
-                  <ul id="shipping_method" className={cx('shipping-methods')}>
-                    <li>
-                      <input
-                        type="radio"
-                        name="shipping_method[0]"
-                        data-index="0"
-                        id="shipping_method_0_flat_rate1"
-                        value="flat_rate:1"
-                        class="shipping_method"
-                        checked="checked"
-                      />
-                      <label for="shipping_method_0_flat_rate1">Flat rate</label>
-                    </li>
-                    <li>
-                      <input
-                        type="radio"
-                        name="shipping_method[0]"
-                        data-index="0"
-                        id="shipping_method_0_wc_pickup_store"
-                        value="wc_pickup_store"
-                        class="shipping_method"
-                      />
-                      <label for="shipping_method_0_wc_pickup_store">Pickup Store</label>
-                    </li>
-                  </ul>
+              <tr className={cx('cart-discount')}>
+                <th>Discount</th>
+                <td data-title="Discount">
+                  {originalTotal > total ? (
+                    <>
+                      <span className={cx('original-price')}>$ {parseFloat(originalTotal).toFixed(2)}</span>
+                      <span className={cx('saved-amount')}>Save $ {parseFloat(originalTotal - total).toFixed(2)}</span>
+                    </>
+                  ) : (
+                    'No discount applied'
+                  )}
                 </td>
               </tr>
               <tr class={cx('order-total')} style={{ marginTop: '10px' }}>

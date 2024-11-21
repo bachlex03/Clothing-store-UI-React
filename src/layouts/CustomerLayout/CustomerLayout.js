@@ -2,11 +2,20 @@ import style from './CustomerLayout.module.scss';
 import classNames from 'classnames/bind';
 import { Header, Footer, CustomerSidebar } from '../components';
 import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 const cx = classNames.bind(style);
 
 function CustomerLayout({ children }) {
   const [scrollDirection, setScrollDirection] = useState('up');
+  const location = useLocation();
+
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'instant',
+    });
+  }, [location.pathname]);
 
   useEffect(() => {
     let lastScrollTop = 0;

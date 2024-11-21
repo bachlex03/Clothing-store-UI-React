@@ -2,7 +2,7 @@ import style from './Search.module.scss';
 import classNames from 'classnames/bind';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleXmark, faSpinner, fas } from '@fortawesome/free-solid-svg-icons';
+import { faCircleXmark, faSpinner, fas, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { Fragment, useState, useRef, useEffect } from 'react';
 import useDebounce from '~/hooks/useDebounce';
 import images from '~/assets/images';
@@ -31,14 +31,13 @@ function Search({ light, color }) {
 
   const searchProductApi = useMutation({
     mutationFn: async (q) => {
-      // setLoading(true);
-
       return await productService.search({
         q,
       });
     },
     onSuccess: (data) => {
-      setProducts(data);
+      const activeProducts = data.filter((product) => product.product_status !== 'Draft');
+      setProducts(activeProducts);
     },
     onError: (error) => {
       if (error instanceof AxiosError) {
@@ -105,6 +104,9 @@ function Search({ light, color }) {
   return (
     <div className={cx('wrapper')}>
       <div className="relative">
+        <span className={cx('search-icon')}>
+          <FontAwesomeIcon icon={faMagnifyingGlass} />
+        </span>
         <input
           type="text"
           placeholder="Search products..."

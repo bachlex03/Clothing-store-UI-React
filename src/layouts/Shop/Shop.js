@@ -1,13 +1,21 @@
 import { Header, Sidebar, Footer } from '../components';
 import style from './Shop.module.scss';
 import { useEffect, useState } from 'react';
-
+import { useLocation } from 'react-router-dom';
 import classNames from 'classnames/bind';
 
 const cx = classNames.bind(style);
 
 function Shop({ children }) {
   const [scrollDirection, setScrollDirection] = useState('up');
+  const location = useLocation();
+
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'instant',
+    });
+  }, [location.pathname]);
 
   useEffect(() => {
     let lastScrollTop = 0;

@@ -45,7 +45,8 @@ function CategoryProducts() {
       return await categoryService.getProductsByCategory(slug);
     },
     onSuccess: (data) => {
-      setProducts(data);
+      const activeProducts = data.filter((product) => product.product_status !== 'Draft');
+      setProducts(activeProducts);
     },
     onError: (error) => {
       if (error instanceof AxiosError) {

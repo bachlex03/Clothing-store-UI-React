@@ -168,6 +168,20 @@ function Home() {
     }
   }, []);
 
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await productService.getAllProducts();
+        // Lọc bỏ sản phẩm có status là Draft
+        const activeProducts = response.filter((product) => product.product_status !== 'Draft');
+        setProducts(activeProducts);
+      } catch (error) {
+        console.log('Failed to fetch products: ', error);
+      }
+    };
+    fetchProducts();
+  }, []);
+
   return (
     <Fragment>
       {/* Slider */}
