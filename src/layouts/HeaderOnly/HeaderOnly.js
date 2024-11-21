@@ -1,5 +1,6 @@
 import style from './HeaderOnly.module.scss';
 import classNames from 'classnames/bind';
+import { useLocation } from 'react-router-dom';
 
 import { Header, Footer } from '../components';
 import { useEffect, useState } from 'react';
@@ -7,50 +8,58 @@ import { useEffect, useState } from 'react';
 const cx = classNames.bind(style);
 
 function HeaderOnly({ children }) {
-  const [scrollDirection, setScrollDirection] = useState('up');
+    const [scrollDirection, setScrollDirection] = useState('up');
+    const location = useLocation();
 
-  useEffect(() => {
-    let lastScrollTop = 0;
+    useEffect(() => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'instant'
+        });
+    }, [location.pathname]);
 
-    const handleScroll = () => {
-      const st = window.pageYOffset;
+    useEffect(() => {
+        let lastScrollTop = 0;
 
-      if (st > lastScrollTop) {
-        setScrollDirection('down');
-      } else if (st < lastScrollTop) {
-        setScrollDirection('up');
-      }
-      if (st < 30) {
-        setScrollDirection('top');
-      }
+        const handleScroll = () => {
+            const st = window.pageYOffset;
 
-      lastScrollTop = st;
-    };
+            if (st > lastScrollTop) {
+                setScrollDirection('down');
+            } else if (st < lastScrollTop) {
+                setScrollDirection('up');
+            }
+            if (st < 30) {
+                setScrollDirection('top');
+            }
 
-    window.addEventListener('scroll', handleScroll);
+            lastScrollTop = st;
+        };
 
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
+        window.addEventListener('scroll', handleScroll);
 
-  const classes = cx('header-component', {
-    show: scrollDirection === 'up',
-    hide: scrollDirection === 'down',
-    top: scrollDirection === 'top',
-  });
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
 
-  return (
-    <div>
-      <div className={classes}>
-        <Header />
-      </div>
-      <div className={cx('container')}>
-        <div className="content">{children}</div>
-      </div>
-      <Footer />
-    </div>
-  );
+    const classes = cx('header-component', {
+        show: scrollDirection === 'up',
+        hide: scrollDirection === 'down',
+        top: scrollDirection === 'top',
+    });
+
+    return (
+        <div>
+            <div className={classes}>
+                <Header />
+            </div>
+            <div className={cx('container')}>
+                <div className="content">{children}</div>
+            </div>
+            <Footer />
+        </div>
+    );
 }
 
 export default HeaderOnly;

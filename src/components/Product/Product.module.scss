@@ -63,6 +63,12 @@
     &:hover {
       color: #fe6767;
     }
+
+    &.eye-icon {
+      &:hover {
+        color: #0056b3;
+      }
+    }
   }
 
   .icon[liked] {

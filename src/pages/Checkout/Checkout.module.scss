@@ -129,7 +129,7 @@
           .tbody {
             tr,
             td {
-              padding: 20px;
+              padding: 10px;
             }
             td[class*='product'] {
               font-size: 1.3rem;
@@ -293,5 +293,20 @@
         }
       }
     }
+  }
+}
+
+.discount-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  .original-price {
+    text-decoration: line-through;
+    color: #9e9e9e;
+  }
+
+  .saved-amount {
+    color: #d7422d;
   }
 }

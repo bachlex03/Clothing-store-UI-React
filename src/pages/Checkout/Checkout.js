@@ -42,8 +42,10 @@ function Checkout() {
 
   useEffect(() => {
     let total = 0;
+    let originalTotal = 0;
     const boughtItems = cartItems.map((item) => {
-      total = total + item.final_price * item.quantity;
+      total += item.final_price * item.quantity;
+      originalTotal += item.price * item.quantity;
       return {
         name: item.name,
         slug: item.slug,
@@ -53,10 +55,12 @@ function Checkout() {
         price: item.price,
         final_price: item.final_price,
         discount: item.discount,
+        image: item.image,
       };
     });
     setListItems(boughtItems);
     setTotal(total);
+    setOriginalTotal(originalTotal);
   }, []);
 
   useEffect(() => {
@@ -519,26 +523,40 @@ function Checkout() {
                       return (
                         <tr>
                           <td className={cx('product')}>
-                            <p className={cx('product-heading')}>{item.name}</p>
-                            <div className={cx('info-product')}>
-                              {item?.discount ? (
-                                <div>
-                                  <span style={{ color: '#d7422d', marginRight: '10px', fontSize: '1.4rem' }}>
-                                    $ {parseFloat(item.final_price).toFixed(2)}
-                                  </span>
-                                  <span
-                                    style={{ color: '#9e9e9e', textDecoration: 'line-through', fontSize: '1.2rem' }}
-                                  >
-                                    $ {parseFloat(item.price).toFixed(2)}
-                                  </span>
-                                </div>
-                              ) : (
-                                <span style={{ fontSize: '1.4rem' }}>$ {parseFloat(item.price).toFixed(2)}</span>
-                              )}
+                            <div className={cx('product-image-wrapper')} style={{ display: 'flex', gap: '12px' }}>
+                              <img
+                                src={item.image}
+                                alt={item.name}
+                                style={{
+                                  width: '80px',
+                                  height: '80px',
+                                  objectFit: 'contain',
+                                  borderRadius: '4px',
+                                }}
+                              />
                               <div>
-                                <p className={cx('variation-value')}>Color: {item.color}</p>
-                                <p className={cx('variation-value')}>Size: {item.size}</p>
-                                <p className={cx('variation-value')}>Quantity: {item.quantity}</p>
+                                <p className={cx('product-heading')}>{item.name}</p>
+                                <div className={cx('info-product')}>
+                                  {item?.discount ? (
+                                    <div>
+                                      <span style={{ color: '#d7422d', marginRight: '10px', fontSize: '1.4rem' }}>
+                                        $ {parseFloat(item.final_price).toFixed(2)}
+                                      </span>
+                                      <span
+                                        style={{ color: '#9e9e9e', textDecoration: 'line-through', fontSize: '1.2rem' }}
+                                      >
+                                        $ {parseFloat(item.price).toFixed(2)}
+                                      </span>
+                                    </div>
+                                  ) : (
+                                    <span style={{ fontSize: '1.4rem' }}>$ {parseFloat(item.price).toFixed(2)}</span>
+                                  )}
+                                  <div>
+                                    <p className={cx('variation-value')}>Color: {item.color}</p>
+                                    <p className={cx('variation-value')}>Size: {item.size}</p>
+                                    <p className={cx('variation-value')}>Quantity: {item.quantity}</p>
+                                  </div>
+                                </div>
                               </div>
                             </div>
                           </td>
@@ -551,13 +569,24 @@ function Checkout() {
                 </tbody>
               </table>
               <div className={cx('total-field')}>
+                <p className={cx('total-title')}>Discount</p>
+                {originalTotal > total ? (
+                  <div className={cx('discount-info')}>
+                    <span className={cx('original-price')}>$ {parseFloat(originalTotal).toFixed(2)}</span>
+                    <span className={cx('saved-amount')}>Save $ {parseFloat(originalTotal - total).toFixed(2)}</span>
+                  </div>
+                ) : (
+                  <p>No discount applied</p>
+                )}
+              </div>
+              <div className={cx('total-field')}>
                 <p className={cx('total-title')}>Subtotal</p>
                 <p>$ {parseFloat(total).toFixed(2)}</p>
               </div>
-              <div className={cx('total-field')}>
-                <p className={cx('total-title')}>Shipping</p>
-                <p>Flat rate: $ 0.00</p>
-              </div>
+              {/* <div className={cx('total-field')}>
+                                <p className={cx('total-title')}>Shipping</p>
+                                <p>Flat rate: $ 0.00</p>
+                            </div> */}
               <div className={cx('total-field')}>
                 <p className={cx('total-title')}>Total</p>
                 <strong>$ {parseFloat(total).toFixed(2)}</strong>
