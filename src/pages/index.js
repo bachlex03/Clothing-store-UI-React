@@ -10,3 +10,4 @@ export { default as Wishlist } from './Wishlist';
 export { default as Recover } from './Recover';
 export { default as Reset } from './Reset';
 export { default as Verify } from './Verify';
+export { default as CheckoutResult } from './CheckoutResult';

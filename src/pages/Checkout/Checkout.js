@@ -40,7 +40,6 @@ function Checkout() {
   const cartItems = useSelector((state) => state.cart.values);
   const userInformation = useSelector((state) => state.user.information);
   const navigate = useNavigate();
-  const [originalTotal, setOriginalTotal] = useState(0);
 
   useEffect(() => {
     let total = 0;

@@ -157,7 +157,7 @@ function Header({ animation = false, blur = false, light = null, color, lightLog
         <nav>
           <ul className={cx('list-header')}>
             <li className={cx('header-item')}>
-              <Link className={cx('header-link')} href="/home" light={lightEffect}>
+              <Link className={cx('header-link')} to={'/home'} href="/home" light={lightEffect}>
                 <p className={cx('header-link-text')}>Home</p>
               </Link>
             </li>
@@ -200,19 +200,19 @@ function Header({ animation = false, blur = false, light = null, color, lightLog
             </li>
 
             <li className={cx('header-item')}>
-              <Link className={cx('header-link')} href="#" light={lightEffect}>
+              <Link className={cx('header-link')} to={'/home'} href="/home" light={lightEffect}>
                 <p className={cx('header-link-text')}>About Us</p>
               </Link>
             </li>
 
             <li className={cx('header-item')}>
-              <Link className={cx('header-link')} href="#" light={lightEffect}>
+              <Link className={cx('header-link')} to={'/home'} href="/home" light={lightEffect}>
                 <p className={cx('header-link-text')}>Blog</p>
               </Link>
             </li>
 
             <li className={cx('header-item')}>
-              <Link className={cx('header-link')} href="#" light={lightEffect}>
+              <Link className={cx('header-link')} to={'/home'} href="/home" light={lightEffect}>
                 <p className={cx('header-link-text')}>
                   Pages
                   <i className={cx('nav-icon')}>

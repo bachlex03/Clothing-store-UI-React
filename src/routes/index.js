@@ -12,6 +12,7 @@ import {
   Checkout,
   Contact,
   Location,
+  CheckoutResult,
 } from '~/pages';
 import { Address, Detail, Order } from '~/pages/Customer';
 import { Products, Invoices, Employees } from '~/pages/Admin';
@@ -26,6 +27,11 @@ const publicRoutes = [
   {
     path: '/home',
     component: Home,
+    layout: HeaderOnly,
+  },
+  {
+    path: '/checkout-result',
+    component: CheckoutResult,
     layout: HeaderOnly,
   },
   {
