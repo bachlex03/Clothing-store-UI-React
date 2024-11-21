@@ -49,3 +49,18 @@ export const getDetailProduct = async (slug) => {
   const result = await request.get(`products/${slug}`);
   return result.data;
 };
+
+export const getNewArrivals = async () => {
+  const response = await request.get('products/new-arrivals');
+  return response.data;
+};
+
+export const getOnSaleProducts = async () => {
+  const response = await request.get('products/on-sale');
+  return response.data;
+};
+
+export const getBestSellers = async () => {
+  const response = await request.get('products/best-sellers');
+  return response.data;
+};

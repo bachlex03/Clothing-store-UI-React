@@ -38,6 +38,13 @@ function Product({ product, children, ...passProps }) {
     dispatch(removeFromWishlist(product));
   };
 
+  const getUrlImage = (product) => {
+    if (product.product_imgs.length > 0) {
+      const splitURL = product.product_imgs[0]?.secure_url?.split('/upload/');
+      return `${splitURL[0]}/upload/h_884,w_690/${splitURL[1]}`;
+    }
+  };
+
   return (
     <div className={cx('wrapper')}>
       <div className={cx('img-wrapper')}>

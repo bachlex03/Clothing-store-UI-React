@@ -268,6 +268,36 @@ function Home() {
           </div>
         </div>
       </section>
+      {/* Related Products */}
+      <section
+        className={
+          areaRelatedProducts ? cx('related-products-container', 'fadeInUp') : cx('related-products-container')
+        }
+      >
+        <div className={cx('related-products-content')}>
+          <div className={cx('text-heading')} ref={relatedProductsRef}>
+            Featured Product
+          </div>
+          <div className={cx('products-container')}>
+            <div className="row">
+              {products.slice(0, 8).map((product, index) => {
+                return (
+                  <div className="col l-3">
+                    <div className={cx('product-component')}>
+                      <Product product={product} />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+            <div className={cx('button-viewall')}>
+              <Link to="/shop" className={cx('btn', 'btn-accent', 'text-black', 'btn-hover-primary')}>
+                View All
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* Categories */}
       <section

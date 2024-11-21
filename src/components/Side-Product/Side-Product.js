@@ -12,21 +12,21 @@ const cx = classNames.bind(styles);
 
 function SideProduct({ product = {}, sale }) {
   return (
-    <div className="flex  mt-20px">
+    <div className="flex mt-20px">
       <Link
         to={{
-          pathname: `/products/${product?.slug ?? 'demo'}`,
+          pathname: `/products/${product?.product_slug ?? 'demo'}`,
         }}
       >
-        <img src={images.demoShopImg} alt="Product" className={cx('img')} />
+        <img src={product?.product_imgs[0]?.secure_url} alt="Product" className={cx('img')} />
       </Link>
       <div className={cx('content')}>
         <Link
           to={{
-            pathname: `/products/${product?.slug ?? 'demo'}`,
+            pathname: `/products/${product?.product_slug ?? 'demo'}`,
           }}
         >
-          <p className={cx('name')}>{product?.name ?? 'Pale Blue Drawstring Waist Jersey Shorts'}</p>
+          <p className={cx('name')}>{product?.product_name ?? 'Pale Blue Drawstring Waist Jersey Shorts'}</p>
 
           <div className={cx('stars')}>
             <i className={cx('star-icon')}>
@@ -47,7 +47,7 @@ function SideProduct({ product = {}, sale }) {
           </div>
         </Link>
         <div className="mt-10">
-          <Price promotion={product?.promotion ?? 0} value={product?.price ?? 50} sale={sale} fs_15 />
+          <Price promotion={product?.product_promotion ?? 0} value={product?.product_price ?? 50} sale={sale} fs_15 />
         </div>
       </div>
     </div>
