@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { Sidebar } from '~/layouts/components';
 
 import style from './Shop.module.scss';
@@ -81,6 +82,24 @@ function Shop() {
     filtered = filtered.filter(
       (product) => product.product_price >= priceRange.min && product.product_price <= priceRange.max,
     );
+
+    // const fetchingProduct = useMutation({
+    //   mutationFn: async () => {
+    //     return await productService.getAllProducts();
+    //   },
+    //   onSuccess: (data) => {
+    //     // Lọc bỏ sản phẩm Draft
+    //     const activeProducts = data.filter((product) => product.product_status !== 'Draft');
+    //     setProducts(activeProducts);
+    //   },
+    //   onError: (error) => {
+    //     if (error instanceof AxiosError) {
+    //       toast.error(`Error ${error.response?.status}`, {
+    //         description: `${error.response?.data?.message}`,
+    //       });
+    //     }
+    //   },
+    // });
 
     // Sort products
     if (sortOrder === 'asc') {
