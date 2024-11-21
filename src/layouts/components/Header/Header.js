@@ -117,7 +117,7 @@ function Header({ animation = false, blur = false, light = null, color, lightLog
           <Link
             to={user ? '/shop' : '/login'}
             onClick={() => {
-              setLightEffect(null);
+              // setLightEffect(null);
               if (user) {
                 // remove token from local storage
                 localStorage.removeItem('token');

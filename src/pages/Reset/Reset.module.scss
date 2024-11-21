@@ -108,3 +108,29 @@ $background-hover-color: #91704f;
     margin: 30px 0 30px;
   }
 }
+
+.input-wrapper {
+  position: relative;
+  margin-bottom: 16px;
+
+  .form-control-ovr.error {
+    border-color: #dc3545;
+    
+    &:focus {
+      box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+    }
+  }
+}
+
+.error-message {
+  color: #dc3545;
+  font-size: 14px;
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.exclamation {
+  font-size: 12px;
+}
