@@ -31,6 +31,7 @@ function Checkout() {
   const [userDistrict, setUserDistrict] = useState('');
   const [phone, setPhone] = useState('');
   const [note, setNote] = useState('');
+  const [originalTotal, setOriginalTotal] = useState(0);
   const [cartList, setCartList] = useState(JSON.parse(localStorage.getItem('cartList')) || []);
   const [listItems, setListItems] = useState([]);
   const [total, setTotal] = useState(0);
