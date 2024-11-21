@@ -68,9 +68,11 @@ function Product({ product, children, ...passProps }) {
               <Text>Select options</Text>
             </p>
           </Link>
-          <i className={cx('icon')}>
-            <FontAwesomeIcon icon={faEye} />
-          </i>
+          <Link to={`/products/${product?.product_slug}` ?? '#'}>
+            <i className={cx('icon', 'eye-icon')}>
+              <FontAwesomeIcon icon={faEye} />
+            </i>
+          </Link>
         </div>
       </div>
 

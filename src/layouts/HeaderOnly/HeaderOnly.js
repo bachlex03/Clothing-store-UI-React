@@ -1,5 +1,6 @@
 import style from './HeaderOnly.module.scss';
 import classNames from 'classnames/bind';
+import { useLocation } from 'react-router-dom';
 
 import { Header, Footer } from '../components';
 import { useEffect, useState } from 'react';
@@ -8,6 +9,14 @@ const cx = classNames.bind(style);
 
 function HeaderOnly({ children }) {
   const [scrollDirection, setScrollDirection] = useState('up');
+  const location = useLocation();
+
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'instant',
+    });
+  }, [location.pathname]);
 
   useEffect(() => {
     let lastScrollTop = 0;

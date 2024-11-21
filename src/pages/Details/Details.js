@@ -15,6 +15,11 @@ import { useMutation } from '@tanstack/react-query'; // Ensure correct import
 import { toast } from 'sonner';
 import { useDispatch, useSelector } from 'react-redux';
 import { add, update } from '~/redux/features/cart/cartSlice';
+import SizeChartModal from '~/components/SizeChartModal/SizeChartModal';
+import { add as addToWishlist, remove as removeFromWishlist } from '~/redux/features/wishlist/wishlistSlice';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHeart as faHeartRegular } from '@fortawesome/free-regular-svg-icons';
+import { faHeart as faHeartSolid } from '@fortawesome/free-solid-svg-icons';
 
 const cx = classNames.bind(style);
 
@@ -29,10 +34,13 @@ function Details() {
   const [selectedSize, setSelectedSize] = useState('');
   const [sizeAvailable, setSizeAvailable] = useState([]);
   const [quantity, setQuantity] = useState(1);
+  const [showSizeChart, setShowSizeChart] = useState(false);
+  const [isWishlist, setIsWishlist] = useState(false);
 
   //handle add to cart
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.values);
+  const wishlistItems = useSelector((state) => state.wishlist.values);
 
   const handleAddToCart = () => {
     const checkQuantity = sizeAvailable.find(
@@ -149,6 +157,13 @@ function Details() {
     }
   }, [sizeAvailable]);
 
+  useEffect(() => {
+    if (product && product._id) {
+      const isInWishlist = wishlistItems.some((item) => item._id === product._id);
+      setIsWishlist(isInWishlist);
+    }
+  }, [product, wishlistItems]);
+
   const getDetailProduct = async () => {
     const result = await getDetails(slug);
     console.log(result);
@@ -172,27 +187,33 @@ function Details() {
     }
   }, [quantity]);
 
-  // const handleAddToCart = () => {
-  //   const productExist = cartList.find(
-  //     (item) => item._id === product._id && item.selectedColor === selectedColor && item.selectedSize === selectedSize,
-  //   );
+  const getTotalStock = () => {
+    if (!sizeAvailable) return 0;
+    return sizeAvailable.reduce((total, item) => total + item.sku_quantity, 0);
+  };
 
-  //   if (productExist) {
-  //     setCartList(
-  //       cartList.map((item) =>
-  //         item._id === product._id && item.selectedColor === selectedColor && item.selectedSize === selectedSize
-  //           ? { ...item, quantity: item.quantity + quantity }
-  //           : item,
-  //       ),
-  //     );
-  //   } else {
-  //     setCartList([...cartList, { ...product, quantity, selectedColor, selectedSize }]);
-  //   }
+  const handleOpenSizeChart = () => {
+    setShowSizeChart(true);
+  };
 
-  //   toast.success('Success', {
-  //     description: 'Add to cart successfully',
-  //   });
-  // };
+  const handleAddToWishlist = (product) => {
+    dispatch(addToWishlist(product));
+    toast.success('Added to wishlist successfully');
+  };
+
+  const handleRemoveFromWishlist = (product) => {
+    dispatch(removeFromWishlist(product));
+    toast.success('Removed from wishlist successfully');
+  };
+
+  const handleWishlist = () => {
+    if (isWishlist) {
+      handleRemoveFromWishlist(product);
+    } else {
+      handleAddToWishlist(product);
+    }
+    setIsWishlist(!isWishlist);
+  };
 
   return (
     <div className={cx('product-detail-container')}>
@@ -204,6 +225,9 @@ function Details() {
               product.product_imgs.map((item) => {
                 return (
                   <div className={cx('product-image')}>
+                    <i className={cx('wishlist-btn')} onClick={() => handleWishlist()} liked={isWishlist ? '' : false}>
+                      {isWishlist ? <FontAwesomeIcon icon={faHeartSolid} /> : <FontAwesomeIcon icon={faHeartRegular} />}
+                    </i>
                     <img src={item.secure_url} alt={`img-${item.original_filename}`} />
                   </div>
                 );
@@ -305,7 +329,9 @@ function Details() {
             <div className={cx('size')}>
               <div className={cx('size-selected')}>
                 <span>Size</span>
-                <div>SIZE CHART</div>
+                <div onClick={() => setShowSizeChart(true)} style={{ cursor: 'pointer' }}>
+                  SIZE CHART
+                </div>
               </div>
               <div className={cx('size-product')}>
                 {sizeAvailable &&
@@ -331,16 +357,9 @@ function Details() {
                   <input
                     type="number"
                     className={cx('qty')}
-                    id
-                    name
                     value={quantity}
-                    size="4"
                     min="0"
-                    max=""
                     step="1"
-                    placeholder=""
-                    inputMode="numeric"
-                    autoComplete="off"
                     onChange={(e) => setQuantity(e.target.value)}
                   />
                   <span className={cx('cms-qty-act', 'cms-qty-up')} onClick={() => handleQuantity(1)}></span>
@@ -353,6 +372,7 @@ function Details() {
               <div className={cx('categories')}>
                 Categories: {product.product_brand} | {product?.product_category?.category_name}
               </div>
+              <div className={cx('stock-info')}>Only {getTotalStock()} items left</div>
             </div>
           </div>
         </div>
@@ -362,6 +382,7 @@ function Details() {
         <div className="related-products-container"></div>
         <div className="contact-container"></div>
       </div>
+      <SizeChartModal isOpen={showSizeChart} onClose={() => setShowSizeChart(false)} />
     </div>
   );
 }
