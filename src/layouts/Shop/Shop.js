@@ -7,59 +7,59 @@ import classNames from 'classnames/bind';
 const cx = classNames.bind(style);
 
 function Shop({ children }) {
-    const [scrollDirection, setScrollDirection] = useState('up');
-    const location = useLocation();
+  const [scrollDirection, setScrollDirection] = useState('up');
+  const location = useLocation();
 
-    useEffect(() => {
-        window.scrollTo({
-            top: 0,
-            behavior: 'instant'
-        });
-    }, [location.pathname]);
-
-    useEffect(() => {
-        let lastScrollTop = 0;
-
-        const handleScroll = () => {
-            const st = window.pageYOffset;
-
-            if (st > lastScrollTop) {
-                setScrollDirection('down');
-            } else if (st < lastScrollTop) {
-                setScrollDirection('up');
-            }
-            if (st < 30) {
-                setScrollDirection('top');
-            }
-
-            lastScrollTop = st;
-        };
-
-        window.addEventListener('scroll', handleScroll);
-
-        return () => {
-            window.removeEventListener('scroll', handleScroll);
-        };
-    }, []);
-
-    const classes = cx('header-component', {
-        show: scrollDirection === 'up',
-        hide: scrollDirection === 'down',
-        top: scrollDirection === 'top',
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'instant',
     });
+  }, [location.pathname]);
 
-    return (
-        <div>
-            <div className={classes}>
-                <Header animation blur lightLogo={true} />
-            </div>
-            <div className={cx('container')}>
-                <div className="left-block"></div>
-                <div className="right-block">{children}</div>
-            </div>
-            <Footer />
-        </div>
-    );
+  useEffect(() => {
+    let lastScrollTop = 0;
+
+    const handleScroll = () => {
+      const st = window.pageYOffset;
+
+      if (st > lastScrollTop) {
+        setScrollDirection('down');
+      } else if (st < lastScrollTop) {
+        setScrollDirection('up');
+      }
+      if (st < 30) {
+        setScrollDirection('top');
+      }
+
+      lastScrollTop = st;
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  const classes = cx('header-component', {
+    show: scrollDirection === 'up',
+    hide: scrollDirection === 'down',
+    top: scrollDirection === 'top',
+  });
+
+  return (
+    <div>
+      <div className={classes}>
+        <Header animation blur lightLogo={true} />
+      </div>
+      <div className={cx('container')}>
+        <div className="left-block"></div>
+        <div className="right-block">{children}</div>
+      </div>
+      <Footer />
+    </div>
+  );
 }
 
 export default Shop;

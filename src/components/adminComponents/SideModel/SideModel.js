@@ -564,7 +564,6 @@ function SideModel(props, ref) {
               <div className={cx('colors')}>
                 <p className={cx('variant-text')}>Colors</p>
 
-                {console.log('color', color)}
                 <div className={cx('color-container')}>
                   {colorsArr.map((hashColor, index) => {
                     return (

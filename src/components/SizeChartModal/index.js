@@ -1,1 +1,1 @@
-export { default } from './SizeChartModal'; 
+export { default } from './SizeChartModal';

@@ -82,7 +82,25 @@
   right: 0;
   width: calc(100% - 58%);
   height: 100%;
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
+  
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: #91704f;
+    border-radius: 3px;
+  }
+  
+  &::-webkit-scrollbar-thumb:hover {
+    background: #755a3f;
+  }
 }
 
 .logreg-box .form-box {
@@ -221,8 +239,13 @@
 
 .error-messsage {
   margin-top: -10px;
+  font-size: 10px;
 }
 
 .exclamation {
   color: #eb001b;
+}
+
+.title {
+  padding-top: 40px;
 }
