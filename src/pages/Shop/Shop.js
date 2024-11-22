@@ -248,6 +248,8 @@ function Shop() {
                         <option value="default">Default sorting</option>
                         <option value="asc">Price: Low to High</option>
                         <option value="desc">Price: High to Low</option>
+                        <option value="newest">Newest Products</option>
+                        <option value="bestseller">Best Selling</option>
                       </select>
                     </div>
                   </div>
