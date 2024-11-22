@@ -202,7 +202,13 @@ function Checkout() {
       if (selectedCity && selectedCity.startsWith('{') && selectedCity.endsWith('}')) {
         objectCity = JSON.parse(selectedCity);
       }
+      console.log('>>>>>>>CHECK', selectedCity, objectCity);
+      if (selectedCity === '-- Choose your option --') {
+        return;
+      }
       setDistrict({});
+      setUserDistrict('');
+      setUserCity('');
       return await getAllDistrict(objectCity?.key);
     },
     onSuccess: (data) => {

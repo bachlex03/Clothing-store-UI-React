@@ -8,6 +8,7 @@ import { renderCategories } from '~/utils/render-category';
 import { useMutation } from '@tanstack/react-query'; // Ensure correct import
 import { toast } from 'sonner';
 import { AxiosError } from 'axios';
+import * as productService from '~/services/api/productService';
 
 const cx = classNames.bind(style);
 
@@ -16,6 +17,27 @@ function Sidebar({ categories, setColors, setSizes, onPriceRangeChange }) {
   const [colorsArray, setColorsArray] = useState([]);
   const [checkedColors, setCheckedColors] = useState([]);
   const [checkedSizes, setCheckedSizes] = useState([]);
+  const [bestSellers, setBestSellers] = useState([]);
+
+  const fetchingBestSellers = useMutation({
+    mutationFn: async () => {
+      return await productService.getBestSellers();
+    },
+    onSuccess: (data) => {
+      setBestSellers(data);
+    },
+    onError: (error) => {
+      if (error instanceof AxiosError) {
+        toast.error(`Error ${error.response?.status}`, {
+          description: `${error.response?.data?.message}`,
+        });
+      }
+    },
+  });
+
+  useEffect(() => {
+    fetchingBestSellers.mutate();
+  }, []);
 
   useEffect(() => {
     const objColorKeys = Object.keys(ColorsHash);
@@ -88,23 +110,17 @@ function Sidebar({ categories, setColors, setSizes, onPriceRangeChange }) {
 
       <div>
         <h3 className={cx('heading')}>Best Selling Products</h3>
-
-        <div className={cx('side-product-component')}>
-          <SideProduct name="Product" />
-        </div>
-
-        <div className={cx('side-product-component')}>
-          <SideProduct name="Product" />
-        </div>
-
-        <div className={cx('side-product-component')}>
-          <SideProduct name="Product" />
-        </div>
-
-        {/* {products ? <SideProduct product={products[3]} /> : <SideProduct name="Product" price sale />} */}
-
-        {/* {products ? <SideProduct product={products[2]} /> : <SideProduct name="Product" price sale />} */}
-
+        {bestSellers.length > 0 ? (
+          bestSellers.slice(0, 4).map((product) => (
+            <div key={product._id} className={cx('side-product-component')}>
+              <SideProduct product={product} sale={product.product_promotion} />
+            </div>
+          ))
+        ) : (
+          <div className={cx('no-products')}>
+            <p>No products found</p>
+          </div>
+        )}
         <span className={cx('separate')}></span>
       </div>
     </aside>

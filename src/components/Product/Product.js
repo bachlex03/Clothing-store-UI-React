@@ -38,6 +38,13 @@ function Product({ product, children, ...passProps }) {
     dispatch(removeFromWishlist(product));
   };
 
+  const getUrlImage = (product) => {
+    if (product.product_imgs.length > 0) {
+      const splitURL = product.product_imgs[0]?.secure_url?.split('/upload/');
+      return `${splitURL[0]}/upload/h_884,w_690/${splitURL[1]}`;
+    }
+  };
+
   return (
     <div className={cx('wrapper')}>
       <div className={cx('img-wrapper')}>
@@ -48,7 +55,7 @@ function Product({ product, children, ...passProps }) {
           {product?.current_discount ? <span className={cx('tag')}>-{product.current_discount}% OFF</span> : ''}
 
           <Link to={`/products/${product?.product_slug ?? '#'}`}>
-            <img src={product.product_imgs[0]?.secure_url ?? images.demoShopImg} className={cx('img')} alt="" />
+            <img src={getUrlImage(product)} className={cx('img')} alt={`${product?.product_name || 'Product'}`} />
           </Link>
         </div>
         <div className={cx('actions')}>
