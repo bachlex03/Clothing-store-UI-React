@@ -42,22 +42,29 @@ function Details() {
   const cartItems = useSelector((state) => state.cart.values);
   const wishlistItems = useSelector((state) => state.wishlist.values);
 
-  const handleAddToCart = () => {
-    const checkQuantity = sizeAvailable.find(
-      (item) => item.sku_size === selectedSize && item.sku_color === selectedColor,
-    );
-    if (checkQuantity && checkQuantity.sku_quantity > quantity) {
-      const data = {
-        name: product.product_name,
-        price: product.product_price,
-        image: product.product_imgs[0].secure_url,
-        color: selectedColor,
-        size: selectedSize,
-        slug: product.product_slug,
-        quantity: quantity,
-        final_price: product.final_price,
-        discount: product.current_discount,
-      };
+    const handleAddToCart = () => {
+        if (quantity < 0) {
+            toast.error('Error', {
+                description: 'Quantity is invalid',
+            });
+            return;
+        }
+        const checkQuantity = sizeAvailable.find(
+            (item) => item.sku_size === selectedSize && item.sku_color === selectedColor,
+        );
+        if (checkQuantity && checkQuantity.sku_quantity > quantity) {
+            const data = {
+                _id: product._id,
+                name: product.product_name,
+                price: product.product_price,
+                image: product.product_imgs[0].secure_url,
+                color: selectedColor,
+                size: selectedSize,
+                slug: product.product_slug,
+                quantity: quantity,
+                final_price: product.final_price,
+                discount: product.current_discount,
+            };
 
       let existIndex = cartItems.findIndex((item) => {
         return item.slug === data.slug && item.color === data.color && item.size === data.size;

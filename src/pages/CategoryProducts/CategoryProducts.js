@@ -119,25 +119,6 @@ function CategoryProducts() {
       <div className="grid wide">
         {products.length > 0 ? (
           <>
-            <div className={cx('shop-header')}>
-              <div className="flex justify-between align-center mb-10px mt-12px">
-                <div className={cx('counter-product')}>
-                  Showing {indexOfFirstProduct + 1} - {Math.min(indexOfLastProduct, products.length)} of{' '}
-                  {products.length} products
-                </div>
-                <div className={cx('sorting')}>
-                  <select
-                    value={sortOrder}
-                    onChange={(e) => handleSortChange(e.target.value)}
-                    className={cx('sort-select')}
-                  >
-                    <option value="default">Default sorting</option>
-                    <option value="asc">Price: Low to High</option>
-                    <option value="desc">Price: High to Low</option>
-                  </select>
-                </div>
-              </div>
-            </div>
 
             <div className="grid wide">
               {products.length > 0 ? (
@@ -184,10 +165,6 @@ function CategoryProducts() {
                   <p className={cx('no-products-text')}>Please check back later or browse other categories</p>
                 </div>
               )}
-            </div>
-
-            <div className={cx('pagination')}>
-              <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
             </div>
           </>
         ) : (

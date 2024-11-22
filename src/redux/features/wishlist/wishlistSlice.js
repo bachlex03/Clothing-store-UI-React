@@ -7,13 +7,27 @@ const wishlistSlice = createSlice({
   },
   reducers: {
     add: (state, action) => {
-      state.values.push(action.payload);
+      const { _id, product_slug, product_imgs, product_name, product_price, product_status } = action.payload;
+
+      const wishlistItem = {
+        _id,
+        product_slug,
+        product_imgs,
+        product_name,
+        product_price,
+        product_status
+      };
+
+      const existingItem = state.values.find(item => item._id === _id);
+
+      if (!existingItem) {
+        state.values.push(wishlistItem);
+      }
     },
 
     remove: (state, action) => {
-      state.values = state.values.filter(
-        (product) => product._id !== action.payload._id
-      );
+      const productId = action.payload._id;
+      state.values = state.values.filter((item) => item._id !== productId);
     },
   },
 });

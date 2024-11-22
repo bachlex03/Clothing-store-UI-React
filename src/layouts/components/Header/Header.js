@@ -99,7 +99,7 @@ function Header({ animation = false, blur = false, light = null, color, lightLog
 
     current.setAttribute('closing', true);
 
-    current.removeEventListener('animationend', () => {});
+    current.removeEventListener('animationend', () => { });
   };
 
   const classes = cx('header-component', {
@@ -271,7 +271,9 @@ function Header({ animation = false, blur = false, light = null, color, lightLog
                   e.stopPropagation();
                 }}
                 ref={cartRef}
-                onAnimationEnd={handleDisplay(cartRef.current)}
+                onAnimationEnd={() => {
+                  handleDisplay(cartRef.current);
+                }}
               >
                 <Cart />
               </div>

@@ -208,7 +208,6 @@ function Checkout() {
       }
       setDistrict({});
       setUserDistrict('');
-      setUserCity('');
       return await getAllDistrict(objectCity?.key);
     },
     onSuccess: (data) => {
@@ -234,6 +233,7 @@ function Checkout() {
     const trimmedPhone = phone.trim();
 
     if (!trimmedFirstName || !trimmedLastName || !trimmedStreet || !selectedCountry || !userCity || !userDistrict) {
+      console.log('>>>>>>>CHECK', trimmedFirstName, trimmedLastName, trimmedStreet, selectedCountry, userCity, userDistrict);
       toast.error('Error', {
         description: 'Please fill in all required fields',
       });
@@ -286,6 +286,8 @@ function Checkout() {
       district: userDistrict,
       country: selectedCountry,
     };
+
+    console.log('data', data);
 
     const response = await updateInfo(data);
     if (response.status === 200) {

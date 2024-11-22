@@ -47,7 +47,7 @@ function SideProduct({ product = {}, sale }) {
           </div>
         </Link>
         <div className="mt-10">
-          <Price promotion={product?.product_promotion ?? 0} value={product?.product_price ?? 50} sale={sale} fs_15 />
+          <Price promotion={product?.product_promotion?.current_discount ?? 0} value={product?.product_price ?? 50} sale={sale} fs_15 />
         </div>
       </div>
     </div>
